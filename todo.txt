@@ -1,0 +1,10 @@
+%UI
+ *index.html which give option to goto toDo page with given name, or to create new todo page
+ *<todoPageName>.html
+  -> will give the platform to add show delete todo 
+%Test
+ * test getRequest
+ * test postRequest
+%JS
+ * todo class which create and manage each toDo
+ * 
