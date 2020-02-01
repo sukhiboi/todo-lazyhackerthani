@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="./images/checkListIcon.png" />
+    <link rel="stylesheet" href="css/indexStyle.css" />
+    <script src="./scripts/indexScript.js"></script>
+    <title>ToDo</title>
+  </head>
+  <body>
+    <div class="mainBox">
+      <input
+        class="button"
+        type="button"
+        value="newFile"
+        onclick="openForm()"
+      />&emsp;
+      <input class="button" type="button" value="show Files" onclick="" />
+    </div>
+
+    <div class="form-popup" id="myForm">
+      <form action="closeForm()">
+        <input
+          class="textBox"
+          type="text"
+          name="fileName"
+          id="fileName"
+          placeholder="type todo file name and enter"
+        />
+        <input
+          class="popUpButton"
+          type="button"
+          value="create"
+          onclick="closeForm()"
+        />
+        <input
+          class="popUpButton"
+          type="button"
+          value="cancel"
+          onclick="closeForm()"
+        />
+      </form>
+    </div>
+  </body>
+</html>
