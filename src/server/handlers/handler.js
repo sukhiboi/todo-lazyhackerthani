@@ -39,6 +39,7 @@ const notFound = function(req, res) {
 };
 
 const methodNotAllowed = function(req, res) {
+  res.setHeader('Content-Type', MIME_TYPES.html);
   res.writeHead(400, 'Method Not Allowed');
   res.end();
 };
