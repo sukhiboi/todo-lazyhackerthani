@@ -55,6 +55,29 @@ const serveTodoPage = function(req, res, next) {
   res.end(content);
 };
 
+const decodeUriText = function(encodedText) {
+  return decodeURIComponent(encodedText.replace(/\+/g, ' '));
+};
+
+const pickupParams = (query, keyValue) => {
+  const [key, value] = keyValue.split('=');
+  query[key] = decodeUriText(value);
+  return query;
+};
+
+const addTaskList = function(req, res, next) {
+  const taskListName = pickupParams({}, req.body).fileName;
+  console.warn(taskListName);
+  if (req.url !== '/saveTaskList') {
+    next();
+    return;
+  }
+  res.writeHead(301, {
+    Location: `page_${taskListName}`
+  });
+  res.end();
+};
+
 const methodNotAllowed = function(req, res) {
   res.writeHead(400, 'Method Not Allowed');
   res.end();
@@ -76,6 +99,7 @@ app.use(readBody);
 app.get('', serveStaticPage);
 app.get('/page', serveTodoPage);
 
+app.post('/saveTaskList', addTaskList);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);
