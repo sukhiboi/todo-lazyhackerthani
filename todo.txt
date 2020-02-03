@@ -1,10 +1,11 @@
 %UI
- *index.html which give option to goto toDo page with given name, or to create new todo page
- *<todoPageName>.html
-  -> will give the platform to add show delete todo 
+ ✔︎index.html which give option to create new tasklist and show all todolist
+ ✔︎<todoPageName>.html
+  -> will give the platform to ✔︎ add ✔︎ show delete each task in that tasklist
 %Test
- * test getRequest
+ ✔︎ test getRequest for static page
+ * test for delivering todo page
  * test postRequest
 %JS
- * todo class which create and manage each toDo
- * 
+ * todo class which create and manage list of tasks (toDo)
+ * task class which create and manage each task
