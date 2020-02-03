@@ -40,8 +40,8 @@ const notFound = function(req, res) {
 };
 
 const serveTodoPage = function(req, res, next) {
-  const taskListName = `list_${req.url.match(/^\/page_(.*)/)[1]}`;
-  if (!(taskListName in todoList)) {
+  const taskListName = `${req.url.match(/^\/page_(.*)/)[1]}`;
+  if (!(`list_${taskListName}` in todoList)) {
     next();
     return;
   }
@@ -49,13 +49,13 @@ const serveTodoPage = function(req, res, next) {
   ////
 
   let tasks = '';
-  todoList[taskListName].forEach((taskProperties, index) => {
+  todoList[`list_${taskListName}`].forEach((taskProperties, index) => {
     tasks += `<input type="checkbox" name="checkBox" id="${index}" ${
       taskProperties.done ? 'checked' : ''
     } />${taskProperties.description}<br />`;
   });
   /////
-  const content = loadTemplate('todoPage.html', { tasks });
+  const content = loadTemplate('todoPage.html', { tasks, taskListName });
   res.setHeader('Content-Type', MIME_TYPES.html);
   res.end(content);
 };
