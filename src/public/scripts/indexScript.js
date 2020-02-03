@@ -1,7 +1,7 @@
-function openForm() {
-  document.getElementById('myForm').style.display = 'block';
-}
+const openForm = () => show('myForm');
 
-function closeForm() {
-  document.getElementById('myForm').style.display = 'none';
-}
+const closeForm = () => hide('myForm');
+
+const hide = id => (document.getElementById(id).style.display = 'none');
+
+const show = id => (document.getElementById(id).style.display = 'block');

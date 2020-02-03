@@ -13,7 +13,7 @@ class App {
     this.routes.push({ handler: middleware });
   }
   serve(req, res) {
-    process.stdout.write(`Request: ${req.url} ${req.method}`);
+    process.stdout.write(`Request: ${req.url} ${req.method}\n`);
     const matchingHandlers = this.routes.filter(route =>
       matchRoute(route, req)
     );

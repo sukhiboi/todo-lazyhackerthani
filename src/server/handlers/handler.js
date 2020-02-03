@@ -1,6 +1,7 @@
 const fs = require('fs');
 
 const { App } = require('./app');
+const { loadTemplate } = require('../library/viewTemplate');
 
 const MIME_TYPES = {
   txt: 'text/plain',
@@ -15,7 +16,7 @@ const MIME_TYPES = {
 };
 
 const TODO_STORE = `${__dirname}/../assets/todos.json`;
-const todos = JSON.stringify(fs.readFileSync(TODO_STORE, 'utf8'));
+const todoList = JSON.parse(fs.readFileSync(TODO_STORE, 'utf8'));
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/../../public`;
@@ -37,9 +38,24 @@ const notFound = function(req, res) {
   res.writeHead(404);
   res.end('Not Found');
 };
+////
+
+const serveTodoPage = function(req, res, next) {
+  if (req.url !== '/page_today') {
+    next();
+    return;
+  }
+  const taskListName = `list_today`;
+  if (!(taskListName in todoList)) {
+    next();
+    return;
+  }
+  const content = loadTemplate('todoPage.html', {});
+  res.setHeader('Content-Type', MIME_TYPES.html);
+  res.end(content);
+};
 
 const methodNotAllowed = function(req, res) {
-  res.setHeader('Content-Type', MIME_TYPES.html);
   res.writeHead(400, 'Method Not Allowed');
   res.end();
 };
@@ -58,6 +74,7 @@ const app = new App();
 app.use(readBody);
 
 app.get('', serveStaticPage);
+app.get('/page', serveTodoPage);
 
 app.get('', notFound);
 app.post('', notFound);
