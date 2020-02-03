@@ -38,19 +38,24 @@ const notFound = function(req, res) {
   res.writeHead(404);
   res.end('Not Found');
 };
-////
 
 const serveTodoPage = function(req, res, next) {
-  if (req.url !== '/page_today') {
-    next();
-    return;
-  }
-  const taskListName = `list_today`;
+  const taskListName = `list_${req.url.match(/^\/page_(.*)/)[1]}`;
   if (!(taskListName in todoList)) {
     next();
     return;
   }
-  const content = loadTemplate('todoPage.html', {});
+
+  ////
+
+  let tasks = '';
+  todoList[taskListName].forEach((taskProperties, index) => {
+    tasks += `<input type="checkbox" name="checkBox" id="${index}" ${
+      taskProperties.done ? 'checked' : ''
+    } />${taskProperties.note}<br />`;
+  });
+  /////
+  const content = loadTemplate('todoPage.html', { tasks });
   res.setHeader('Content-Type', MIME_TYPES.html);
   res.end(content);
 };
@@ -67,14 +72,11 @@ const pickupParams = (query, keyValue) => {
 
 const addTaskList = function(req, res, next) {
   const taskListName = pickupParams({}, req.body).fileName;
-  console.warn(taskListName);
   if (req.url !== '/saveTaskList') {
     next();
     return;
   }
   todoList[`list_${taskListName}`] = todoList[`list_${taskListName}`] || [];
-  console.warn(todoList);
-
   fs.writeFileSync(TODO_STORE, JSON.stringify(todoList));
   res.writeHead(301, {
     Location: `page_${taskListName}`
@@ -101,7 +103,7 @@ const app = new App();
 app.use(readBody);
 
 app.get('', serveStaticPage);
-app.get('/page', serveTodoPage);
+app.get('/page_', serveTodoPage);
 
 app.post('/saveTaskList', addTaskList);
 app.get('', notFound);
