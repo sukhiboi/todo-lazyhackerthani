@@ -52,7 +52,7 @@ const serveTodoPage = function(req, res, next) {
   todoList[taskListName].forEach((taskProperties, index) => {
     tasks += `<input type="checkbox" name="checkBox" id="${index}" ${
       taskProperties.done ? 'checked' : ''
-    } />${taskProperties.note}<br />`;
+    } />${taskProperties.description}<br />`;
   });
   /////
   const content = loadTemplate('todoPage.html', { tasks });
@@ -84,6 +84,26 @@ const addTaskList = function(req, res, next) {
   res.end();
 };
 
+const addTask = function(req, res, next) {
+  if (req.url !== '/addTask') {
+    next();
+    return;
+  }
+  const taskListName = `${req.headers.referer.match(/\/page_(.*)/)[1]}`;
+  const description = pickupParams({}, req.body).task;
+  todoList[`list_${taskListName}`].push({
+    description,
+    date: new Date(),
+    done: false,
+    id: `task${todoList[`list_${taskListName}`].length}`
+  });
+  fs.writeFileSync(TODO_STORE, JSON.stringify(todoList));
+  res.writeHead(301, {
+    Location: `page_${taskListName}`
+  });
+  res.end();
+};
+
 const methodNotAllowed = function(req, res) {
   res.writeHead(400, 'Method Not Allowed');
   res.end();
@@ -106,6 +126,7 @@ app.get('', serveStaticPage);
 app.get('/page_', serveTodoPage);
 
 app.post('/saveTaskList', addTaskList);
+app.post('/addTask', addTask);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);

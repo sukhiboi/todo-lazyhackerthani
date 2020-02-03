@@ -8,12 +8,15 @@
   <body>
     <div class="todoPageDiv">
       <div class="textBoxDiv">
-        <input
-          type="text"
-          name="task"
-          id="task"
-          placeholder="type your task and enter"
-        />
+        <form action="addTask" method="POST">
+          <input
+            type="text"
+            name="task"
+            id="task"
+            placeholder="type your task and enter"
+          />
+        </form>
+
         <div>
           __tasks__
         </div>
