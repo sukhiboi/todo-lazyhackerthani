@@ -72,6 +72,10 @@ const addTaskList = function(req, res, next) {
     next();
     return;
   }
+  todoList[`list_${taskListName}`] = todoList[`list_${taskListName}`] || [];
+  console.warn(todoList);
+
+  fs.writeFileSync(TODO_STORE, JSON.stringify(todoList));
   res.writeHead(301, {
     Location: `page_${taskListName}`
   });
