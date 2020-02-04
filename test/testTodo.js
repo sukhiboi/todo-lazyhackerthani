@@ -4,7 +4,7 @@ const {
   TaskList,
   ToDo,
   ToDoList
-} = require('../src/server/library/todo');
+} = require('../src/server/library/todoList');
 
 describe('Task class', function() {
   describe('toHTML', function() {
