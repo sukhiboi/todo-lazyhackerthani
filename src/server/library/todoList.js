@@ -1,7 +1,8 @@
+let counter = 0;
 class Task {
-  constructor(description, id, time, done = false) {
+  constructor(description, time, id, done = false) {
     this.description = description;
-    this.id = id;
+    this.id = id || `task${++counter}`;
     this.time = time;
     this.done = done;
   }
@@ -23,7 +24,7 @@ class TaskList {
     const tasks = content || [];
     const taskList = new TaskList();
     tasks.forEach(tsk => {
-      taskList.addTask(new Task(tsk.description, tsk.id, new Date(tsk.time)));
+      taskList.addTask(new Task(tsk.description, new Date(tsk.time), tsk.id));
     });
     return taskList;
   }
@@ -36,20 +37,23 @@ class TaskList {
 }
 
 class ToDo {
-  constructor(title, listId, startDate, tasks) {
+  constructor(title, startDate, tasks, listId) {
     this.title = title;
-    this.listId = listId;
+    this.listId = listId || `list${++counter}`;
     this.startDate = startDate;
-    this.tasks = tasks;
+    this.tasks = tasks || TaskList.load();
+  }
+  addTask(task) {
+    this.tasks.addTask(task);
   }
   static load(content) {
     const toDoDetails = content || {};
     const taskList = TaskList.load(content.tasks);
     const toDo = new ToDo(
       toDoDetails.title,
-      toDoDetails.listId,
       toDoDetails.startDate,
-      taskList
+      taskList,
+      toDoDetails.listId
     );
     return toDo;
   }
@@ -63,9 +67,9 @@ class ToDo {
     return JSON.stringify(todo);
   }
   toHTML() {
-    return `<div id="${this.listId}"><h1>${this.title.substring(
-      5
-    )}</h1>${this.tasks.toHTML()}</div>`;
+    return `<div id="${this.listId}"><h1>${
+      this.title
+    }</h1>${this.tasks.toHTML()}</div>`;
   }
 }
 
@@ -77,7 +81,15 @@ class ToDoList {
     this.list.push(toDo);
   }
   has(todoId) {
-    return this.list.some(todo => todo.listId === todoId);
+    return this.list.some(todo => {
+      return todo.listId === todoId;
+    });
+  }
+  addTask(todoId, task) {
+    const toDo = this.list.find(td => {
+      return td.listId === todoId;
+    });
+    toDo.addTask(task);
   }
   static load(content) {
     const toDos = JSON.parse(content || '[]');
@@ -95,7 +107,7 @@ class ToDoList {
     });
     return JSON.stringify(todoList);
   }
-  todoInHtml(todoId) {
+  toDoInHTML(todoId) {
     const todo = this.list.find(todo => {
       return todo.listId === todoId;
     });

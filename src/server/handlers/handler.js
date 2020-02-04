@@ -2,7 +2,7 @@ const fs = require('fs');
 
 const { App } = require('./app');
 const { loadTemplate } = require('../library/viewTemplate');
-const { ToDoList } = require('../library/todoList');
+const { ToDoList, ToDo, Task } = require('../library/todoList');
 
 const MIME_TYPES = {
   txt: 'text/plain',
@@ -16,8 +16,8 @@ const MIME_TYPES = {
   pdf: 'application/pdf'
 };
 
-const TODO_STORE = `${__dirname}/../assets/todosList.json`;
-// const toDoList = JSON.parse(fs.readFileSync(TODO_STORE, 'utf8'));
+const TODO_STORE = `${__dirname}/../assets/todoList.json`;
+const toDoList = ToDoList.load(fs.readFileSync(TODO_STORE, 'utf8'));
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/../../public`;
@@ -65,45 +65,29 @@ const pickupParams = (query, keyValue) => {
 };
 
 const serveToDoPage = function(req, res, next) {
-  const taskListName = `${req.url.match(/^\/page_(.*)/)[1]}`;
-  return 0;
-};
-
-///////////////////////////////////////////////////////////////////
-
-const TODO_STORE_OLD = `${__dirname}/../assets/todos.json`;
-const todoListOld = JSON.parse(fs.readFileSync(TODO_STORE_OLD, 'utf8'));
-
-const serveTodoPage = function(req, res, next) {
-  const taskListName = `${req.url.match(/^\/page_(.*)/)[1]}`;
-  if (!(`list_${taskListName}` in todoListOld)) {
+  const taskListName = `${req.url.match(/\/(.*)\?todoId\=(.*)/)[1]}`;
+  const todoId = `${req.url.match(/\/(.*)\?todoId\=(.*)/)[2]}`;
+  if (!toDoList.has(todoId)) {
     next();
     return;
   }
-
-  let tasks = '';
-  todoListOld[`list_${taskListName}`].forEach((taskProperties, index) => {
-    tasks += `<input type="checkbox" name="checkBox" id="${index}" ${
-      taskProperties.done ? 'checked' : ''
-    } />${taskProperties.description}<br />`;
-  });
-
-  const content = loadTemplate('todoPage.html', { tasks, taskListName });
+  const tasks = toDoList.toDoInHTML(todoId);
+  const content = loadTemplate('todoPage.html', { tasks });
   res.setHeader('Content-Type', MIME_TYPES.html);
   res.end(content);
 };
 
-const addTaskList = function(req, res, next) {
+const addToDo = function(req, res, next) {
   const taskListName = pickupParams({}, req.body).fileName;
   if (req.url !== '/saveTaskList') {
     next();
     return;
   }
-  todoListOld[`list_${taskListName}`] =
-    todoListOld[`list_${taskListName}`] || [];
-  fs.writeFileSync(TODO_STORE_OLD, JSON.stringify(todoListOld));
+  const toDo = ToDo.load({ title: taskListName, startDate: new Date() });
+  toDoList.addToDo(toDo);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
   res.writeHead(301, {
-    Location: `page_${taskListName}`
+    Location: `${taskListName}?todoId=${toDo.listId}`
   });
   res.end();
 };
@@ -113,17 +97,15 @@ const addTask = function(req, res, next) {
     next();
     return;
   }
-  const taskListName = `${req.headers.referer.match(/\/page_(.*)/)[1]}`;
+  const taskListName = `${req.headers.referer.match(/\/(.*)?todoId=(.*)/)[1]}`;
+  const todoId = `${req.headers.referer.match(/\/(.*)?todoId=(.*)/)[2]}`;
+
   const description = pickupParams({}, req.body).task;
-  todoListOld[`list_${taskListName}`].push({
-    description,
-    date: new Date(),
-    done: false,
-    id: `task${todoListOld[`list_${taskListName}`].length}`
-  });
-  fs.writeFileSync(TODO_STORE_OLD, JSON.stringify(todoListOld));
+  const task = new Task(description, new Date());
+  toDoList.addTask(todoId, task);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
   res.writeHead(301, {
-    Location: `page_${taskListName}`
+    Location: `${req.headers.referer}`
   });
   res.end();
 };
@@ -133,9 +115,9 @@ const app = new App();
 app.use(readBody);
 
 app.get('', serveStaticPage);
-app.get('/page_', serveTodoPage);
+app.get(/.*?todoId=/, serveToDoPage);
 
-app.post('/saveTaskList', addTaskList);
+app.post('/saveTaskList', addToDo);
 app.post('/addTask', addTask);
 app.get('', notFound);
 app.post('', notFound);

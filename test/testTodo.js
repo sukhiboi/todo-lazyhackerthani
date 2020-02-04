@@ -10,13 +10,13 @@ describe('Task class', function() {
   describe('toHTML', function() {
     it('should  give html string according to its data without checked when its not done', function() {
       const date = new Date();
-      const task = new Task('buy milk', 'task1', date);
+      const task = new Task('buy milk', date, 'task1');
       const html = `<input type="checkbox" name="checkBox" id="task1"  />buy milk<br />`;
       assert.strictEqual(task.toHTML(), html);
     });
     it('should  give html string according to its data with checked when its done', function() {
       const date = new Date();
-      const task = new Task('buy milk', 'task1', date, true);
+      const task = new Task('buy milk', date, 'task1', true);
       const html = `<input type="checkbox" name="checkBox" id="task1" checked />buy milk<br />`;
       assert.strictEqual(task.toHTML(), html);
     });
@@ -119,7 +119,7 @@ describe('ToDo', function() {
         ]
       };
       const toDo = ToDo.load(content);
-      const html = `<div id="list1"><h1>today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task1"  />go to office<br /></div>`;
+      const html = `<div id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task1"  />go to office<br /></div>`;
       assert.strictEqual(toDo.toHTML(), html);
     });
   });
@@ -153,8 +153,8 @@ describe('ToDoList', function() {
       const jsonString =
         '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"description":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"description":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
       const toDoList = ToDoList.load(jsonString);
-      const html = `<div id="list1"><h1>today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task2"  />go to market<br /></div>`;
-      assert.strictEqual(toDoList.todoInHtml('list1'), html);
+      const html = `<div id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task2"  />go to market<br /></div>`;
+      assert.strictEqual(toDoList.toDoInHTML('list1'), html);
     });
   });
 });
