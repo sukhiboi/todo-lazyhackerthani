@@ -4,6 +4,10 @@
   -> will give the platform to ✔︎ add ✔︎ show delete each task in that tasklist
 %Test
  ✔︎ test getRequest for static page
+ ✔︎ test Task class
+ ✔︎ test TaskList class
+ ✔︎ test ToDo class
+ ✔︎ test ToDoList class
  * test for delivering todo page
  * test postRequest
 %JS
