@@ -97,6 +97,32 @@ describe('ToDo', function() {
       assert.strictEqual(toDo.toJSON(), jsonString);
     });
   });
+  describe('toHTML', function() {
+    it('should give html string of its own data', function() {
+      const content = {
+        title: 'page_today',
+        listId: 'list1',
+        startDate: '2020-02-04T04:19:21.661Z',
+        tasks: [
+          {
+            description: 'go to office',
+            time: '2020-02-04T04:19:30.857Z',
+            done: false,
+            id: 'task1'
+          },
+          {
+            description: 'go to office',
+            time: '2020-02-04T04:19:30.857Z',
+            done: false,
+            id: 'task1'
+          }
+        ]
+      };
+      const toDo = ToDo.load(content);
+      const html = `<div id="list1"><h1>today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task1"  />go to office<br /></div>`;
+      assert.strictEqual(toDo.toHTML(), html);
+    });
+  });
 });
 
 describe('ToDoList', function() {

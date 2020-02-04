@@ -62,6 +62,11 @@ class ToDo {
     };
     return JSON.stringify(todo);
   }
+  toHTML() {
+    return `<div id="${this.listId}"><h1>${this.title.substring(
+      5
+    )}</h1>${this.tasks.toHTML()}</div>`;
+  }
 }
 
 class ToDoList {
