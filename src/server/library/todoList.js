@@ -95,6 +95,12 @@ class ToDoList {
     });
     return JSON.stringify(todoList);
   }
+  todoInHtml(todoId) {
+    const todo = this.list.find(todo => {
+      return todo.listId === todoId;
+    });
+    return todo.toHTML();
+  }
 }
 
 module.exports = { TaskList, Task, ToDo, ToDoList };
