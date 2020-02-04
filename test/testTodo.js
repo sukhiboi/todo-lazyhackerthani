@@ -108,4 +108,18 @@ describe('ToDoList', function() {
       assert.strictEqual(toDoList.toJSON(), jsonString);
     });
   });
+  describe('has', function() {
+    it('should say true if the given id is present in todoList', function() {
+      const jsonString =
+        '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"description":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"description":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
+      const toDoList = ToDoList.load(jsonString);
+      assert.isTrue(toDoList.has('list1'));
+    });
+    it('should say false if the given id is not present in todoList', function() {
+      const jsonString =
+        '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"description":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"description":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
+      const toDoList = ToDoList.load(jsonString);
+      assert.isFalse(toDoList.has('list2'));
+    });
+  });
 });

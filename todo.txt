@@ -8,8 +8,16 @@
  ✔︎ test TaskList class
  ✔︎ test ToDo class
  ✔︎ test ToDoList class
+ ✔︎ test todolist.has a listid
+ * test todo.toHTML
+ * test todoList.toHTML of given todo
  * test for delivering todo page
  * test postRequest
 %JS
- * todo class which create and manage list of tasks (toDo)
- * task class which create and manage each task
+ ✔︎ todo class which create and manage each todo
+ ✔︎ todoList class which create and manage list of todo 
+ ✔︎ task class which create and manage each task
+ ✔︎ taskList class which create and manage list of task
+ ✔︎ add todolist.has a listid
+ * add todo.toHTML
+ * add todoList.toHTML of given todo

@@ -71,6 +71,9 @@ class ToDoList {
   addToDo(toDo) {
     this.list.push(toDo);
   }
+  has(todoId) {
+    return this.list.some(todo => todo.listId === todoId);
+  }
   static load(content) {
     const toDos = JSON.parse(content || '[]');
     const toDoList = new ToDoList();

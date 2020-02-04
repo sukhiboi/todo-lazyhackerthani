@@ -16,8 +16,8 @@ const MIME_TYPES = {
   pdf: 'application/pdf'
 };
 
-const TODO_STORE = `${__dirname}/../assets/todos.json`;
-const todoListOld = JSON.parse(fs.readFileSync(TODO_STORE, 'utf8'));
+const TODO_STORE = `${__dirname}/../assets/todosList.json`;
+// const toDoList = JSON.parse(fs.readFileSync(TODO_STORE, 'utf8'));
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/../../public`;
@@ -39,26 +39,19 @@ const notFound = function(req, res) {
   res.writeHead(404);
   res.end('Not Found');
 };
-
-const serveTodoPage = function(req, res, next) {
-  const taskListName = `${req.url.match(/^\/page_(.*)/)[1]}`;
-  if (!(`list_${taskListName}` in todoListOld)) {
-    next();
-    return;
-  }
-
-  ////
-
-  let tasks = '';
-  todoListOld[`list_${taskListName}`].forEach((taskProperties, index) => {
-    tasks += `<input type="checkbox" name="checkBox" id="${index}" ${
-      taskProperties.done ? 'checked' : ''
-    } />${taskProperties.description}<br />`;
-  });
-  /////
-  const content = loadTemplate('todoPage.html', { tasks, taskListName });
+const methodNotAllowed = function(req, res) {
   res.setHeader('Content-Type', MIME_TYPES.html);
-  res.end(content);
+  res.writeHead(400);
+  res.end('Method Not Allowed');
+};
+
+const readBody = function(req, res, next) {
+  let data = '';
+  req.on('data', chunk => (data += chunk));
+  req.on('end', () => {
+    req.body = data;
+    next();
+  });
 };
 
 const decodeUriText = function(encodedText) {
@@ -71,6 +64,35 @@ const pickupParams = (query, keyValue) => {
   return query;
 };
 
+const serveToDoPage = function(req, res, next) {
+  const taskListName = `${req.url.match(/^\/page_(.*)/)[1]}`;
+  return 0;
+};
+
+///////////////////////////////////////////////////////////////////
+
+const TODO_STORE_OLD = `${__dirname}/../assets/todos.json`;
+const todoListOld = JSON.parse(fs.readFileSync(TODO_STORE_OLD, 'utf8'));
+
+const serveTodoPage = function(req, res, next) {
+  const taskListName = `${req.url.match(/^\/page_(.*)/)[1]}`;
+  if (!(`list_${taskListName}` in todoListOld)) {
+    next();
+    return;
+  }
+
+  let tasks = '';
+  todoListOld[`list_${taskListName}`].forEach((taskProperties, index) => {
+    tasks += `<input type="checkbox" name="checkBox" id="${index}" ${
+      taskProperties.done ? 'checked' : ''
+    } />${taskProperties.description}<br />`;
+  });
+
+  const content = loadTemplate('todoPage.html', { tasks, taskListName });
+  res.setHeader('Content-Type', MIME_TYPES.html);
+  res.end(content);
+};
+
 const addTaskList = function(req, res, next) {
   const taskListName = pickupParams({}, req.body).fileName;
   if (req.url !== '/saveTaskList') {
@@ -79,7 +101,7 @@ const addTaskList = function(req, res, next) {
   }
   todoListOld[`list_${taskListName}`] =
     todoListOld[`list_${taskListName}`] || [];
-  fs.writeFileSync(TODO_STORE, JSON.stringify(todoListOld));
+  fs.writeFileSync(TODO_STORE_OLD, JSON.stringify(todoListOld));
   res.writeHead(301, {
     Location: `page_${taskListName}`
   });
@@ -99,26 +121,11 @@ const addTask = function(req, res, next) {
     done: false,
     id: `task${todoListOld[`list_${taskListName}`].length}`
   });
-  fs.writeFileSync(TODO_STORE, JSON.stringify(todoListOld));
+  fs.writeFileSync(TODO_STORE_OLD, JSON.stringify(todoListOld));
   res.writeHead(301, {
     Location: `page_${taskListName}`
   });
   res.end();
-};
-
-const methodNotAllowed = function(req, res) {
-  res.setHeader('Content-Type', MIME_TYPES.html);
-  res.writeHead(400);
-  res.end('Method Not Allowed');
-};
-
-const readBody = function(req, res, next) {
-  let data = '';
-  req.on('data', chunk => (data += chunk));
-  req.on('end', () => {
-    req.body = data;
-    next();
-  });
 };
 
 const app = new App();
