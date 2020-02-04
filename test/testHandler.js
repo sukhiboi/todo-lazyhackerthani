@@ -37,11 +37,11 @@ describe('GET method ', () => {
 });
 
 describe('method not allowed', () => {
-  it.skip('should give the method not allowed when the method is not get/post', done => {
+  it('should give the method not allowed when the method is not get/post', done => {
     request(app.serve.bind(app))
       .put('/invalid')
       .expect('Content-Type', 'text/html')
       .expect(400, done)
-      .expect(/method not allowed/);
+      .expect(/Method Not Allowed/);
   });
 });

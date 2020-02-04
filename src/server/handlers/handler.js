@@ -2,6 +2,7 @@ const fs = require('fs');
 
 const { App } = require('./app');
 const { loadTemplate } = require('../library/viewTemplate');
+const { ToDoList } = require('../library/todoList');
 
 const MIME_TYPES = {
   txt: 'text/plain',
@@ -16,7 +17,7 @@ const MIME_TYPES = {
 };
 
 const TODO_STORE = `${__dirname}/../assets/todos.json`;
-const todoList = JSON.parse(fs.readFileSync(TODO_STORE, 'utf8'));
+const todoListOld = JSON.parse(fs.readFileSync(TODO_STORE, 'utf8'));
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/../../public`;
@@ -41,7 +42,7 @@ const notFound = function(req, res) {
 
 const serveTodoPage = function(req, res, next) {
   const taskListName = `${req.url.match(/^\/page_(.*)/)[1]}`;
-  if (!(`list_${taskListName}` in todoList)) {
+  if (!(`list_${taskListName}` in todoListOld)) {
     next();
     return;
   }
@@ -49,7 +50,7 @@ const serveTodoPage = function(req, res, next) {
   ////
 
   let tasks = '';
-  todoList[`list_${taskListName}`].forEach((taskProperties, index) => {
+  todoListOld[`list_${taskListName}`].forEach((taskProperties, index) => {
     tasks += `<input type="checkbox" name="checkBox" id="${index}" ${
       taskProperties.done ? 'checked' : ''
     } />${taskProperties.description}<br />`;
@@ -76,8 +77,9 @@ const addTaskList = function(req, res, next) {
     next();
     return;
   }
-  todoList[`list_${taskListName}`] = todoList[`list_${taskListName}`] || [];
-  fs.writeFileSync(TODO_STORE, JSON.stringify(todoList));
+  todoListOld[`list_${taskListName}`] =
+    todoListOld[`list_${taskListName}`] || [];
+  fs.writeFileSync(TODO_STORE, JSON.stringify(todoListOld));
   res.writeHead(301, {
     Location: `page_${taskListName}`
   });
@@ -91,13 +93,13 @@ const addTask = function(req, res, next) {
   }
   const taskListName = `${req.headers.referer.match(/\/page_(.*)/)[1]}`;
   const description = pickupParams({}, req.body).task;
-  todoList[`list_${taskListName}`].push({
+  todoListOld[`list_${taskListName}`].push({
     description,
     date: new Date(),
     done: false,
-    id: `task${todoList[`list_${taskListName}`].length}`
+    id: `task${todoListOld[`list_${taskListName}`].length}`
   });
-  fs.writeFileSync(TODO_STORE, JSON.stringify(todoList));
+  fs.writeFileSync(TODO_STORE, JSON.stringify(todoListOld));
   res.writeHead(301, {
     Location: `page_${taskListName}`
   });
@@ -105,8 +107,9 @@ const addTask = function(req, res, next) {
 };
 
 const methodNotAllowed = function(req, res) {
-  res.writeHead(400, 'Method Not Allowed');
-  res.end();
+  res.setHeader('Content-Type', MIME_TYPES.html);
+  res.writeHead(400);
+  res.end('Method Not Allowed');
 };
 
 const readBody = function(req, res, next) {
