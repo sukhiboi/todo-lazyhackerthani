@@ -115,12 +115,9 @@ const abstractUrl = function(url) {
 };
 
 const app = new App();
-
 app.use(readBody);
-
 app.get('', serveStaticPage);
 app.get(/.*?todoId=/, serveToDoPage);
-
 app.post('/saveTaskList', addToDo);
 app.post('/addTask', addTask);
 app.get('', notFound);

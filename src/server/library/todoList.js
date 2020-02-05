@@ -1,8 +1,17 @@
-let counter = 0;
+const fs = require('fs');
+
+const getCount = () => {
+  const COUNT_STORE = `${__dirname}/../assets/count.json`;
+  const counter = JSON.parse(fs.readFileSync(COUNT_STORE, 'utf8')) || {};
+  counter.count = (counter.count || 0) + 1;
+  fs.writeFileSync(COUNT_STORE, JSON.stringify(counter));
+  return counter.count;
+};
+
 class Task {
   constructor(description, time, id, done = false) {
     this.description = description;
-    this.id = id || `task${++counter}`;
+    this.id = id || `task${getCount()}`;
     this.time = time;
     this.done = done;
   }
@@ -39,7 +48,7 @@ class TaskList {
 class ToDo {
   constructor(title, startDate, tasks, listId) {
     this.title = title;
-    this.listId = listId || `list${++counter}`;
+    this.listId = listId || `list${getCount()}`;
     this.startDate = startDate;
     this.tasks = tasks || TaskList.load();
   }
