@@ -65,8 +65,7 @@ const pickupParams = (query, keyValue) => {
 };
 
 const serveToDoPage = function(req, res, next) {
-  const taskListName = `${req.url.match(/\/(.*)\?todoId\=(.*)/)[1]}`;
-  const todoId = `${req.url.match(/\/(.*)\?todoId\=(.*)/)[2]}`;
+  const { path, todoId } = abstractUrl(req.url);
   if (!toDoList.has(todoId)) {
     next();
     return;
@@ -97,8 +96,7 @@ const addTask = function(req, res, next) {
     next();
     return;
   }
-  const taskListName = `${req.headers.referer.match(/\/(.*)?todoId=(.*)/)[1]}`;
-  const todoId = `${req.headers.referer.match(/\/(.*)?todoId=(.*)/)[2]}`;
+  const { path, todoId } = abstractUrl(req.headers.referer);
 
   const description = pickupParams({}, req.body).task;
   const task = new Task(description, new Date());
@@ -108,6 +106,12 @@ const addTask = function(req, res, next) {
     Location: `${req.headers.referer}`
   });
   res.end();
+};
+
+const abstractUrl = function(url) {
+  const [path, argsText] = url.split('?');
+  const args = pickupParams({}, argsText);
+  return Object.assign(args, { path: path.split('/').join('') });
 };
 
 const app = new App();
