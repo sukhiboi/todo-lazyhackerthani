@@ -1,11 +1,8 @@
 const fs = require('fs');
 
 const getCount = () => {
-  const COUNT_STORE = `${__dirname}/../assets/count.json`;
-  const counter = JSON.parse(fs.readFileSync(COUNT_STORE, 'utf8') || '{}');
-  counter.count = (counter.count || 0) + 1;
-  fs.writeFileSync(COUNT_STORE, JSON.stringify(counter));
-  return counter.count;
+  const date = new Date();
+  return date.getTime();
 };
 
 class Task {
