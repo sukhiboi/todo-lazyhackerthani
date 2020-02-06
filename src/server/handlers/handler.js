@@ -1,7 +1,6 @@
 const fs = require('fs');
 
 const { App } = require('./app');
-const { loadTemplate } = require('../library/viewTemplate');
 const { ToDoList, ToDo, Task } = require('../library/todoList');
 
 const MIME_TYPES = {
@@ -54,42 +53,6 @@ const readBody = function(req, res, next) {
   });
 };
 
-const decodeUriText = function(encodedText) {
-  return decodeURIComponent(encodedText.replace(/\+/g, ' '));
-};
-
-const pickupParams = (query, keyValue) => {
-  const [key, value] = keyValue.split('=');
-  query[key] = decodeUriText(value);
-  return query;
-};
-
-const serveToDoPage = function(req, res, next) {
-  const { path, todoId } = abstractUrl(req.url);
-  if (!toDoList.has(todoId)) {
-    next();
-    return;
-  }
-  const tasks = toDoList.toDoInHTML(todoId);
-  const content = loadTemplate('todoPage.html', { tasks });
-  res.setHeader('Content-Type', MIME_TYPES.html);
-  res.end(content);
-};
-
-const addToDo = function(req, res, next) {
-  const taskListName = pickupParams({}, req.body).fileName;
-  if (req.url !== '/saveTaskList') {
-    next();
-    return;
-  }
-  const toDo = ToDo.load({ title: taskListName, startDate: new Date() });
-  toDoList.addToDo(toDo);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.writeHead(301, {
-    Location: `${taskListName}?todoId=${toDo.listId}`
-  });
-  res.end();
-};
 const createToDo = function(req, res, next) {
   if (req.url !== '/createToDo') {
     next();
@@ -114,17 +77,9 @@ const createTask = function(req, res, next) {
   res.end(task.toJSON());
 };
 
-const abstractUrl = function(url) {
-  const [path, argsText] = url.split('?');
-  const args = pickupParams({}, argsText);
-  return Object.assign(args, { path: path.split('/').join('') });
-};
-
 const app = new App();
 app.use(readBody);
 app.get('', serveStaticPage);
-app.get(/.*?todoId=/, serveToDoPage);
-app.post('/saveTaskList', addToDo);
 app.post('/createTask', createTask);
 app.post('/createToDo', createToDo);
 app.get('', notFound);

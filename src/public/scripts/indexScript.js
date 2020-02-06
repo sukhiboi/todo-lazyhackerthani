@@ -4,7 +4,7 @@ const show = id => (document.getElementById(id).style.display = 'block');
 
 const handleNewTask = function() {
   const task = JSON.parse(this.responseText);
-  const todoId = document.querySelector('.listIdDiv').id; //rename to taskListId
+  const todoId = document.querySelector('.listIdDiv').id;
   const taskInHtml = createTaskTemplate(task);
   document.getElementById(todoId).innerHTML += taskInHtml;
 };
