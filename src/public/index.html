@@ -30,13 +30,13 @@
         class="popUpButton"
         type="submit"
         value="create"
-        onclick="hide('myForm'),createToDo('todoName','todoBox')"
+        onclick="hide('myForm'),createToDo('todoName','todoBox'),clearValue('todoName')"
       />
       <input
         class="popUpButton"
         type="button"
         value="cancel"
-        onclick="hide('myForm')"
+        onclick="clearValue('todoName'),hide('myForm')"
       />
     </div>
     <div class="todoPageDiv hideIt" id="todoBox">
@@ -52,15 +52,23 @@
             id="taskAddIcon"
             src="./images/addTaskIcon.png"
             alt="Submit"
-            onclick="createTask('taskBox')"
+            onclick="createTask('taskBox'),clearValue('taskBox')"
           />
         </div>
         <div class="listIdDiv" id="#">
           <h1 class="headingTag"></h1>
         </div>
         <div>
-          <input type="button" value="save" onclick="hide('todoBox')" />&emsp;
-          <input type="button" value="close" onclick="hide('todoBox')" />
+          <input
+            type="button"
+            value="save"
+            onclick="hide('todoBox'),clearValue('taskBox')"
+          />&emsp;
+          <input
+            type="button"
+            value="close"
+            onclick="hide('todoBox'),clearValue('taskBox')"
+          />
         </div>
       </div>
     </div>

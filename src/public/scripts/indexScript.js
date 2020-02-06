@@ -2,6 +2,8 @@ const hide = id => (document.getElementById(id).style.display = 'none');
 
 const show = id => (document.getElementById(id).style.display = 'block');
 
+const clearValue = id => (document.getElementById(id).value = '');
+
 const handleNewTask = function() {
   const task = JSON.parse(this.responseText);
   const todoId = document.querySelector('.listIdDiv').id;
