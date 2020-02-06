@@ -10,8 +10,13 @@ const createTask = function(textBoxId) {
   }
 };
 
-const formatResponse = function(args) {
-  return 0;
+const formatResponse = function() {
+  const task = JSON.parse(this.responseText);
+  const todoId = document.querySelector('.listIdDiv').id;
+  const taskInHtml = `<input type="checkbox" name="checkBox" id="${task.id}" ${
+    task.done ? 'checked' : ''
+  } />${task.description}<br />`;
+  document.getElementById(todoId).innerHTML += taskInHtml;
 };
 
 const sendXHR = function(data, url, method) {

@@ -17,7 +17,7 @@ const MIME_TYPES = {
 };
 
 const TODO_STORE = `${__dirname}/../assets/todoList.json`;
-const toDoList = ToDoList.load(fs.readFileSync(TODO_STORE, 'utf8'));
+const toDoList = ToDoList.load(fs.readFileSync(TODO_STORE, 'utf8') || '[]');
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/../../public`;
@@ -100,7 +100,7 @@ const createTask = function(req, res, next) {
   const task = new Task(taskName, new Date());
   toDoList.addTask(todoId, task);
   fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end();
+  res.end(task.toJSON());
 };
 
 const abstractUrl = function(url) {
