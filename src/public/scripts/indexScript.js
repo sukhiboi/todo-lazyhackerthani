@@ -10,12 +10,18 @@ const createTask = function(textBoxId) {
   }
 };
 
+const createTaskTemplate = function(task) {
+  return `<input type="checkbox" name="checkBox" id="${task.id}" ${
+    task.done ? 'checked' : ''
+  } />${task.description}<br />`;
+};
+
 const formatResponse = function() {
   const task = JSON.parse(this.responseText);
   const todoId = document.querySelector('.listIdDiv').id;
-  const taskInHtml = `<input type="checkbox" name="checkBox" id="${task.id}" ${
-    task.done ? 'checked' : ''
-  } />${task.description}<br />`;
+  const taskInHtml = createTaskTemplate(task);
+  console.log(taskInHtml);
+
   document.getElementById(todoId).innerHTML += taskInHtml;
 };
 
