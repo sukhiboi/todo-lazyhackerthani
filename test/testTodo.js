@@ -21,6 +21,15 @@ describe('Task class', function() {
       assert.strictEqual(task.toHTML(), html);
     });
   });
+  describe('toJSON', function() {
+    it('should  give JSON string according to its data', function() {
+      const date = new Date('2020-02-06T04:14:39.160Z');
+      const task = new Task('buy milk', date, 'task1', true);
+      const jsonString =
+        '{"description":"buy milk","id":"task1","time":"2020-02-06T04:14:39.160Z","done":true}';
+      assert.strictEqual(task.toJSON(), jsonString);
+    });
+  });
 });
 describe('TaskList', function() {
   describe('toHTML', function() {
@@ -119,7 +128,7 @@ describe('ToDo', function() {
         ]
       };
       const toDo = ToDo.load(content);
-      const html = `<div id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task1"  />go to office<br /></div>`;
+      const html = `<div class="listIdDiv" id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task1"  />go to office<br /></div>`;
       assert.strictEqual(toDo.toHTML(), html);
     });
   });
@@ -153,7 +162,7 @@ describe('ToDoList', function() {
       const jsonString =
         '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"description":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"description":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
       const toDoList = ToDoList.load(jsonString);
-      const html = `<div id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task2"  />go to market<br /></div>`;
+      const html = `<div class="listIdDiv" id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task2"  />go to market<br /></div>`;
       assert.strictEqual(toDoList.toDoInHTML('list1'), html);
     });
   });

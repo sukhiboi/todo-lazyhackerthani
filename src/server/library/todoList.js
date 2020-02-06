@@ -20,6 +20,14 @@ class Task {
       this.done ? 'checked' : ''
     } />${this.description}<br />`;
   }
+  toJSON() {
+    return JSON.stringify({
+      description: this.description,
+      id: this.id,
+      time: this.time,
+      done: this.done
+    });
+  }
 }
 
 class TaskList {
@@ -41,7 +49,7 @@ class TaskList {
     return this.list.map(tsk => tsk.toHTML()).join('');
   }
   toJSON() {
-    return JSON.stringify(this.list);
+    return JSON.stringify(this.list.map(tsk => JSON.parse(tsk.toJSON())));
   }
 }
 
