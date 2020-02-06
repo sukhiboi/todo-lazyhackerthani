@@ -15,11 +15,6 @@ class Task {
     this.time = time;
     this.done = done;
   }
-  toHTML() {
-    return `<input type="checkbox" name="checkBox" id="${this.id}" ${
-      this.done ? 'checked' : ''
-    } />${this.description}<br />`;
-  }
   toJSON() {
     return JSON.stringify({
       description: this.description,
@@ -44,9 +39,6 @@ class TaskList {
       taskList.addTask(new Task(tsk.description, new Date(tsk.time), tsk.id));
     });
     return taskList;
-  }
-  toHTML() {
-    return this.list.map(tsk => tsk.toHTML()).join('');
   }
   toJSON() {
     return JSON.stringify(this.list.map(tsk => JSON.parse(tsk.toJSON())));
@@ -83,11 +75,6 @@ class ToDo {
     };
     return JSON.stringify(todo);
   }
-  toHTML() {
-    return `<div class="listIdDiv" id="${this.listId}"><h1>${
-      this.title
-    }</h1>${this.tasks.toHTML()}</div>`;
-  }
 }
 
 class ToDoList {
@@ -123,12 +110,6 @@ class ToDoList {
       todoList.push(JSON.parse(todo.toJSON()));
     });
     return JSON.stringify(todoList);
-  }
-  toDoInHTML(todoId) {
-    const todo = this.list.find(todo => {
-      return todo.listId === todoId;
-    });
-    return todo.toHTML();
   }
 }
 

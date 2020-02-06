@@ -7,20 +7,6 @@ const {
 } = require('../src/server/library/todoList');
 
 describe('Task class', function() {
-  describe('toHTML', function() {
-    it('should  give html string according to its data without checked when its not done', function() {
-      const date = new Date();
-      const task = new Task('buy milk', date, 'task1');
-      const html = `<input type="checkbox" name="checkBox" id="task1"  />buy milk<br />`;
-      assert.strictEqual(task.toHTML(), html);
-    });
-    it('should  give html string according to its data with checked when its done', function() {
-      const date = new Date();
-      const task = new Task('buy milk', date, 'task1', true);
-      const html = `<input type="checkbox" name="checkBox" id="task1" checked />buy milk<br />`;
-      assert.strictEqual(task.toHTML(), html);
-    });
-  });
   describe('toJSON', function() {
     it('should  give JSON string according to its data', function() {
       const date = new Date('2020-02-06T04:14:39.160Z');
@@ -32,28 +18,6 @@ describe('Task class', function() {
   });
 });
 describe('TaskList', function() {
-  describe('toHTML', function() {
-    it('should give html string according to its data ', function() {
-      const content = [
-        {
-          description: 'go to office',
-          time: '2020-02-04T04:19:30.857Z',
-          done: false,
-          id: 'task1'
-        },
-        {
-          description: 'go to office',
-          time: '2020-02-04T04:19:30.857Z',
-          done: false,
-          id: 'task1'
-        }
-      ];
-      const taskList = TaskList.load(content);
-      const html =
-        '<input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task1"  />go to office<br />';
-      assert.strictEqual(taskList.toHTML(), html);
-    });
-  });
   describe('toJSON', function() {
     it('should give json string of list', function() {
       const content = [
@@ -106,34 +70,7 @@ describe('ToDo', function() {
       assert.strictEqual(toDo.toJSON(), jsonString);
     });
   });
-  describe('toHTML', function() {
-    it('should give html string of its own data', function() {
-      const content = {
-        title: 'page_today',
-        listId: 'list1',
-        startDate: '2020-02-04T04:19:21.661Z',
-        tasks: [
-          {
-            description: 'go to office',
-            time: '2020-02-04T04:19:30.857Z',
-            done: false,
-            id: 'task1'
-          },
-          {
-            description: 'go to office',
-            time: '2020-02-04T04:19:30.857Z',
-            done: false,
-            id: 'task1'
-          }
-        ]
-      };
-      const toDo = ToDo.load(content);
-      const html = `<div class="listIdDiv" id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task1"  />go to office<br /></div>`;
-      assert.strictEqual(toDo.toHTML(), html);
-    });
-  });
 });
-
 describe('ToDoList', function() {
   describe('toJSON', function() {
     it('should give json string of its own data', function() {
@@ -155,15 +92,6 @@ describe('ToDoList', function() {
         '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"description":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"description":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
       const toDoList = ToDoList.load(jsonString);
       assert.isFalse(toDoList.has('list2'));
-    });
-  });
-  describe('todoInHtml', function() {
-    it('should give html string of given todo id', function() {
-      const jsonString =
-        '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"description":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"description":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
-      const toDoList = ToDoList.load(jsonString);
-      const html = `<div class="listIdDiv" id="list1"><h1>page_today</h1><input type="checkbox" name="checkBox" id="task1"  />go to office<br /><input type="checkbox" name="checkBox" id="task2"  />go to market<br /></div>`;
-      assert.strictEqual(toDoList.toDoInHTML('list1'), html);
     });
   });
 });

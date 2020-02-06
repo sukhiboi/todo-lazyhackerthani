@@ -25,7 +25,8 @@
   ✔︎ convert add task from form post to xmlHTTPRequest
   ✔︎ convert add todo from form post to xmlHTTPRequest
   ✔︎ remove functions and files which is used to deliver separate todo page
-  * remove toHTML from all class
-  * remove test for toHTML in all class
+  ✔︎ remove toHTML from all class
+  ✔︎ remove test for toHTML in all class
   * remove input text value after clicking add
   * add npmtest, npmStart, add config 
+  * use time to create id
