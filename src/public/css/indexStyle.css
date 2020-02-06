@@ -10,6 +10,37 @@
   box-shadow: 0 8px 6px -6px black;
 }
 
+.stickNote {
+  width: 359.03px;
+  height: auto;
+  padding-bottom: 10px;
+  background: #cfdaee;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  transform: rotate(-1deg);
+  margin-bottom: 20px;
+}
+
+#todoEditIcon {
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+#todoEditIcon:active {
+  height: 31px;
+  width: 31px;
+}
+
+#todoAddIcon {
+  height: 40px;
+  width: 40px;
+}
+#todoAddIcon:active {
+  height: 41px;
+  width: 41px;
+}
+
 .hideIt {
   display: none;
 }
@@ -22,13 +53,20 @@
 }
 
 body {
-  background-color: rgb(205, 241, 194);
+  background-color: #e3fdf3;
 }
-.mainBox {
+#mainBox {
   /* border: solid; */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  margin-left: 5%;
+  margin-top: 5%;
   align-content: center;
   height: auto;
-  width: 95%;
+  width: 90%;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
 .todoPageDiv {
   /* display: none; */
@@ -67,4 +105,21 @@ body {
   position: fixed;
   top: 10px;
   right: 10px;
+}
+input[type='checkbox'] {
+  width: 45px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+input[type='checkbox'] + label {
+  font-size: large;
+  font-style: normal;
+}
+input[type='checkbox']:checked + label {
+  color: rgb(148, 137, 137);
+}
+
+.stickyTitle {
+  padding: 20px;
 }

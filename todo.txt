@@ -33,5 +33,9 @@
   * add npmtest, npmStart, add config 
   
   
-  $ view all todo in the page
+  ✔︎ view all todo in the page
   $ restyle the index.html
+
+  * bug fix: refreshing sending xmlHTTPRequest resubmitting last data
+  * bug fix: hide not applicaple divs
+  * remove inside text when click to close add todo window

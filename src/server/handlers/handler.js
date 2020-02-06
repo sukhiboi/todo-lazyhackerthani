@@ -33,6 +33,10 @@ const serveStaticPage = function(req, res, next) {
   res.end(content);
 };
 
+const getToDos = function(req, res, next) {
+  res.end(toDoList.toJSON());
+};
+
 const notFound = function(req, res) {
   res.setHeader('Content-Type', MIME_TYPES.html);
   res.writeHead(404);
@@ -80,6 +84,7 @@ const createTask = function(req, res, next) {
 const app = new App();
 app.use(readBody);
 app.get('', serveStaticPage);
+app.get('/getToDos', getToDos);
 app.post('/createTask', createTask);
 app.post('/createToDo', createToDo);
 app.get('', notFound);

@@ -38,6 +38,35 @@ const createToDo = function(textBoxId, windowId) {
   }
 };
 
+const loadToDos = () => sendXHR({}, 'getToDos', 'GET', handleAllToDo);
+
+const handleAllToDo = function() {
+  const todoList = JSON.parse(this.responseText);
+  const html = todoList
+    .map(todo => {
+      return createStickyTemplate(todo);
+    })
+    .join('');
+  document.getElementById('mainBox').innerHTML = html;
+};
+
+const createStickyTemplate = function(todo) {
+  const tasksInHtml = todo.tasks
+    .map(task => {
+      return createTaskTemplate(task);
+    })
+    .join('');
+  return `<div class="stickNote" id="${todo.listId}">
+        <div>
+          <h2 class="stickyTitle">${todo.title}</h2>
+          <img id="todoEditIcon" src="./images/editTodoIcon.png" alt="edit" />
+        </div>
+        <div>
+          ${tasksInHtml}
+        </div>
+      </div>`;
+};
+
 const createTaskTemplate = function(task) {
   return `<input type="checkbox" name="checkBox" id="${task.id}" ${
     task.done ? 'checked' : ''

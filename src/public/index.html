@@ -8,7 +8,7 @@
     <script src="./scripts/indexScript.js"></script>
     <title>ToDo</title>
   </head>
-  <body>
+  <body onload="loadToDos()">
     <div class="addTodoDiv">
       <img
         id="todoAddIcon"
@@ -17,7 +17,7 @@
         onclick="show('myForm')"
       />
     </div>
-    <div class="mainBox"></div>
+    <div id="mainBox"></div>
 
     <div class="form-popup" id="myForm">
       <input
