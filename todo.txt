@@ -10,8 +10,8 @@
  ✔︎ test ToDoList class
  ✔︎ test todolist.has a listid
  ✔︎ test todo.toHTML
- * test todoList.toHTML of given todo
- * test for delivering todo page
+ ✔︎ test todoList.toHTML of given todo
+ ✔︎ test task toJSON
  * test postRequest
 %JS
  ✔︎ todo class which create and manage each todo
@@ -20,4 +20,12 @@
  ✔︎ taskList class which create and manage list of task
  ✔︎ add todolist.has a listid
  ✔︎ add todo.toHTML
- * add todoList.toHTML of given todo
+ ✔︎ add todoList.toHTML of given todo
+
+  ✔︎ convert add task from form post to xmlHTTPRequest
+  ✔︎ convert add todo from form post to xmlHTTPRequest
+  ✔︎ remove functions and files which is used to deliver separate todo page
+  * remove toHTML from all class
+  * remove test for toHTML in all class
+  * remove input text value after clicking add
+  * add npmtest, npmStart, add config 
