@@ -28,8 +28,10 @@
   ✔︎ remove toHTML from all class
   ✔︎ remove test for toHTML in all class
   ✔︎ remove input text value after clicking add
+  ✔︎ use time to create id
+  ✔︎ change new file button to a plus icon
   * add npmtest, npmStart, add config 
-  * use time to create id
+  
   
   $ view all todo in the page
   $ restyle the index.html

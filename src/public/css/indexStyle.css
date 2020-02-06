@@ -24,17 +24,11 @@
 body {
   background-color: rgb(205, 241, 194);
 }
-.button {
-  margin-top: 40px;
-  width: 100%;
-}
 .mainBox {
+  /* border: solid; */
   align-content: center;
-  position: fixed;
-  top: 33%;
-  left: 33%;
-  height: 33%;
-  width: 33%;
+  height: auto;
+  width: 95%;
 }
 .todoPageDiv {
   /* display: none; */
@@ -67,4 +61,10 @@ body {
 #taskAddIcon:active {
   height: 42px;
   width: 42px;
+}
+
+.addTodoDiv {
+  position: fixed;
+  top: 10px;
+  right: 10px;
 }
