@@ -28,10 +28,11 @@ const handleNewToDo = function() {
   document.querySelector('.headingTag').innerHTML = todo.title;
 };
 
-const createToDo = function(textBoxId) {
+const createToDo = function(textBoxId, windowId) {
   const toDoName = document.getElementById(textBoxId).value;
   if (toDoName) {
     sendXHR(JSON.stringify({ toDoName }), 'createToDo', 'POST', handleNewToDo);
+    show(windowId);
   }
 };
 
