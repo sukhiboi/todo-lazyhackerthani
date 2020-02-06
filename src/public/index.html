@@ -20,26 +20,49 @@
     </div>
 
     <div class="form-popup" id="myForm">
-      <form action="saveTaskList" method="POST">
-        <input
-          type="text"
-          name="fileName"
-          id="fileName"
-          placeholder="type task list name and enter"
-        />
-        <input
-          class="popUpButton"
-          type="submit"
-          value="create"
-          onclick="hide('myForm')"
-        />
-        <input
-          class="popUpButton"
-          type="button"
-          value="cancel"
-          onclick="hide('myForm')"
-        />
-      </form>
+      <input
+        type="text"
+        name="todoName"
+        id="todoName"
+        placeholder="type task list name and enter"
+      />
+      <input
+        class="popUpButton"
+        type="submit"
+        value="create"
+        onclick="hide('myForm'),show('todoBox'),createToDo('todoName')"
+      />
+      <input
+        class="popUpButton"
+        type="button"
+        value="cancel"
+        onclick="hide('myForm')"
+      />
+    </div>
+    <div class="todoPageDiv hideIt" id="todoBox">
+      <div class="todoBoxDiv">
+        <div class="textBoxDiv">
+          <input
+            type="text"
+            name="task"
+            id="taskBox"
+            placeholder="type your task and enter"
+          />
+          <img
+            id="taskAddIcon"
+            src="./images/addTaskIcon.png"
+            alt="Submit"
+            onclick="createTask('taskBox')"
+          />
+        </div>
+        <div class="listIdDiv" id="#">
+          <h1 class="headingTag"></h1>
+        </div>
+        <div>
+          <input type="button" value="save" onclick="hide('todoBox')" />&emsp;
+          <input type="button" value="close" onclick="hide('todoBox')" />
+        </div>
+      </div>
     </div>
   </body>
 </html>

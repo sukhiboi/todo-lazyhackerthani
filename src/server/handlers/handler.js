@@ -90,6 +90,17 @@ const addToDo = function(req, res, next) {
   });
   res.end();
 };
+const createToDo = function(req, res, next) {
+  if (req.url !== '/createToDo') {
+    next();
+    return;
+  }
+  const { toDoName } = JSON.parse(req.body);
+  const toDo = ToDo.load({ title: toDoName, startDate: new Date() });
+  toDoList.addToDo(toDo);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
+  res.end(toDo.toJSON());
+};
 
 const createTask = function(req, res, next) {
   if (req.url !== '/createTask') {
@@ -115,6 +126,7 @@ app.get('', serveStaticPage);
 app.get(/.*?todoId=/, serveToDoPage);
 app.post('/saveTaskList', addToDo);
 app.post('/createTask', createTask);
+app.post('/createToDo', createToDo);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);
