@@ -10,7 +10,7 @@
   box-shadow: 0 8px 6px -6px black;
 }
 
-.hideit {
+.hideIt {
   display: none;
 }
 
@@ -35,4 +35,36 @@ body {
   left: 33%;
   height: 33%;
   width: 33%;
+}
+.todoPageDiv {
+  /* display: none; */
+  padding: 10px 10px 10px 10px;
+  position: fixed;
+  top: 20%;
+  left: 20%;
+  height: auto;
+  width: 60%;
+  box-shadow: 0 8px 6px -6px black;
+  background-color: #cfdaee;
+}
+.todoBoxDiv {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.textBoxDiv {
+  display: flex;
+  justify-content: space-between;
+}
+#taskBox {
+  margin-bottom: 8px;
+  width: 88%;
+}
+#taskAddIcon {
+  margin-top: 10px;
+  height: 40px;
+  width: 40px;
+}
+#taskAddIcon:active {
+  height: 42px;
+  width: 42px;
 }

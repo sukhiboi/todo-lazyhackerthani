@@ -91,20 +91,15 @@ const addToDo = function(req, res, next) {
   res.end();
 };
 
-const addTask = function(req, res, next) {
-  if (req.url !== '/addTask') {
+const createTask = function(req, res, next) {
+  if (req.url !== '/createTask') {
     next();
     return;
   }
-  const { path, todoId } = abstractUrl(req.headers.referer);
-
-  const description = pickupParams({}, req.body).task;
-  const task = new Task(description, new Date());
+  const { taskName, todoId } = JSON.parse(req.body);
+  const task = new Task(taskName, new Date());
   toDoList.addTask(todoId, task);
   fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.writeHead(301, {
-    Location: `${req.headers.referer}`
-  });
   res.end();
 };
 
@@ -119,7 +114,7 @@ app.use(readBody);
 app.get('', serveStaticPage);
 app.get(/.*?todoId=/, serveToDoPage);
 app.post('/saveTaskList', addToDo);
-app.post('/addTask', addTask);
+app.post('/createTask', createTask);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);

@@ -1,28 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
     <link rel="icon" href="./images/checkListIcon.png" />
-    <link rel="stylesheet" href="css/todoStyle.css" />
+    <link rel="stylesheet" href="css/indexStyle.css" />
     <link rel="stylesheet" href="css/formStyle.css" />
+    <script src="scripts/indexScript.js"></script>
   </head>
   <body>
-    <div class="todoPageDiv">
-      <div class="textBoxDiv">
-        <form action="addTask" method="POST">
+    <div class="todoPageDiv" id="todoBox">
+      <div class="todoBoxDiv">
+        <div class="textBoxDiv">
           <input
             type="text"
             name="task"
-            id="task"
+            id="taskBox"
             placeholder="type your task and enter"
           />
-        </form>
+          <img
+            id="taskAddIcon"
+            src="./images/addTaskIcon.png"
+            alt="Submit"
+            onclick="createTask('taskBox')"
+          />
+        </div>
 
         <div>
           __tasks__
         </div>
         <div>
           <input type="button" value="save" onclick="" />&emsp;
-          <input type="button" value="close" onclick="" />
+          <input type="button" value="close" onclick="hide('todoBox')" />
         </div>
       </div>
     </div>
