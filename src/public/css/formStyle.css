@@ -14,13 +14,24 @@ input[type='submit']:hover {
 }
 
 input[type='text'] {
-  width: 90%;
-  padding: 15px;
-  margin: 10px 7px 0px 7px;
   border: none;
   background-color: #9ab6eb;
 }
 input[type='text']:focus {
   outline: none;
   box-shadow: inset 0 0 5px white;
+}
+
+input[type='checkbox'] {
+  width: 45px;
+  height: 20px;
+  border-radius: 5px;
+}
+
+input[type='checkbox'] + label {
+  font-size: larger;
+  font-style: normal;
+}
+input[type='checkbox']:checked + label {
+  color: rgb(148, 137, 137);
 }

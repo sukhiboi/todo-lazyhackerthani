@@ -6,9 +6,9 @@ const clearValue = id => (document.getElementById(id).value = '');
 
 const handleNewTask = function() {
   const task = JSON.parse(this.responseText);
-  const todoId = document.querySelector('.listIdDiv').id;
+  const todoDivId = document.querySelector('.listIdDiv').id;
   const taskInHtml = createTaskTemplate(task);
-  document.getElementById(todoId).innerHTML += taskInHtml;
+  document.getElementById(todoDivId).innerHTML += taskInHtml;
 };
 
 const createTask = function(textBoxId) {
@@ -56,17 +56,23 @@ const createStickyTemplate = function(todo) {
       return createTaskTemplate(task);
     })
     .join('');
-  return `<div class="stickNote" id="${todo.listId}">
-        <div>
-          <h2 class="stickyTitle">${todo.title}&nbsp<i id="addTask${todo.listId}" class="fa fa-plus-circle faa-spin animated-hover " aria-hidden="true"></i>
-</h2>
-          <img id="edit${todo.listId}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
-          <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" />
-        </div>
-        <div>
-          ${tasksInHtml}
-        </div>
-      </div>`;
+  return `<div class="stickNote" id="div${todo.listId}">
+            <img id="edit${todo.listId}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
+            <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" />
+             <div class="stickyTitle">
+               <h2 >${todo.title}&nbsp
+               <i class="fa fa-chevron-down" aria-hidden="true" onclick="show('input${todo.listId}')"></i>
+               </h2>
+             </div>
+             <div class="smallTextBoxDiv hideIt" id="input${todo.listId}">
+               <input type="text"  class="smallTextBox" name="stickyInputBox" id="taskTo${todo.listId}" placeholder="type task and enter"/>
+               <i class="fa fa-plus-circle" aria-hidden="true" ></i>&nbsp
+               <i class="fa fa-times-circle" aria-hidden="true" onclick="hide('input${todo.listId}'),clearValue('taskTo${todo.listId}')"></i>
+             </div><br>
+            <div id="tasksOf${todo.listId}">
+              ${tasksInHtml}
+            </div>
+          </div>`;
 };
 
 const createTaskTemplate = function(task) {
@@ -74,7 +80,7 @@ const createTaskTemplate = function(task) {
     task.id
   }"><input type="checkbox" name="checkBox" id="checkbox${task.id}" ${
     task.done ? 'checked' : ''
-  } />${task.description}<img id="edit${
+  } /><label for="checkbox${task.id}">${task.description}</label><img id="edit${
     task.id
   }" src="./images/editTaskIcon.png" alt="edit" class="taskEditIcon" /><img id="delete${
     task.id

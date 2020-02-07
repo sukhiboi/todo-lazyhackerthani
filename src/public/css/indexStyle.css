@@ -11,9 +11,8 @@
 }
 
 .stickNote {
-  width: auto;
-  min-width: 25%;
-  max-width: 32%;
+  margin: 10px 10px 15px 10px;
+  width: 28%;
   height: auto;
   padding-bottom: 10px;
   background: #cfdaee;
@@ -21,13 +20,20 @@
   transform: rotate(-1deg);
 }
 .taskDiv {
+  height: 2px;
   padding: 5px;
 }
 .stickyTitle {
-  padding: 10px;
-  padding-top: 18px;
+  margin-top: 50px;
+  height: 25px;
   text-align: center;
 }
+.smallTextBoxDiv {
+  width: 90%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 #addTaskIcon {
   height: 30px;
   width: 30px;
@@ -110,8 +116,14 @@ body {
   justify-content: space-between;
 }
 #taskBox {
+  margin: 10px 7px 0px 7px;
   margin-bottom: 8px;
   width: 88%;
+  padding: 15px;
+}
+.smallTextBox {
+  width: 70%;
+  padding: 8px;
 }
 #taskAddIcon {
   margin-top: 10px;
@@ -127,18 +139,6 @@ body {
   position: fixed;
   top: 10px;
   right: 10px;
-}
-input[type='checkbox'] {
-  width: 45px;
-  height: 20px;
-  border-radius: 5px;
-}
-
-input[type='checkbox'] + label {
-  font-style: normal;
-}
-input[type='checkbox']:checked + label {
-  color: rgb(148, 137, 137);
 }
 
 .taskDeleteIcon {
@@ -159,4 +159,31 @@ input[type='checkbox']:checked + label {
 }
 .fa-plus-circle:hover {
   color: #8aabe9;
+}
+.fa-plus-circle:active {
+  color: #6e97e4;
+}
+.fa-times-circle {
+  color: #9ab6eb;
+}
+.fa-times-circle:hover {
+  color: #8aabe9;
+}
+.fa-times-circle:active {
+  color: #6e97e4;
+}
+.fa-chevron-down {
+  color: #9ab6eb;
+}
+.fa-chevron-down:hover {
+  color: #8aabe9;
+}
+.fa-chevron-down:active {
+  color: #6e97e4;
+}
+
+#todoName {
+  margin: 10px 7px 0px 7px;
+  width: 90%;
+  padding: 15px;
 }
