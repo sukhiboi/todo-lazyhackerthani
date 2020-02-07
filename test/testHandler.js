@@ -8,14 +8,14 @@ describe('GET method ', () => {
         .get('/')
         .expect('Content-Type', 'text/html')
         .expect(200, done)
-        .expect(/newFile/);
+        .expect(/todoAddIcon/);
     });
     it('should give the index.html page when the url is /index.html', done => {
       request(app.serve.bind(app))
         .get('/index.html')
         .expect('Content-Type', 'text/html')
         .expect(200, done)
-        .expect(/newFile/);
+        .expect(/todoAddIcon/);
     });
   });
   describe('not Found file', () => {

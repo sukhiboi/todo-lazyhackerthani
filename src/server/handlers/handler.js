@@ -66,7 +66,7 @@ const createToDo = function(req, res, next) {
   const toDo = ToDo.load({ title: toDoName, startDate: new Date() });
   toDoList.addToDo(toDo);
   fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDo.toJSON());
+  res.end(toDoList.toJSON());
 };
 
 const createTask = function(req, res, next) {
@@ -78,7 +78,7 @@ const createTask = function(req, res, next) {
   const task = new Task(taskName, new Date());
   toDoList.addTask(todoId, task);
   fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(task.toJSON());
+  res.end(toDoList.toJSON());
 };
 
 const app = new App();

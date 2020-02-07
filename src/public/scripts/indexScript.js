@@ -4,37 +4,24 @@ const show = id => (document.getElementById(id).style.display = 'block');
 
 const clearValue = id => (document.getElementById(id).value = '');
 
-const handleNewTask = function() {
-  const task = JSON.parse(this.responseText);
-  const todoDivId = document.querySelector('.listIdDiv').id;
-  const taskInHtml = createTaskTemplate(task);
-  document.getElementById(todoDivId).innerHTML += taskInHtml;
-};
-
-const createTask = function(textBoxId) {
+const createTask = function(textBoxId, todoId) {
   const taskName = document.getElementById(textBoxId).value;
-  const todoId = document.querySelector('.listIdDiv').id;
   if (taskName) {
     sendXHR(
       JSON.stringify({ taskName, todoId }),
       'createTask',
       'POST',
-      handleNewTask
+      handleAllToDo
     );
   }
-};
-
-const handleNewToDo = function() {
-  const todo = JSON.parse(this.responseText);
-  document.querySelector('.listIdDiv').id = todo.listId;
-  document.querySelector('.headingTag').innerHTML = todo.title;
 };
 
 const createToDo = function(textBoxId, windowId) {
   const toDoName = document.getElementById(textBoxId).value;
   if (toDoName) {
-    sendXHR(JSON.stringify({ toDoName }), 'createToDo', 'POST', handleNewToDo);
-    show(windowId);
+    // sendXHR(JSON.stringify({ toDoName }), 'createToDo', 'POST', handleNewToDo);
+    // show(windowId);
+    sendXHR(JSON.stringify({ toDoName }), 'createToDo', 'POST', handleAllToDo);
   }
 };
 
@@ -66,8 +53,8 @@ const createStickyTemplate = function(todo) {
              </div>
              <div class="smallTextBoxDiv hideIt" id="input${todo.listId}">
                <input type="text"  class="smallTextBox" name="stickyInputBox" id="taskTo${todo.listId}" placeholder="type task and enter"/>
-               <i class="fa fa-plus-circle" aria-hidden="true" ></i>&nbsp
-               <i class="fa fa-times-circle" aria-hidden="true" onclick="hide('input${todo.listId}'),clearValue('taskTo${todo.listId}')"></i>
+               <i  id="addIconFor${todo.listId}" class="fa fa-plus-circle" aria-hidden="true" onclick="createTask('taskTo${todo.listId}','${todo.listId}')"></i>&nbsp
+               <i id="cancelIconFor${todo.listId}" class="fa fa-times-circle" aria-hidden="true" onclick="hide('input${todo.listId}'),clearValue('taskTo${todo.listId}')"></i>
              </div><br>
             <div id="tasksOf${todo.listId}">
               ${tasksInHtml}
