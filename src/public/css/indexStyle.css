@@ -125,6 +125,10 @@ body {
   width: 70%;
   padding: 8px;
 }
+.smallerTextBox {
+  width: 60%;
+  padding: 9px;
+}
 #taskAddIcon {
   margin-top: 10px;
   height: 40px;

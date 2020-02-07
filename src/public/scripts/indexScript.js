@@ -16,11 +16,23 @@ const createTask = function(textBoxId, todoId) {
   }
 };
 
-const createToDo = function(textBoxId, windowId) {
+const showEditTask = function(taskId) {
+  const label = document.getElementById(`descriptionOf${taskId}`);
+  const description = label.innerHTML;
+  const input = `<input type="text" id="editedDescriptionOf${taskId}" class="smallerTextBox" value="${description}"/>`;
+  label.innerHTML = input;
+  const editIconSpan = document.getElementById(`editIconFor${taskId}`);
+  const saveIcon = `<i id="saveIconFor${taskId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTask('editedDescriptionOf${taskId}','${taskId}')"></i>`;
+  editIconSpan.innerHTML = saveIcon;
+};
+
+const editTask = function(textBoxId, taskId) {
+  console.log(textBoxId, taskId);
+};
+
+const createToDo = function(textBoxId) {
   const toDoName = document.getElementById(textBoxId).value;
   if (toDoName) {
-    // sendXHR(JSON.stringify({ toDoName }), 'createToDo', 'POST', handleNewToDo);
-    // show(windowId);
     sendXHR(JSON.stringify({ toDoName }), 'createToDo', 'POST', handleAllToDo);
   }
 };
@@ -43,7 +55,7 @@ const createStickyTemplate = function(todo) {
       return createTaskTemplate(task);
     })
     .join('');
-  return `<div class="stickNote" id="div${todo.listId}">
+  const html = `<div class="stickNote" id="div${todo.listId}">
             <img id="edit${todo.listId}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
             <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" />
              <div class="stickyTitle">
@@ -60,6 +72,7 @@ const createStickyTemplate = function(todo) {
               ${tasksInHtml}
             </div>
           </div>`;
+  return html;
 };
 
 const createTaskTemplate = function(task) {
@@ -67,9 +80,13 @@ const createTaskTemplate = function(task) {
     task.id
   }"><input type="checkbox" name="checkBox" id="checkbox${task.id}" ${
     task.done ? 'checked' : ''
-  } /><label for="checkbox${task.id}">${task.description}</label><img id="edit${
+  } /><label id="descriptionOf${task.id}" for="checkbox${task.id}">${
+    task.description
+  }</label>&emsp;<span id="editIconFor${
     task.id
-  }" src="./images/editTaskIcon.png" alt="edit" class="taskEditIcon" /><img id="delete${
+  }"><i  class="fa fa-pencil-square-o" aria-hidden="true" onclick="showEditTask('${
+    task.id
+  }')"></i></span><img id="deleteIconFor${
     task.id
   }" src="./images/deleteTaskIcon.png" alt="delete" class="taskDeleteIcon" /></div><br />`;
 };
