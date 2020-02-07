@@ -58,8 +58,10 @@ const createStickyTemplate = function(todo) {
     .join('');
   return `<div class="stickNote" id="${todo.listId}">
         <div>
-          <h2 class="stickyTitle">${todo.title}</h2>
-          <img id="todoEditIcon" src="./images/editTodoIcon.png" alt="edit" />
+          <h2 class="stickyTitle">${todo.title}&nbsp<i id="addTask${todo.listId}" class="fa fa-plus-circle faa-spin animated-hover " aria-hidden="true"></i>
+</h2>
+          <img id="edit${todo.listId}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
+          <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" />
         </div>
         <div>
           ${tasksInHtml}
@@ -68,9 +70,15 @@ const createStickyTemplate = function(todo) {
 };
 
 const createTaskTemplate = function(task) {
-  return `<input type="checkbox" name="checkBox" id="${task.id}" ${
+  return `<div class="taskDiv" id="${
+    task.id
+  }"><input type="checkbox" name="checkBox" id="checkbox${task.id}" ${
     task.done ? 'checked' : ''
-  } />${task.description}<br />`;
+  } />${task.description}<img id="edit${
+    task.id
+  }" src="./images/editTaskIcon.png" alt="edit" class="taskEditIcon" /><img id="delete${
+    task.id
+  }" src="./images/deleteTaskIcon.png" alt="delete" class="taskDeleteIcon" /></div><br />`;
 };
 
 const sendXHR = function(data, url, method, responseHandler) {
