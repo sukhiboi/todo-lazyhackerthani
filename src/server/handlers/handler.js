@@ -57,6 +57,17 @@ const readBody = function(req, res, next) {
   });
 };
 
+const editToDoTitle = function(req, res, next) {
+  if (req.url !== '/editToDoTitle') {
+    next();
+    return;
+  }
+  const { title, todoId } = JSON.parse(req.body);
+  toDoList.editToDoTitle(todoId, title);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
+  res.end(toDoList.toJSON());
+};
+
 const deleteToDo = function(req, res, next) {
   if (req.url !== '/deleteToDo') {
     next();
@@ -91,8 +102,8 @@ const deleteTask = function(req, res, next) {
   res.end(toDoList.toJSON());
 };
 
-const editTask = function(req, res, next) {
-  if (req.url !== '/editTask') {
+const editTaskDescription = function(req, res, next) {
+  if (req.url !== '/editTaskDescription') {
     next();
     return;
   }
@@ -131,10 +142,11 @@ app.get('', serveStaticPage);
 app.get('/getToDos', getToDos);
 app.post('/createTask', createTask);
 app.post('/createToDo', createToDo);
-app.post('/editTask', editTask);
+app.post('/editTaskDescription', editTaskDescription);
 app.post('/deleteTask', deleteTask);
 app.post('/editTaskStatus', editTaskStatus);
 app.post('/deleteToDo', deleteToDo);
+app.post('/editToDoTitle', editToDoTitle);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);

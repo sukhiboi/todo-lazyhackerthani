@@ -90,6 +90,9 @@ class ToDo {
   deleteTask(taskId) {
     this.tasks.deleteTask(taskId);
   }
+  editTitle(title) {
+    this.title = title;
+  }
   static load(content) {
     const toDoDetails = content || {};
     const taskList = TaskList.load(content.tasks);
@@ -149,6 +152,15 @@ class ToDoList {
     this.list.forEach((todo, index) => {
       if (todo.listId === todoId) this.list.splice(index, 1);
     });
+  }
+  findToDo(todoId) {
+    return this.list.find(todo => {
+      return todo.listId === todoId;
+    });
+  }
+  editToDoTitle(todoId, title) {
+    const todo = this.findToDo(todoId);
+    if (todo) todo.editTitle(title);
   }
   static load(content) {
     const toDos = JSON.parse(content || '[]');

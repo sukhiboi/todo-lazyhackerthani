@@ -24,16 +24,38 @@ const showEditTask = function(taskId) {
   const input = `<input type="text" id="editedDescriptionOf${taskId}" class="smallerTextBox" value="${description}"/>`;
   label.innerHTML = input;
   const editIconSpan = document.getElementById(`editIconFor${taskId}`);
-  const saveIcon = `<i id="saveIconFor${taskId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTask('editedDescriptionOf${taskId}','${taskId}')"></i>`;
+  const saveIcon = `<i id="saveIconFor${taskId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTaskDescription('editedDescriptionOf${taskId}','${taskId}')"></i>`;
   editIconSpan.innerHTML = saveIcon;
 };
 
-const editTask = function(textBoxId, taskId) {
+const showEditTitle = function(todoId) {
+  const headingSpan = document.getElementById(`titleFor${todoId}`);
+  const title = headingSpan.innerHTML;
+  const input = `<input type="text" id="editedTitleOf${todoId}" class="smallerTextBox" value="${title}"/>`;
+  headingSpan.innerHTML = input;
+  const editIconSpan = document.getElementById(`editIconFor${todoId}`);
+  const saveIcon = `<i id="saveIconFor${todoId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editToDoTitle('editedTitleOf${todoId}','${todoId}')"></i>`;
+  editIconSpan.innerHTML = saveIcon;
+};
+
+const editTaskDescription = function(textBoxId, taskId) {
   const taskText = document.getElementById(textBoxId).value;
   if (taskText) {
     sendXHR(
       JSON.stringify({ taskText, taskId }),
-      'editTask',
+      'editTaskDescription',
+      'POST',
+      handleAllToDo
+    );
+  } else alert('type something in text box and save');
+};
+
+const editToDoTitle = function(textBoxId, todoId) {
+  const title = document.getElementById(textBoxId).value;
+  if (title) {
+    sendXHR(
+      JSON.stringify({ title, todoId }),
+      'editToDoTitle',
       'POST',
       handleAllToDo
     );
@@ -80,9 +102,8 @@ const createStickyTemplate = function(todo) {
             <img id="edit${todo.listId}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
             <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" onclick="deleteToDo('${todo.listId}')"/>
              <div class="stickyTitle">
-               <h2 >${todo.title}&nbsp
-               <i class="fa fa-chevron-down" aria-hidden="true" onclick="show('input${todo.listId}')"></i>
-               </h2>
+               <h2><span id="titleFor${todo.listId}">${todo.title}</span>&nbsp<span id="editIconFor${todo.listId}"><i  class="fa fa-pencil" aria-hidden="true" onclick="showEditTitle('${todo.listId}')"></i>&nbsp
+               <i class="fa fa-chevron-down" aria-hidden="true" onclick="show('input${todo.listId}')"></i></span></h2>
              </div>
              <div class="smallTextBoxDiv hideIt" id="input${todo.listId}">
                <input type="text"  class="smallTextBox" name="stickyInputBox" id="taskTo${todo.listId}" placeholder="type task and enter"/>
@@ -111,7 +132,7 @@ const createTaskTemplate = function(task) {
     task.id
   }')"></i>&nbsp<i id="deleteIconFor${
     task.id
-  }" class="fa fa-times-circle" aria-hidden="true" onclick="deleteTask('${
+  }" class="fa fa-minus-square-o" aria-hidden="true" onclick="deleteTask('${
     task.id
   }')"></i></span></div><br />`;
 };

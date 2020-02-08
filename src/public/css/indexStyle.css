@@ -158,31 +158,13 @@ body {
   width: 20px;
 } */
 
-.fa-plus-circle {
+.fa {
   color: #9ab6eb;
 }
-.fa-plus-circle:hover {
+.fa:hover {
   color: #8aabe9;
 }
-.fa-plus-circle:active {
-  color: #6e97e4;
-}
-.fa-times-circle {
-  color: #9ab6eb;
-}
-.fa-times-circle:hover {
-  color: #8aabe9;
-}
-.fa-times-circle:active {
-  color: #6e97e4;
-}
-.fa-chevron-down {
-  color: #9ab6eb;
-}
-.fa-chevron-down:hover {
-  color: #8aabe9;
-}
-.fa-chevron-down:active {
+.fa:active {
   color: #6e97e4;
 }
 
