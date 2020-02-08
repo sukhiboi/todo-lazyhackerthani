@@ -30,12 +30,28 @@
   ✔︎ remove input text value after clicking add
   ✔︎ use time to create id
   ✔︎ change new file button to a plus icon
-  * add npmtest, npmStart, add config 
+  * add npmtest, npmStart, add config (important)
   
   
   ✔︎ view all todo in the page
-  $ restyle the index.html
+  ✔︎ restyle the index.html
 
-  * bug fix: refreshing sending xmlHTTPRequest resubmitting last data
-  * bug fix: hide not applicaple divs
-  * remove inside text when click to close add todo window
+  ✔︎ bug fix: refreshing sending xmlHTTPRequest resubmitting last data
+  ✔︎ bug fix: hide not applicaple divs
+  ✔︎ remove inside text when click to close add todo window
+
+  ✔︎ task status change, task edit, task delete, save editted task
+  ✔︎ todo title edit, todo delete
+
+  * add search bar 
+  * add separate search in todoTitle and task
+  * show filtered list
+  * highlight matching text
+
+  * todo edit will open pop up window where you can edit todo in bigger window (less priority)
+  * pull out a todoAppHandler which will take care of everything in the app, you just provide path to it and initialize,
+    - it will read write and do things in order
+  * login class which create and handle user
+
+  * design login page which will be the index page
+  * check wether you have cookies if its present then validate then only go to to do page of perticular person
