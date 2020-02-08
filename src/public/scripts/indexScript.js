@@ -1,6 +1,8 @@
 const hide = id => (document.getElementById(id).style.display = 'none');
 
 const show = id => (document.getElementById(id).style.display = 'block');
+const hideByOpacity = id => (document.getElementById(id).style.opacity = -1);
+const showByOpacity = id => (document.getElementById(id).style.opacity = 1);
 
 const clearValue = id => (document.getElementById(id).value = '');
 

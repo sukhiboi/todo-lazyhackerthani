@@ -19,7 +19,7 @@
         id="todoAddIcon"
         src="./images/addTodoIcon.png"
         alt="Add"
-        onclick="show('myForm'),hide('mainBox')"
+        onclick="show('myForm'),hideByOpacity('mainBox')"
       />
     </div>
     <div id="mainBox"></div>
@@ -34,13 +34,13 @@
         class="popUpButton"
         type="submit"
         value="create"
-        onclick="hide('myForm'),createToDo('todoName','todoBox'),clearValue('todoName'),show('mainBox')"
+        onclick="hide('myForm'),createToDo('todoName','todoBox'),clearValue('todoName'),showByOpacity('mainBox')"
       />
       <input
         class="popUpButton"
         type="button"
         value="cancel"
-        onclick="clearValue('todoName'),hide('myForm'),show('mainBox')"
+        onclick="clearValue('todoName'),hide('myForm'),showByOpacity('mainBox')"
       />
     </div>
     <div class="todoPageDiv hideIt" id="todoBox">
