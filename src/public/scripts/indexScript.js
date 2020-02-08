@@ -38,6 +38,13 @@ const editTask = function(textBoxId, taskId) {
   } else alert('type something in text box and save');
 };
 
+const editTaskStatus = function(taskId) {
+  sendXHR(JSON.stringify({ taskId }), 'editTaskStatus', 'POST', () => {});
+};
+
+const deleteTask = taskId =>
+  sendXHR(JSON.stringify({ taskId }), 'deleteTask', 'POST', handleAllToDo);
+
 const createToDo = function(textBoxId) {
   const toDoName = document.getElementById(textBoxId).value;
   if (toDoName) {
@@ -86,7 +93,9 @@ const createStickyTemplate = function(todo) {
 const createTaskTemplate = function(task) {
   return `<div class="taskDiv" id="${
     task.id
-  }"><input type="checkbox" name="checkBox" id="checkbox${task.id}" ${
+  }"><input type="checkbox" name="checkBox" onclick="editTaskStatus('${
+    task.id
+  }')" id="checkbox${task.id}" ${
     task.done ? 'checked' : ''
   } /><label id="descriptionOf${task.id}" for="checkbox${task.id}">${
     task.description
@@ -96,7 +105,9 @@ const createTaskTemplate = function(task) {
     task.id
   }')"></i>&nbsp<i id="deleteIconFor${
     task.id
-  }" class="fa fa-times-circle" aria-hidden="true" onclick=""></i></span></div><br />`;
+  }" class="fa fa-times-circle" aria-hidden="true" onclick="deleteTask('${
+    task.id
+  }')"></i></span></div><br />`;
 };
 
 const sendXHR = function(data, url, method, responseHandler) {

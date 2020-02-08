@@ -15,6 +15,9 @@ class Task {
   editDescription(description) {
     this.description = description;
   }
+  editStatus() {
+    this.done = !this.done;
+  }
   toJSON() {
     return JSON.stringify({
       description: this.description,
@@ -41,11 +44,22 @@ class TaskList {
     const task = this.findTask(taskId);
     if (task) task.editDescription(description);
   }
+  editTaskStatus(taskId) {
+    const task = this.findTask(taskId);
+    if (task) task.editStatus();
+  }
+  deleteTask(taskId) {
+    this.list.forEach((task, index) => {
+      if (task.id === taskId) this.list.splice(index, 1);
+    });
+  }
   static load(content) {
     const tasks = content || [];
     const taskList = new TaskList();
     tasks.forEach(tsk => {
-      taskList.addTask(new Task(tsk.description, new Date(tsk.time), tsk.id));
+      taskList.addTask(
+        new Task(tsk.description, new Date(tsk.time), tsk.id, tsk.done)
+      );
     });
     return taskList;
   }
@@ -69,6 +83,12 @@ class ToDo {
   }
   editTaskDescription(taskId, description) {
     this.tasks.editTaskDescription(taskId, description);
+  }
+  editTaskStatus(taskId) {
+    this.tasks.editTaskStatus(taskId);
+  }
+  deleteTask(taskId) {
+    this.tasks.deleteTask(taskId);
   }
   static load(content) {
     const toDoDetails = content || {};
@@ -118,6 +138,12 @@ class ToDoList {
   }
   editTaskDescription(taskId, description) {
     this.list.forEach(todo => todo.editTaskDescription(taskId, description));
+  }
+  deleteTask(taskId) {
+    this.list.forEach(todo => todo.deleteTask(taskId));
+  }
+  editTaskStatus(taskId) {
+    this.list.forEach(todo => todo.editTaskStatus(taskId));
   }
   static load(content) {
     const toDos = JSON.parse(content || '[]');

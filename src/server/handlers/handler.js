@@ -69,11 +69,37 @@ const createToDo = function(req, res, next) {
   res.end(toDoList.toJSON());
 };
 
+const deleteTask = function(req, res, next) {
+  if (req.url !== '/deleteTask') {
+    next();
+    return;
+  }
+  const { taskId } = JSON.parse(req.body);
+  toDoList.deleteTask(taskId);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
+  res.end(toDoList.toJSON());
+};
+
 const editTask = function(req, res, next) {
   if (req.url !== '/editTask') {
     next();
     return;
   }
+  const { taskText, taskId } = JSON.parse(req.body);
+  toDoList.editTaskDescription(taskId, taskText);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
+  res.end(toDoList.toJSON());
+};
+
+const editTaskStatus = function(req, res, next) {
+  if (req.url !== '/editTaskStatus') {
+    next();
+    return;
+  }
+  const { taskId } = JSON.parse(req.body);
+  toDoList.editTaskStatus(taskId);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
+  res.end(toDoList.toJSON());
 };
 
 const createTask = function(req, res, next) {
@@ -95,6 +121,8 @@ app.get('/getToDos', getToDos);
 app.post('/createTask', createTask);
 app.post('/createToDo', createToDo);
 app.post('/editTask', editTask);
+app.post('/deleteTask', deleteTask);
+app.post('/editTaskStatus', editTaskStatus);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);
