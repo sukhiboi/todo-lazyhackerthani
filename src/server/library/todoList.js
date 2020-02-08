@@ -12,6 +12,9 @@ class Task {
     this.time = time;
     this.done = done;
   }
+  editDescription(description) {
+    this.description = description;
+  }
   toJSON() {
     return JSON.stringify({
       description: this.description,
@@ -28,6 +31,15 @@ class TaskList {
   }
   addTask(task) {
     this.list.push(task);
+  }
+  findTask(taskId) {
+    return this.list.find(task => {
+      return task.id === taskId;
+    });
+  }
+  editTaskDescription(taskId, description) {
+    const task = this.findTask(taskId);
+    if (task) task.editDescription(description);
   }
   static load(content) {
     const tasks = content || [];
@@ -51,6 +63,12 @@ class ToDo {
   }
   addTask(task) {
     this.tasks.addTask(task);
+  }
+  findTask(taskId) {
+    return this.tasks.findTask(taskId);
+  }
+  editTaskDescription(taskId, description) {
+    this.tasks.editTaskDescription(taskId, description);
   }
   static load(content) {
     const toDoDetails = content || {};
@@ -91,6 +109,15 @@ class ToDoList {
       return td.listId === todoId;
     });
     toDo.addTask(task);
+  }
+  findTask(taskId) {
+    const task = this.list.find(todo => {
+      return todo.findTask(taskId);
+    });
+    return task;
+  }
+  editTaskDescription(taskId, description) {
+    this.list.forEach(todo => todo.editTaskDescription(taskId, description));
   }
   static load(content) {
     const toDos = JSON.parse(content || '[]');

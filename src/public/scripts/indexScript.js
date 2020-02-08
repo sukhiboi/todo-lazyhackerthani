@@ -27,7 +27,15 @@ const showEditTask = function(taskId) {
 };
 
 const editTask = function(textBoxId, taskId) {
-  console.log(textBoxId, taskId);
+  const taskText = document.getElementById(textBoxId).value;
+  if (taskText) {
+    sendXHR(
+      JSON.stringify({ taskText, taskId }),
+      'editTask',
+      'POST',
+      handleAllToDo
+    );
+  } else alert('type something in text box and save');
 };
 
 const createToDo = function(textBoxId) {
@@ -86,9 +94,9 @@ const createTaskTemplate = function(task) {
     task.id
   }"><i  class="fa fa-pencil-square-o" aria-hidden="true" onclick="showEditTask('${
     task.id
-  }')"></i></span><img id="deleteIconFor${
+  }')"></i>&nbsp<i id="deleteIconFor${
     task.id
-  }" src="./images/deleteTaskIcon.png" alt="delete" class="taskDeleteIcon" /></div><br />`;
+  }" class="fa fa-times-circle" aria-hidden="true" onclick=""></i></span></div><br />`;
 };
 
 const sendXHR = function(data, url, method, responseHandler) {

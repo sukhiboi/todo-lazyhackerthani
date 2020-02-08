@@ -69,6 +69,13 @@ const createToDo = function(req, res, next) {
   res.end(toDoList.toJSON());
 };
 
+const editTask = function(req, res, next) {
+  if (req.url !== '/editTask') {
+    next();
+    return;
+  }
+};
+
 const createTask = function(req, res, next) {
   if (req.url !== '/createTask') {
     next();
@@ -87,6 +94,7 @@ app.get('', serveStaticPage);
 app.get('/getToDos', getToDos);
 app.post('/createTask', createTask);
 app.post('/createToDo', createToDo);
+app.post('/editTask', editTask);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);

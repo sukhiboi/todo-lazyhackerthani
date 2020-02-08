@@ -145,18 +145,18 @@ body {
   right: 10px;
 }
 
-.taskDeleteIcon {
+/* .taskDeleteIcon {
   position: absolute;
   right: 7px;
   height: 20px;
   width: 20px;
-}
-.taskEditIcon {
+} */
+/* .taskEditIcon {
   position: absolute;
   right: 37px;
   height: 20px;
   width: 20px;
-}
+} */
 
 .fa-plus-circle {
   color: #9ab6eb;
