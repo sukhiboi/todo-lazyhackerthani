@@ -57,6 +57,17 @@ const readBody = function(req, res, next) {
   });
 };
 
+const deleteToDo = function(req, res, next) {
+  if (req.url !== '/deleteToDo') {
+    next();
+    return;
+  }
+  const { todoId } = JSON.parse(req.body);
+  toDoList.deleteToDo(todoId);
+  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
+  res.end(toDoList.toJSON());
+};
+
 const createToDo = function(req, res, next) {
   if (req.url !== '/createToDo') {
     next();
@@ -123,6 +134,7 @@ app.post('/createToDo', createToDo);
 app.post('/editTask', editTask);
 app.post('/deleteTask', deleteTask);
 app.post('/editTaskStatus', editTaskStatus);
+app.post('/deleteToDo', deleteToDo);
 app.get('', notFound);
 app.post('', notFound);
 app.use(methodNotAllowed);

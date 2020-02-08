@@ -145,6 +145,11 @@ class ToDoList {
   editTaskStatus(taskId) {
     this.list.forEach(todo => todo.editTaskStatus(taskId));
   }
+  deleteToDo(todoId) {
+    this.list.forEach((todo, index) => {
+      if (todo.listId === todoId) this.list.splice(index, 1);
+    });
+  }
   static load(content) {
     const toDos = JSON.parse(content || '[]');
     const toDoList = new ToDoList();

@@ -52,6 +52,10 @@ const createToDo = function(textBoxId) {
   }
 };
 
+const deleteToDo = function(todoId) {
+  sendXHR(JSON.stringify({ todoId }), 'deleteToDo', 'POST', handleAllToDo);
+};
+
 const loadToDos = () => sendXHR({}, 'getToDos', 'GET', handleAllToDo);
 
 const handleAllToDo = function() {
@@ -72,7 +76,7 @@ const createStickyTemplate = function(todo) {
     .join('');
   const html = `<div class="stickNote" id="div${todo.listId}">
             <img id="edit${todo.listId}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
-            <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" />
+            <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" onclick="deleteToDo('${todo.listId}')"/>
              <div class="stickyTitle">
                <h2 >${todo.title}&nbsp
                <i class="fa fa-chevron-down" aria-hidden="true" onclick="show('input${todo.listId}')"></i>
