@@ -14,11 +14,58 @@
     <title>ToDo</title>
   </head>
   <body onload="loadToDos()">
+    <datalist id="">
+      <option>In TASK</option>
+      <option>In TODO</option>
+    </datalist>
+
+    <div id="searchDiv">
+      <i
+        class="fa fa-search searchIcon"
+        id="plainSearchIcon"
+        aria-hidden="true"
+        onclick="hide('plainSearchIcon'),show('taskSearchDiv')"
+      ></i>
+      <div id="taskSearchDiv">
+        <input
+          id="taskSearchTextBox"
+          type="search"
+          autocomplete="on"
+          onkeyup="filter('taskSearchTextBox','label')"
+          placeholder="search in Tasks"
+        />
+        <img
+          id="taskSearchIcon"
+          title="search in tasks"
+          src="./images/taskSearchIcon.png"
+          class="searchIcon specificSearchIcon"
+          alt="taskSearch"
+          onclick="hide('taskSearchDiv'),show('titleSearchDiv'),clearValue('taskSearchTextBox')"
+        />
+      </div>
+      <div id="titleSearchDiv">
+        <input
+          id="titleSearchTextBox"
+          type="search"
+          autocomplete="on"
+          onkeyup="filter('titleSearchTextBox','h2')"
+          placeholder="search in title"
+        /><img
+          id="titleSearchIcon"
+          title="search in toDos"
+          src="./images/titleSearchIcon.png"
+          class="searchIcon specificSearchIcon"
+          alt="titleSearch"
+          onclick="hide('titleSearchDiv'),show('taskSearchDiv'),clearValue('titleSearchTextBox')"
+        />
+      </div>
+    </div>
     <div class="addTodoDiv">
       <img
         id="todoAddIcon"
         src="./images/addTodoIcon.png"
         alt="Add"
+        title="add new todo"
         onclick="show('myForm'),hideByOpacity('mainBox')"
       />
     </div>

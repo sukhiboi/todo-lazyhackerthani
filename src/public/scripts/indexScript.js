@@ -6,6 +6,22 @@ const showByOpacity = id => (document.getElementById(id).style.opacity = 1);
 
 const clearValue = id => (document.getElementById(id).value = '');
 
+const filter = function(textBoxId, tagName) {
+  const searchText = document.getElementById(textBoxId).value;
+  const stickies = Array.from(document.getElementsByClassName('stickNote'));
+  stickies.forEach(sticky => {
+    const labels = Array.from(sticky.getElementsByTagName(tagName)).concat([
+      ''
+    ]);
+    const isMatch = labels.some(label => {
+      const regEx = new RegExp(`${searchText}`, 'g');
+      return regEx.test(label.innerHTML);
+    });
+    if (isMatch) show(sticky.id);
+    else hide(sticky.id);
+  });
+};
+
 const createTask = function(textBoxId, todoId) {
   const taskName = document.getElementById(textBoxId).value;
   if (taskName) {
@@ -124,9 +140,9 @@ const createTaskTemplate = function(task) {
     task.id
   }')" id="checkbox${task.id}" ${
     task.done ? 'checked' : ''
-  } /><label id="descriptionOf${task.id}" for="checkbox${task.id}">${
-    task.description
-  }</label>&emsp;<span id="editIconFor${
+  } /><label class="taskLabel" id="descriptionOf${task.id}" for="checkbox${
+    task.id
+  }">${task.description}</label>&emsp;<span id="editIconFor${
     task.id
   }"><i  class="fa fa-pencil-square-o" aria-hidden="true" onclick="showEditTask('${
     task.id

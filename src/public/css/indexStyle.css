@@ -61,12 +61,12 @@
 }
 
 #todoAddIcon {
-  height: 40px;
-  width: 40px;
+  height: 60px;
+  width: 60px;
 }
 #todoAddIcon:active {
-  height: 41px;
-  width: 41px;
+  height: 61px;
+  width: 61px;
 }
 
 .hideIt {
@@ -81,7 +81,7 @@
 }
 
 body {
-  background-color: #e3fdf3;
+  background-color: white;
 }
 #mainBox {
   /* border: solid; */
@@ -142,7 +142,7 @@ body {
 .addTodoDiv {
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: 530px;
 }
 
 /* .taskDeleteIcon {
@@ -172,4 +172,31 @@ body {
   margin: 10px 7px 0px 7px;
   width: 90%;
   padding: 15px;
+}
+#taskSearchTextBox,
+#titleSearchTextBox {
+  /* display: none; */
+  background: none;
+  border: none;
+  border-bottom: 2px solid #6e97e4;
+  width: 300px;
+  position: fixed;
+  top: 50px;
+  right: 670px;
+}
+#taskSearchDiv,
+#titleSearchDiv {
+  display: none;
+}
+#plainSearchIcon {
+  font-size: 55px;
+}
+.specificSearchIcon {
+  height: 70px;
+  width: 60px;
+}
+.searchIcon {
+  position: fixed;
+  top: 10px;
+  right: 600px;
 }
