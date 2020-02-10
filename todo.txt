@@ -55,3 +55,22 @@
 
   * design login page which will be the index page
   * check wether you have cookies if its present then validate then only go to to do page of perticular person
+
+
+---------------
+
+* Move app.js and handlers.js to library directory.
+* install sinon, nyc, mocha
+* config file (it will contain data store path)
+* add querystring (change the conversation method of server and client,  client will send in url encoding)
+* create MIME.js 
+* make components
+* write tests
+* use delete and patch methodd(update,app.JS)
+* export classes ( in their own files)
+* add save and load methods to app(todoList)class
+* remove tasklist class
+* send the function reference of app.server from handlers.js
+* don't render body again and again
+* install eslint
+-----
