@@ -8,11 +8,18 @@ describe('GET method ', () => {
         .get('/')
         .expect('Content-Type', 'text/html')
         .expect(200, done)
-        .expect(/todoAddIcon/);
+        .expect(/login/);
     });
     it('should give the index.html page when the url is /index.html', done => {
       request(app.serve.bind(app))
         .get('/index.html')
+        .expect('Content-Type', 'text/html')
+        .expect(200, done)
+        .expect(/login/);
+    });
+    it('should give the index.html page when the url is /', done => {
+      request(app.serve.bind(app))
+        .get('/home.html')
         .expect('Content-Type', 'text/html')
         .expect(200, done)
         .expect(/todoAddIcon/);
