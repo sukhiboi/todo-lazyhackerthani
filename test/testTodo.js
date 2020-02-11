@@ -6,14 +6,52 @@ const {
   ToDoList
 } = require('../src/server/library/todoList');
 
+let date;
+
+beforeEach(function() {
+  date = new Date();
+});
+
 describe('Task class', function() {
   describe('toJSON', function() {
-    it('should  give JSON string according to its data', function() {
-      const date = new Date('2020-02-06T04:14:39.160Z');
-      const task = new Task('buy milk', date, 'task1', true);
-      const jsonString =
-        '{"caption":"buy milk","id":"task1","time":"2020-02-06T04:14:39.160Z","done":true}';
+    it('should generate JSON when task is inComplete', function() {
+      const task = new Task('buy milk', date, 'task1');
+      const jsonString = `{"caption":"buy milk","id":"task1","time":"${date.toJSON()}","done":false}`;
       assert.strictEqual(task.toJSON(), jsonString);
+    });
+  });
+  describe('editStatus', function() {
+    it('should change the status to done when it is inComplete', function() {
+      const task = new Task('buy milk', date, 'task1');
+      task.editStatus();
+      assert.deepStrictEqual(task, {
+        caption: 'buy milk',
+        time: date,
+        id: 'task1',
+        done: true
+      });
+    });
+    it('should change the status to undone when it is complete', function() {
+      const task = new Task('buy milk', date, 'task1', true);
+      task.editStatus();
+      assert.deepStrictEqual(task, {
+        caption: 'buy milk',
+        time: date,
+        id: 'task1',
+        done: false
+      });
+    });
+  });
+  describe('editCaption', function() {
+    it('should edit the caption of the Task', function() {
+      const task = new Task('buy milk', date, 'task1');
+      task.editCaption('buy shampoo');
+      assert.deepStrictEqual(task, {
+        caption: 'buy shampoo',
+        time: date,
+        id: 'task1',
+        done: false
+      });
     });
   });
 });
