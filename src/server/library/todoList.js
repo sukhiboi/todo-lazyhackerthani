@@ -6,21 +6,21 @@ const getCount = () => {
 };
 
 class Task {
-  constructor(description, time, id, done = false) {
-    this.description = description;
+  constructor(caption, time, id, done = false) {
+    this.caption = caption;
     this.id = id || `task${getCount()}`;
     this.time = time;
     this.done = done;
   }
-  editDescription(description) {
-    this.description = description;
+  editCaption(caption) {
+    this.caption = caption;
   }
   editStatus() {
     this.done = !this.done;
   }
   toJSON() {
     return JSON.stringify({
-      description: this.description,
+      caption: this.caption,
       id: this.id,
       time: this.time,
       done: this.done
@@ -40,9 +40,9 @@ class TaskList {
       return task.id === taskId;
     });
   }
-  editTaskDescription(taskId, description) {
+  editTaskCaption(taskId, caption) {
     const task = this.findTask(taskId);
-    if (task) task.editDescription(description);
+    if (task) task.editCaption(caption);
   }
   editTaskStatus(taskId) {
     const task = this.findTask(taskId);
@@ -58,7 +58,7 @@ class TaskList {
     const taskList = new TaskList();
     tasks.forEach(tsk => {
       taskList.addTask(
-        new Task(tsk.description, new Date(tsk.time), tsk.id, tsk.done)
+        new Task(tsk.caption, new Date(tsk.time), tsk.id, tsk.done)
       );
     });
     return taskList;
@@ -81,8 +81,8 @@ class ToDo {
   findTask(taskId) {
     return this.tasks.findTask(taskId);
   }
-  editTaskDescription(taskId, description) {
-    this.tasks.editTaskDescription(taskId, description);
+  editTaskCaption(taskId, caption) {
+    this.tasks.editTaskCaption(taskId, caption);
   }
   editTaskStatus(taskId) {
     this.tasks.editTaskStatus(taskId);
@@ -139,8 +139,8 @@ class ToDoList {
     });
     return task;
   }
-  editTaskDescription(taskId, description) {
-    this.list.forEach(todo => todo.editTaskDescription(taskId, description));
+  editTaskCaption(taskId, caption) {
+    this.list.forEach(todo => todo.editTaskCaption(taskId, caption));
   }
   deleteTask(taskId) {
     this.list.forEach(todo => todo.deleteTask(taskId));
