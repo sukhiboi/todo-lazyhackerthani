@@ -64,7 +64,7 @@
 ✔︎ config file (it will contain data store path)
 * add querystring (change the conversation method of server and client,  client will send in url encoding)
 ✔︎ create MIME.js 
-* make components
+✗ make components (plan droped)
 * write tests
 * use delete and patch methodd(update,app.JS)
 * export classes ( in their own files)
@@ -74,3 +74,5 @@
 * don't render body again and again
 * install eslint
 -----
+
+* middleware for validation
