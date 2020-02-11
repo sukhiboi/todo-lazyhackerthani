@@ -15,7 +15,7 @@ class Task {
   editCaption(caption) {
     this.caption = caption;
   }
-  editStatus() {
+  toggleStatus() {
     this.done = !this.done;
   }
   toJSON() {
@@ -46,7 +46,7 @@ class TaskList {
   }
   editTaskStatus(taskId) {
     const task = this.findTask(taskId);
-    if (task) task.editStatus();
+    if (task) task.toggleStatus();
   }
   deleteTask(taskId) {
     this.list.forEach((task, index) => {
