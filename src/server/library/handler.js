@@ -3,17 +3,7 @@ const fs = require('fs');
 const { App } = require('./app');
 const { ToDoList, ToDo, Task } = require('../library/todoList');
 
-const MIME_TYPES = {
-  txt: 'text/plain',
-  html: 'text/html',
-  css: 'text/css',
-  js: 'application/javascript',
-  json: 'application/json',
-  gif: 'image/gif',
-  jpg: 'image/jpeg',
-  png: 'image/png',
-  pdf: 'application/pdf'
-};
+const MIME_TYPES = require('./mimeTypes');
 
 const TODO_STORE = require(`${__dirname}/../../../config.js`);
 const toDoList = ToDoList.load(fs.readFileSync(TODO_STORE, 'utf8') || '[]');
