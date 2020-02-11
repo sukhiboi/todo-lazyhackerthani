@@ -15,7 +15,7 @@ const MIME_TYPES = {
   pdf: 'application/pdf'
 };
 
-const TODO_STORE = `${__dirname}/../assets/todoList.json`;
+const TODO_STORE = require(`${__dirname}/../../../config.js`);
 const toDoList = ToDoList.load(fs.readFileSync(TODO_STORE, 'utf8') || '[]');
 
 const serveStaticPage = function(req, res, next) {

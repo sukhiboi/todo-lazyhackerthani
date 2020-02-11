@@ -59,8 +59,8 @@
 
 ---------------
 
-* Move app.js and handlers.js to library directory.
-* install sinon, nyc, mocha
+✔︎ Move app.js and handlers.js to library directory.
+✔︎ install sinon, nyc, mocha
 * config file (it will contain data store path)
 * add querystring (change the conversation method of server and client,  client will send in url encoding)
 * create MIME.js 
