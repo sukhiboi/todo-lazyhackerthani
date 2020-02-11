@@ -98,7 +98,7 @@ class ToDo {
     const taskList = TaskList.load(content.tasks);
     const toDo = new ToDo(
       toDoDetails.title,
-      toDoDetails.startDate,
+      new Date(toDoDetails.startDate),
       taskList,
       toDoDetails.listId
     );
@@ -134,9 +134,9 @@ class ToDoList {
     toDo.addTask(task);
   }
   findTask(taskId) {
-    const task = this.list.find(todo => {
+    const task = this.list.reduce((context, todo) => {
       return todo.findTask(taskId);
-    });
+    }, null);
     return task;
   }
   editTaskCaption(taskId, caption) {
