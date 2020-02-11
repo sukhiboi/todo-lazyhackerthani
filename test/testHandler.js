@@ -1,5 +1,5 @@
 const request = require('supertest');
-const { app } = require('../src/server/handlers/handler');
+const { app } = require('../src/server/library/handler');
 
 describe('GET method ', () => {
   describe('static file', () => {
