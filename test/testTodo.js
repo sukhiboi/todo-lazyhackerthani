@@ -57,7 +57,7 @@ describe('Task class', function() {
 });
 
 describe('TaskList', function() {
-let task;
+  let task;
 
   beforeEach(function() {
     task = new Task('something', date, 'task2');
@@ -174,6 +174,117 @@ let task;
 });
 
 describe('ToDo', function() {
+  describe('addTask', function() {
+    it('should add a task', function() {
+      const task = new Task('buy shampoo', date, 'task1', true);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      const expected = {
+        title: 'Home',
+        listId: 'todo1',
+        startDate: date,
+        tasks: {
+          list: [task]
+        }
+      };
+      assert.deepStrictEqual(todo, expected);
+    });
+  });
+
+  describe('findTask', function() {
+    it('should find a task with a given id', function() {
+      const task = new Task('buy shampoo', date, 'task1', true);
+      const task2 = new Task('buy dove shampoo', date, 'task9', false);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      todo.addTask(task2);
+      const foundedTask = todo.findTask('task9');
+      assert.deepStrictEqual(foundedTask, task2);
+    });
+
+    it('should give undefined when the given id is not found', function() {
+      const task = new Task('buy shampoo', date, 'task1', true);
+      const task2 = new Task('buy dove shampoo', date, 'task9', false);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      todo.addTask(task2);
+      const foundedTask = todo.findTask('task90');
+      assert.isUndefined(foundedTask);
+    });
+  });
+
+  describe('editTaskCaption', function() {
+    it('should edit the caption of the task with matching taskId', function() {
+      const task = new Task('buy shampoo', date, 'task1', true);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      todo.editTaskCaption('task1', 'buy dove shampoo');
+      assert.deepStrictEqual(task.caption, 'buy dove shampoo');
+    });
+  });
+
+  describe('editTaskStatus', function() {
+    it('should toggle the status of the task with matching taskId', function() {
+      const task = new Task('buy shampoo', date, 'task1', true);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      todo.editTaskStatus('task1');
+      assert.isFalse(task.done);
+    });
+
+    it('should toggle the status of the task with matching taskId', function() {
+      const task = new Task('buy shampoo', date, 'task1', false);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      todo.editTaskStatus('task1');
+      assert.isTrue(task.done);
+    });
+  });
+
+  describe('deleteTask', function() {
+    it('should delete the task with matching taskId', function() {
+      const task = new Task('buy shampoo', date, 'task1', true);
+      const task2 = new Task('buy dove shampoo', date, 'task7', false);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      todo.addTask(task2);
+      todo.deleteTask('task1');
+      assert.deepStrictEqual(todo.tasks, { list: [task2] });
+    });
+
+    it("should NOT delete any other tasks when taskId doesn't found", function() {
+      const task = new Task('buy shampoo', date, 'task1', true);
+      const task2 = new Task('buy dove shampoo', date, 'task7', false);
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.addTask(task);
+      todo.addTask(task2);
+      todo.deleteTask('task90');
+      assert.deepStrictEqual(todo.tasks, { list: [task, task2] });
+    });
+  });
+
+  describe('editTitle', function() {
+    it('should edit the title of the todo', function() {
+      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      todo.editTitle('new Title');
+      assert.deepStrictEqual(todo.title, 'new Title');
+    });
+  });
+
+  describe('load', function() {
+    it('should load the todo from object which have properties of a todo', function() {
+      const rawTodo = {
+        title: 'raw Todo',
+        startDate: date,
+        listId: 'todo2',
+        tasks: [{ caption: 'new Task', time: date, done: false, id: 'task4' }]
+      };
+      const todo = ToDo.load(rawTodo);
+      assert.ok(todo.tasks instanceof TaskList);
+      assert.ok(todo.tasks.list[0] instanceof Task);
+    });
+  });
+
   describe('toJSON', function() {
     it('should give json string of its own data', function() {
       const content = {
@@ -202,6 +313,7 @@ describe('ToDo', function() {
     });
   });
 });
+
 describe('ToDoList', function() {
   describe('toJSON', function() {
     it('should give json string of its own data', function() {
