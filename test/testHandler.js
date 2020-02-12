@@ -83,11 +83,45 @@ describe('createTodo', function() {
       });
   });
 
-  it('should response back with all the todos ', function(done) {
+  it('should response back with file not found ', function(done) {
     request(app.serve.bind(app))
       .post('/createToDoInvalid')
       .send(`{"toDoName": "Home"}`)
       .expect(404)
       .expect(/Not Found/, done);
+  });
+});
+
+describe('deleteTodo', function() {
+  let fakeWriter;
+  let now = new Date();
+
+  beforeEach(function() {
+    fakeWriter = sinon.fake();
+    sinon.useFakeTimers(now.getTime());
+    sinon.replace(fs, 'writeFileSync', fakeWriter);
+  });
+
+  afterEach(function() {
+    sinon.restore();
+  });
+
+  it.only('should response back with all the todos ', function(done) {
+    request(app.serve.bind(app))
+      .post('/createToDo')
+      .send(`{"toDoName": "Home"}`)
+      .expect(200)
+      .expect(/Home/, () => {
+        assert.deepStrictEqual(
+          fakeWriter.firstCall.args[1],
+          `[{"title":"Home","listId":"list${now.getTime()}","startDate":"${now.toJSON()}","tasks":[]}]`
+        );
+        request(app.serve.bind(app))
+          .post('/deleteToDo')
+          .send(`{"todoId":"list${now.getTime()}"}`)
+          .expect(200, () => {
+            assert.deepStrictEqual(fakeWriter.secondCall.args[1], `[]`);
+          });
+      });
   });
 });
