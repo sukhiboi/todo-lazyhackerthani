@@ -185,15 +185,6 @@ class ToDoStore {
     if (todo) todo.editTitle(title);
     this.save();
   }
-  static load(content) {
-    const toDos = JSON.parse(content || '[]');
-    const toDoStore = new ToDoStore();
-    toDos.forEach(td => {
-      const toDo = ToDo.load(td);
-      toDoStore.addToDo(toDo);
-    });
-    return toDoStore;
-  }
   toJSON() {
     const todoList = [];
     this.list.forEach(todo => {
