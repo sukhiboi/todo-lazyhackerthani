@@ -29,14 +29,14 @@ const methodNotAllowed = function(req, res) {
   res.end('Method Not Allowed');
 };
 
-const getToDos = function(req, res, next) {
-  res.end(toDoList.toJSON());
-};
-
 const notFound = function(req, res) {
   res.setHeader('Content-Type', MIME_TYPES.html);
   res.writeHead(404);
   res.end('Not Found');
+};
+
+const getToDos = function(req, res, next) {
+  res.end(toDoList.toJSON());
 };
 
 const readBody = function(req, res, next) {

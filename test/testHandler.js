@@ -1,4 +1,7 @@
+const fs = require('fs');
 const request = require('supertest');
+const sinon = require('sinon');
+const assert = require('chai').assert;
 const { app } = require('../src/server/library/handler');
 
 describe('serveStaticPage', () => {
@@ -49,5 +52,42 @@ describe('method not allowed', () => {
       .expect('Content-Type', 'text/html')
       .expect(400, done)
       .expect(/Method Not Allowed/);
+  });
+});
+
+describe('createTodo', function() {
+  let fakeWriter;
+  let now = new Date();
+
+  beforeEach(function() {
+    fakeWriter = sinon.fake();
+    sinon.useFakeTimers(now.getTime());
+    sinon.replace(fs, 'writeFileSync', fakeWriter);
+  });
+
+  afterEach(function() {
+    sinon.restore();
+  });
+
+  it('should response back with all the todos ', function(done) {
+    request(app.serve.bind(app))
+      .post('/createToDo')
+      .send(`{"toDoName": "Home"}`)
+      .expect(200)
+      .expect(/Home/, () => {
+        assert.deepStrictEqual(
+          fakeWriter.firstCall.args[1],
+          `[{"title":"Home","listId":"list${now.getTime()}","startDate":"${now.toJSON()}","tasks":[]}]`
+        );
+        done();
+      });
+  });
+
+  it('should response back with all the todos ', function(done) {
+    request(app.serve.bind(app))
+      .post('/createToDoInvalid')
+      .send(`{"toDoName": "Home"}`)
+      .expect(404)
+      .expect(/Not Found/, done);
   });
 });
