@@ -76,3 +76,10 @@
 -----
 
 * middleware for validation
+
+-------
+
+- rename TodoList to Todo store
+- new Todo store will take path of data store.
+- TodoStore will have a initialize method which read from the file and load.
+- Delete static load method of Todo Store.
