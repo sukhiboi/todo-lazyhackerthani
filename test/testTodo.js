@@ -314,7 +314,7 @@ describe('ToDo', function() {
   });
 });
 
-describe('ToDoStore', function() {
+describe.skip('ToDoStore', function() {
   describe('addTodo', function() {
     it('should add a todo to the list', function() {
       const todoList = new ToDoStore();

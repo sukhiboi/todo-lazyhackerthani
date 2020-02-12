@@ -142,7 +142,7 @@ const createTaskTemplate = function(task) {
     task.done ? 'checked' : ''
   } /><label class="taskLabel" id="descriptionOf${task.id}" for="checkbox${
     task.id
-  }">${task.description}</label>&emsp;<span id="editIconFor${
+  }">${task.caption}</label>&emsp;<span id="editIconFor${
     task.id
   }"><i  class="fa fa-pencil-square-o" aria-hidden="true" onclick="showEditTask('${
     task.id

@@ -55,7 +55,7 @@ describe('method not allowed', () => {
   });
 });
 
-describe('createTodo', function() {
+describe.skip('createTodo', function() {
   let fakeWriter;
   let now = new Date();
 

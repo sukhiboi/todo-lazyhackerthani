@@ -116,11 +116,28 @@ class ToDo {
 }
 
 class ToDoStore {
-  constructor() {
+  constructor(filePath) {
+    this.path = filePath;
     this.list = [];
   }
+
+  initialize() {
+    const content = fs.readFileSync(this.path, 'utf8');
+    const toDos = JSON.parse(content || '[]');
+    toDos.forEach(td => {
+      const toDo = ToDo.load(td);
+      this.addToDo(toDo);
+    });
+    return this;
+  }
+
+  save() {
+    fs.writeFile(this.path, this.toJSON(), () => {});
+  }
+
   addToDo(toDo) {
     this.list.push(toDo);
+    this.save();
   }
   has(todoId) {
     return this.list.some(todo => {
@@ -132,6 +149,7 @@ class ToDoStore {
       return td.listId === todoId;
     });
     toDo.addTask(task);
+    this.save();
   }
   findTask(taskId) {
     const task = this.list.reduce((context, todo) => {
@@ -141,17 +159,21 @@ class ToDoStore {
   }
   editTaskCaption(taskId, caption) {
     this.list.forEach(todo => todo.editTaskCaption(taskId, caption));
+    this.save();
   }
   deleteTask(taskId) {
     this.list.forEach(todo => todo.deleteTask(taskId));
+    this.save();
   }
   editTaskStatus(taskId) {
     this.list.forEach(todo => todo.editTaskStatus(taskId));
+    this.save();
   }
   deleteToDo(todoId) {
     this.list.forEach((todo, index) => {
       if (todo.listId === todoId) this.list.splice(index, 1);
     });
+    this.save();
   }
   findToDo(todoId) {
     return this.list.find(todo => {
@@ -161,6 +183,7 @@ class ToDoStore {
   editToDoTitle(todoId, title) {
     const todo = this.findToDo(todoId);
     if (todo) todo.editTitle(title);
+    this.save();
   }
   static load(content) {
     const toDos = JSON.parse(content || '[]');

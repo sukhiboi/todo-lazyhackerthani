@@ -6,7 +6,9 @@ const { ToDoStore, ToDo, Task } = require('../library/todoList');
 const MIME_TYPES = require('./mimeTypes');
 
 const TODO_STORE = require(`${__dirname}/../../../config.js`);
-const toDoStore = ToDoStore.load(fs.readFileSync(TODO_STORE, 'utf8') || '[]');
+
+const toDoStore = new ToDoStore(TODO_STORE);
+toDoStore.initialize();
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/../../public`;
@@ -35,7 +37,7 @@ const notFound = function(req, res) {
   res.end('Not Found');
 };
 
-const getToDos = function(req, res, next) {
+const getToDos = function (req, res, next) {
   res.end(toDoStore.toJSON());
 };
 
@@ -55,7 +57,6 @@ const editToDoTitle = function(req, res, next) {
   }
   const { title, todoId } = JSON.parse(req.body);
   toDoStore.editToDoTitle(todoId, title);
-  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
   res.end(toDoStore.toJSON());
 };
 
@@ -66,7 +67,6 @@ const deleteToDo = function(req, res, next) {
   }
   const { todoId } = JSON.parse(req.body);
   toDoStore.deleteToDo(todoId);
-  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
   res.end(toDoStore.toJSON());
 };
 
@@ -78,7 +78,6 @@ const createToDo = function(req, res, next) {
   const { toDoName } = JSON.parse(req.body);
   const toDo = ToDo.load({ title: toDoName, startDate: new Date() });
   toDoStore.addToDo(toDo);
-  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
   res.end(toDoStore.toJSON());
 };
 
@@ -89,7 +88,6 @@ const deleteTask = function(req, res, next) {
   }
   const { taskId } = JSON.parse(req.body);
   toDoStore.deleteTask(taskId);
-  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
   res.end(toDoStore.toJSON());
 };
 
@@ -100,7 +98,6 @@ const editTaskDescription = function(req, res, next) {
   }
   const { taskText, taskId } = JSON.parse(req.body);
   toDoStore.editTaskDescription(taskId, taskText);
-  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
   res.end(toDoStore.toJSON());
 };
 
@@ -111,7 +108,6 @@ const editTaskStatus = function(req, res, next) {
   }
   const { taskId } = JSON.parse(req.body);
   toDoStore.editTaskStatus(taskId);
-  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
   res.end(toDoStore.toJSON());
 };
 
@@ -123,7 +119,6 @@ const createTask = function(req, res, next) {
   const { taskName, todoId } = JSON.parse(req.body);
   const task = new Task(taskName, new Date());
   toDoStore.addTask(todoId, task);
-  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
   res.end(toDoStore.toJSON());
 };
 
