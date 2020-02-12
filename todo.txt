@@ -91,5 +91,6 @@
 
 ✔︎ Delete TaskList, move the method logic to Todo class.
 - export classes ( in their own files)
+- Rename variables names 
 - make every method return. 
 - Change the tests
