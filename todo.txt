@@ -79,7 +79,12 @@
 
 -------
 
-- rename TodoList to Todo store
-- new Todo store will take path of data store.
-- TodoStore will have a initialize method which read from the file and load.
-- Delete static load method of Todo Store.
+✔︎ rename TodoList to Todo store
+✔︎ new Todo store will take path of data store.
+✔︎ TodoStore will have a initialize method which read from the file and load.
+✔︎ Delete static load method of Todo Store.
+
+- Rename App class to Router.
+- Create TodoApp class which takes TodoStore instance. 
+- It will have an initialize method to initilize ToDoStore.
+- It has a serve method which take (req, res) and handle request, it will serve the response.
