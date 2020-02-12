@@ -1,5 +1,5 @@
 const empty = 0;
-class App {
+class Router {
   constructor() {
     this.routes = [];
   }
@@ -35,4 +35,4 @@ const matchRoute = function(route, req) {
   return true;
 };
 
-module.exports = { App };
+module.exports = { Router };

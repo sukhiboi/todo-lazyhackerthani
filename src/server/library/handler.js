@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const { App } = require('./app');
+const { Router } = require('./router');
 const { ToDoStore, ToDo, Task } = require('../library/todoList');
 
 const MIME_TYPES = require('./mimeTypes');
@@ -37,7 +37,7 @@ const notFound = function(req, res) {
   res.end('Not Found');
 };
 
-const getToDos = function (req, res, next) {
+const getToDos = function(req, res, next) {
   res.end(toDoStore.toJSON());
 };
 
@@ -122,19 +122,19 @@ const createTask = function(req, res, next) {
   res.end(toDoStore.toJSON());
 };
 
-const app = new App();
-app.use(readBody);
-app.get('', serveStaticPage);
-app.get('/getToDos', getToDos);
-app.post('/createTask', createTask);
-app.post('/createToDo', createToDo);
-app.post('/editTaskDescription', editTaskDescription);
-app.post('/deleteTask', deleteTask);
-app.post('/editTaskStatus', editTaskStatus);
-app.post('/deleteToDo', deleteToDo);
-app.post('/editToDoTitle', editToDoTitle);
-app.get('', notFound);
-app.post('', notFound);
-app.use(methodNotAllowed);
+const router = new Router();
+router.use(readBody);
+router.get('', serveStaticPage);
+router.get('/getToDos', getToDos);
+router.post('/createTask', createTask);
+router.post('/createToDo', createToDo);
+router.post('/editTaskDescription', editTaskDescription);
+router.post('/deleteTask', deleteTask);
+router.post('/editTaskStatus', editTaskStatus);
+router.post('/deleteToDo', deleteToDo);
+router.post('/editToDoTitle', editToDoTitle);
+router.get('', notFound);
+router.post('', notFound);
+router.use(methodNotAllowed);
 
-module.exports = { app };
+module.exports = { router };
