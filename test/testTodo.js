@@ -3,7 +3,7 @@ const {
   Task,
   TaskList,
   ToDo,
-  ToDoList
+  ToDoStore
 } = require('../src/server/library/todoList');
 
 let date;
@@ -314,10 +314,10 @@ describe('ToDo', function() {
   });
 });
 
-describe('ToDoList', function() {
+describe('ToDoStore', function() {
   describe('addTodo', function() {
     it('should add a todo to the list', function() {
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       const todo = new ToDo('new Todo', date, new TaskList(), 'todo1');
       todoList.addToDo(todo);
       assert.deepStrictEqual(todoList, { list: [todo] });
@@ -328,7 +328,7 @@ describe('ToDoList', function() {
     it('should add a task', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       const expected = {
@@ -352,7 +352,7 @@ describe('ToDoList', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task9', false);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
@@ -364,7 +364,7 @@ describe('ToDoList', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task9', false);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
@@ -377,7 +377,7 @@ describe('ToDoList', function() {
     it('should edit the caption of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskCaption('task1', 'buy dove shampoo');
@@ -389,7 +389,7 @@ describe('ToDoList', function() {
     it('should toggle the status of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskStatus('task1');
@@ -399,7 +399,7 @@ describe('ToDoList', function() {
     it('should toggle the status of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', false);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskStatus('task1');
@@ -412,7 +412,7 @@ describe('ToDoList', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
@@ -424,7 +424,7 @@ describe('ToDoList', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
@@ -437,7 +437,7 @@ describe('ToDoList', function() {
     it('should edit the status of the task with matching id', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskStatus('task1');
@@ -449,7 +449,7 @@ describe('ToDoList', function() {
     it('should delete Todo with the given Id', function() {
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
       const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addToDo(todo2);
       todoList.deleteToDo('todo1');
@@ -459,7 +459,7 @@ describe('ToDoList', function() {
     it('should NOT delete Todo when the given Id not found', function() {
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
       const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addToDo(todo2);
       todoList.deleteToDo('todo18');
@@ -471,7 +471,7 @@ describe('ToDoList', function() {
     it('should find todo with the give id', function() {
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
       const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addToDo(todo2);
       const foundedTodo = todoList.findToDo('todo19');
@@ -481,7 +481,7 @@ describe('ToDoList', function() {
     it('should give undefined when todo with given todoId not found', function() {
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
       const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.addToDo(todo2);
       const foundedTodo = todoList.findToDo('todo190');
@@ -492,7 +492,7 @@ describe('ToDoList', function() {
   describe('editTodoTitle', function() {
     it('should edit the title with matching todoId', function() {
       const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoList();
+      const todoList = new ToDoStore();
       todoList.addToDo(todo);
       todoList.editToDoTitle('todo1', 'Office');
       assert.deepStrictEqual(todoList.list[0].title, 'Office');
@@ -517,7 +517,7 @@ describe('ToDoList', function() {
         }
       ];
       const jsonString = JSON.stringify(todoListRaw);
-      const todoList = ToDoList.load(jsonString);
+      const todoList = ToDoStore.load(jsonString);
       assert.deepStrictEqual(todoList, {
         list: [
           {
@@ -543,8 +543,8 @@ describe('ToDoList', function() {
   describe('toJSON', function() {
     it('should give json string of its own data', function() {
       const jsonString = `[{"title":"page_today","listId":"list1","startDate":"${date.toJSON()}","tasks":[{"caption":"go to office","id":"task1","time":"${date.toJSON()}","done":false},{"caption":"go to market","id":"task2","time":"${date.toJSON()}","done":false}]}]`;
-      const toDoList = ToDoList.load(jsonString);
-      assert.strictEqual(toDoList.toJSON(), jsonString);
+      const toDoStore = ToDoStore.load(jsonString);
+      assert.strictEqual(toDoStore.toJSON(), jsonString);
     });
   });
 
@@ -552,14 +552,14 @@ describe('ToDoList', function() {
     it('should say true if the given id is present in todoList', function() {
       const jsonString =
         '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
-      const toDoList = ToDoList.load(jsonString);
-      assert.isTrue(toDoList.has('list1'));
+      const toDoStore = ToDoStore.load(jsonString);
+      assert.isTrue(toDoStore.has('list1'));
     });
     it('should say false if the given id is not present in todoList', function() {
       const jsonString =
         '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
-      const toDoList = ToDoList.load(jsonString);
-      assert.isFalse(toDoList.has('list2'));
+      const toDoStore = ToDoStore.load(jsonString);
+      assert.isFalse(toDoStore.has('list2'));
     });
   });
 });

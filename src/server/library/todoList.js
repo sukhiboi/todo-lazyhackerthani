@@ -115,7 +115,7 @@ class ToDo {
   }
 }
 
-class ToDoList {
+class ToDoStore {
   constructor() {
     this.list = [];
   }
@@ -164,12 +164,12 @@ class ToDoList {
   }
   static load(content) {
     const toDos = JSON.parse(content || '[]');
-    const toDoList = new ToDoList();
+    const toDoStore = new ToDoStore();
     toDos.forEach(td => {
       const toDo = ToDo.load(td);
-      toDoList.addToDo(toDo);
+      toDoStore.addToDo(toDo);
     });
-    return toDoList;
+    return toDoStore;
   }
   toJSON() {
     const todoList = [];
@@ -180,4 +180,4 @@ class ToDoList {
   }
 }
 
-module.exports = { TaskList, Task, ToDo, ToDoList };
+module.exports = { TaskList, Task, ToDo, ToDoStore };

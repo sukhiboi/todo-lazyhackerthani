@@ -1,12 +1,12 @@
 const fs = require('fs');
 
 const { App } = require('./app');
-const { ToDoList, ToDo, Task } = require('../library/todoList');
+const { ToDoStore, ToDo, Task } = require('../library/todoList');
 
 const MIME_TYPES = require('./mimeTypes');
 
 const TODO_STORE = require(`${__dirname}/../../../config.js`);
-const toDoList = ToDoList.load(fs.readFileSync(TODO_STORE, 'utf8') || '[]');
+const toDoStore = ToDoStore.load(fs.readFileSync(TODO_STORE, 'utf8') || '[]');
 
 const serveStaticPage = function(req, res, next) {
   const publicFolder = `${__dirname}/../../public`;
@@ -36,7 +36,7 @@ const notFound = function(req, res) {
 };
 
 const getToDos = function(req, res, next) {
-  res.end(toDoList.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const readBody = function(req, res, next) {
@@ -54,9 +54,9 @@ const editToDoTitle = function(req, res, next) {
     return;
   }
   const { title, todoId } = JSON.parse(req.body);
-  toDoList.editToDoTitle(todoId, title);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDoList.toJSON());
+  toDoStore.editToDoTitle(todoId, title);
+  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const deleteToDo = function(req, res, next) {
@@ -65,9 +65,9 @@ const deleteToDo = function(req, res, next) {
     return;
   }
   const { todoId } = JSON.parse(req.body);
-  toDoList.deleteToDo(todoId);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDoList.toJSON());
+  toDoStore.deleteToDo(todoId);
+  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const createToDo = function(req, res, next) {
@@ -77,9 +77,9 @@ const createToDo = function(req, res, next) {
   }
   const { toDoName } = JSON.parse(req.body);
   const toDo = ToDo.load({ title: toDoName, startDate: new Date() });
-  toDoList.addToDo(toDo);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDoList.toJSON());
+  toDoStore.addToDo(toDo);
+  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const deleteTask = function(req, res, next) {
@@ -88,9 +88,9 @@ const deleteTask = function(req, res, next) {
     return;
   }
   const { taskId } = JSON.parse(req.body);
-  toDoList.deleteTask(taskId);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDoList.toJSON());
+  toDoStore.deleteTask(taskId);
+  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const editTaskDescription = function(req, res, next) {
@@ -99,9 +99,9 @@ const editTaskDescription = function(req, res, next) {
     return;
   }
   const { taskText, taskId } = JSON.parse(req.body);
-  toDoList.editTaskDescription(taskId, taskText);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDoList.toJSON());
+  toDoStore.editTaskDescription(taskId, taskText);
+  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const editTaskStatus = function(req, res, next) {
@@ -110,9 +110,9 @@ const editTaskStatus = function(req, res, next) {
     return;
   }
   const { taskId } = JSON.parse(req.body);
-  toDoList.editTaskStatus(taskId);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDoList.toJSON());
+  toDoStore.editTaskStatus(taskId);
+  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const createTask = function(req, res, next) {
@@ -122,9 +122,9 @@ const createTask = function(req, res, next) {
   }
   const { taskName, todoId } = JSON.parse(req.body);
   const task = new Task(taskName, new Date());
-  toDoList.addTask(todoId, task);
-  fs.writeFileSync(TODO_STORE, toDoList.toJSON());
-  res.end(toDoList.toJSON());
+  toDoStore.addTask(todoId, task);
+  fs.writeFileSync(TODO_STORE, toDoStore.toJSON());
+  res.end(toDoStore.toJSON());
 };
 
 const app = new App();
