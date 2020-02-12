@@ -29,7 +29,7 @@ const createTask = function(textBoxId, todoId) {
       JSON.stringify({ taskName, todoId }),
       'createTask',
       'POST',
-      handleAllToDo
+      handleAllTodo
     );
   }
 };
@@ -50,30 +50,30 @@ const showEditTitle = function(todoId) {
   const input = `<input type="text" id="editedTitleOf${todoId}" class="smallerTextBox" value="${title}"/>`;
   headingSpan.innerHTML = input;
   const editIconSpan = document.getElementById(`editIconFor${todoId}`);
-  const saveIcon = `<i id="saveIconFor${todoId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editToDoTitle('editedTitleOf${todoId}','${todoId}')"></i>`;
+  const saveIcon = `<i id="saveIconFor${todoId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTodoTitle('editedTitleOf${todoId}','${todoId}')"></i>`;
   editIconSpan.innerHTML = saveIcon;
 };
 
 const editTaskDescription = function(textBoxId, taskId) {
-  const taskText = document.getElementById(textBoxId).value;
-  if (taskText) {
+  const caption = document.getElementById(textBoxId).value;
+  if (caption) {
     sendXHR(
-      JSON.stringify({ taskText, taskId }),
+      JSON.stringify({ caption, taskId }),
       'editTaskDescription',
       'POST',
-      handleAllToDo
+      handleAllTodo
     );
   } else alert('type something in text box and save');
 };
 
-const editToDoTitle = function(textBoxId, todoId) {
+const editTodoTitle = function(textBoxId, todoId) {
   const title = document.getElementById(textBoxId).value;
   if (title) {
     sendXHR(
       JSON.stringify({ title, todoId }),
-      'editToDoTitle',
+      'editTodoTitle',
       'POST',
-      handleAllToDo
+      handleAllTodo
     );
   } else alert('type something in text box and save');
 };
@@ -83,22 +83,22 @@ const editTaskStatus = function(taskId) {
 };
 
 const deleteTask = taskId =>
-  sendXHR(JSON.stringify({ taskId }), 'deleteTask', 'POST', handleAllToDo);
+  sendXHR(JSON.stringify({ taskId }), 'deleteTask', 'POST', handleAllTodo);
 
-const createToDo = function(textBoxId) {
-  const toDoName = document.getElementById(textBoxId).value;
-  if (toDoName) {
-    sendXHR(JSON.stringify({ toDoName }), 'createToDo', 'POST', handleAllToDo);
+const createTodo = function(textBoxId) {
+  const todoName = document.getElementById(textBoxId).value;
+  if (todoName) {
+    sendXHR(JSON.stringify({ todoName }), 'createTodo', 'POST', handleAllTodo);
   }
 };
 
-const deleteToDo = function(todoId) {
-  sendXHR(JSON.stringify({ todoId }), 'deleteToDo', 'POST', handleAllToDo);
+const deleteTodo = function(todoId) {
+  sendXHR(JSON.stringify({ todoId }), 'deleteTodo', 'POST', handleAllTodo);
 };
 
-const loadToDos = () => sendXHR({}, 'getToDos', 'GET', handleAllToDo);
+const loadTodos = () => sendXHR({}, 'getTodos', 'GET', handleAllTodo);
 
-const handleAllToDo = function() {
+const handleAllTodo = function() {
   const todoList = JSON.parse(this.responseText);
   const html = todoList
     .map(todo => {
@@ -114,19 +114,19 @@ const createStickyTemplate = function(todo) {
       return createTaskTemplate(task);
     })
     .join('');
-  const html = `<div class="stickNote" id="div${todo.listId}">
-            <img id="edit${todo.listId}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
-            <img id="delete${todo.listId}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" onclick="deleteToDo('${todo.listId}')"/>
+  const html = `<div class="stickNote" id="div${todo.id}">
+            <img id="edit${todo.id}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
+            <img id="delete${todo.id}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" onclick="deleteTodo('${todo.id}')"/>
              <div class="stickyTitle">
-               <h2><span id="titleFor${todo.listId}">${todo.title}</span>&nbsp<span id="editIconFor${todo.listId}"><i  class="fa fa-pencil" aria-hidden="true" onclick="showEditTitle('${todo.listId}')"></i>&nbsp
-               <i class="fa fa-chevron-down" aria-hidden="true" onclick="show('input${todo.listId}')"></i></span></h2>
+               <h2><span id="titleFor${todo.id}">${todo.title}</span>&nbsp<span id="editIconFor${todo.id}"><i  class="fa fa-pencil" aria-hidden="true" onclick="showEditTitle('${todo.id}')"></i>&nbsp
+               <i class="fa fa-chevron-down" aria-hidden="true" onclick="show('input${todo.id}')"></i></span></h2>
              </div>
-             <div class="smallTextBoxDiv hideIt" id="input${todo.listId}">
-               <input type="text"  class="smallTextBox" name="stickyInputBox" id="taskTo${todo.listId}" placeholder="type task and enter"/>
-               <i  id="addIconFor${todo.listId}" class="fa fa-plus-circle" aria-hidden="true" onclick="createTask('taskTo${todo.listId}','${todo.listId}')"></i>&nbsp
-               <i id="cancelIconFor${todo.listId}" class="fa fa-times-circle" aria-hidden="true" onclick="hide('input${todo.listId}'),clearValue('taskTo${todo.listId}')"></i>
+             <div class="smallTextBoxDiv hideIt" id="input${todo.id}">
+               <input type="text"  class="smallTextBox" name="stickyInputBox" id="taskTo${todo.id}" placeholder="type task and enter"/>
+               <i  id="addIconFor${todo.id}" class="fa fa-plus-circle" aria-hidden="true" onclick="createTask('taskTo${todo.id}','${todo.id}')"></i>&nbsp
+               <i id="cancelIconFor${todo.id}" class="fa fa-times-circle" aria-hidden="true" onclick="hide('input${todo.id}'),clearValue('taskTo${todo.id}')"></i>
              </div><br>
-            <div id="tasksOf${todo.listId}">
+            <div id="tasksOf${todo.id}">
               ${tasksInHtml}
             </div>
           </div>`;

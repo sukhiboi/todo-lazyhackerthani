@@ -9,11 +9,11 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-    <script src="./scripts/indexScript.js"></script>
+    <script src="./js/index.js"></script>
 
-    <title>ToDo</title>
+    <title>Todo</title>
   </head>
-  <body onload="loadToDos()">
+  <body onload="loadTodos()">
     <datalist id="">
       <option>In TASK</option>
       <option>In TODO</option>
@@ -81,7 +81,7 @@
         class="popUpButton"
         type="submit"
         value="create"
-        onclick="hide('myForm'),createToDo('todoName','todoBox'),clearValue('todoName'),showByOpacity('mainBox')"
+        onclick="hide('myForm'),createTodo('todoName','todoBox'),clearValue('todoName'),showByOpacity('mainBox')"
       />
       <input
         class="popUpButton"

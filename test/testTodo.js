@@ -1,10 +1,7 @@
 const assert = require('chai').assert;
-const {
-  Task,
-  TaskList,
-  ToDo,
-  ToDoStore
-} = require('../src/server/library/todoList');
+const Task = require('./../src/server/library/task');
+const Todo = require('./../src/server/library/todo');
+const TodoStore = require('./../src/server/library/todoStore');
 
 let date;
 
@@ -60,16 +57,16 @@ describe('Task class', function() {
   });
 });
 
-describe.skip('ToDo', function() {
+describe.skip('Todo', function() {
   describe('addTask', function() {
     it('should add a task', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       const expected = {
         title: 'Home',
         listId: 'todo1',
-        startDate: date,
+        fromDate: date,
         tasks: {
           list: [task]
         }
@@ -82,7 +79,7 @@ describe.skip('ToDo', function() {
     it('should find a task with a given id', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task9', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       todo.addTask(task2);
       const foundedTask = todo.findTask('task9');
@@ -92,7 +89,7 @@ describe.skip('ToDo', function() {
     it('should give undefined when the given id is not found', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task9', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       todo.addTask(task2);
       const foundedTask = todo.findTask('task90');
@@ -103,7 +100,7 @@ describe.skip('ToDo', function() {
   describe('editTaskCaption', function() {
     it('should edit the caption of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       todo.editTaskCaption('task1', 'buy dove shampoo');
       assert.deepStrictEqual(task.caption, 'buy dove shampoo');
@@ -113,7 +110,7 @@ describe.skip('ToDo', function() {
   describe('editTaskStatus', function() {
     it('should toggle the status of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       todo.editTaskStatus('task1');
       assert.isFalse(task.done);
@@ -121,7 +118,7 @@ describe.skip('ToDo', function() {
 
     it('should toggle the status of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       todo.editTaskStatus('task1');
       assert.isTrue(task.done);
@@ -132,7 +129,7 @@ describe.skip('ToDo', function() {
     it('should delete the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       todo.addTask(task2);
       todo.deleteTask('task1');
@@ -142,7 +139,7 @@ describe.skip('ToDo', function() {
     it("should NOT delete any other tasks when taskId doesn't found", function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.addTask(task);
       todo.addTask(task2);
       todo.deleteTask('task90');
@@ -152,7 +149,7 @@ describe.skip('ToDo', function() {
 
   describe('editTitle', function() {
     it('should edit the title of the todo', function() {
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
       todo.editTitle('new Title');
       assert.deepStrictEqual(todo.title, 'new Title');
     });
@@ -162,11 +159,11 @@ describe.skip('ToDo', function() {
     it('should load the todo from object which have properties of a todo', function() {
       const rawTodo = {
         title: 'raw Todo',
-        startDate: date,
+        fromDate: date,
         listId: 'todo2',
         tasks: [{ caption: 'new Task', time: date, done: false, id: 'task4' }]
       };
-      const todo = ToDo.load(rawTodo);
+      const todo = Todo.load(rawTodo);
       assert.ok(todo.tasks instanceof TaskList);
       assert.ok(todo.tasks.list[0] instanceof Task);
     });
@@ -177,7 +174,7 @@ describe.skip('ToDo', function() {
       const content = {
         title: 'page_today',
         listId: 'list1',
-        startDate: '2020-02-04T04:19:21.661Z',
+        fromDate: '2020-02-04T04:19:21.661Z',
         tasks: [
           {
             caption: 'go to office',
@@ -193,20 +190,20 @@ describe.skip('ToDo', function() {
           }
         ]
       };
-      const toDo = ToDo.load(content);
+      const toDo = Todo.load(content);
       const jsonString =
-        '{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}';
+        '{"title":"page_today","listId":"list1","fromDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}';
       assert.strictEqual(toDo.toJSON(), jsonString);
     });
   });
 });
 
-describe.skip('ToDoStore', function() {
+describe.skip('TodoStore', function() {
   describe('addTodo', function() {
     it('should add a todo to the list', function() {
-      const todoList = new ToDoStore();
-      const todo = new ToDo('new Todo', date, new TaskList(), 'todo1');
-      todoList.addToDo(todo);
+      const todoList = new TodoStore();
+      const todo = new Todo('new Todo', date, new TaskList(), 'todo1');
+      todoList.addTodo(todo);
       assert.deepStrictEqual(todoList, { list: [todo] });
     });
   });
@@ -214,16 +211,16 @@ describe.skip('ToDoStore', function() {
   describe('addTask', function() {
     it('should add a task', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       const expected = {
         list: [
           {
             title: 'Home',
             listId: 'todo1',
-            startDate: date,
+            fromDate: date,
             tasks: {
               list: [task]
             }
@@ -238,9 +235,9 @@ describe.skip('ToDoStore', function() {
     it('should find a task with a given id', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task9', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
       const foundedTask = todoList.findTask('task9');
@@ -250,9 +247,9 @@ describe.skip('ToDoStore', function() {
     it('should give undefined when the given id is not found', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task9', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
       const foundedTask = todoList.findTask('task90');
@@ -263,9 +260,9 @@ describe.skip('ToDoStore', function() {
   describe('editTaskCaption', function() {
     it('should edit the caption of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskCaption('task1', 'buy dove shampoo');
       assert.deepStrictEqual(task.caption, 'buy dove shampoo');
@@ -275,9 +272,9 @@ describe.skip('ToDoStore', function() {
   describe('editTaskStatus', function() {
     it('should toggle the status of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskStatus('task1');
       assert.isFalse(task.done);
@@ -285,9 +282,9 @@ describe.skip('ToDoStore', function() {
 
     it('should toggle the status of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskStatus('task1');
       assert.isTrue(task.done);
@@ -298,9 +295,9 @@ describe.skip('ToDoStore', function() {
     it('should delete the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
       todoList.deleteTask('task1');
@@ -310,9 +307,9 @@ describe.skip('ToDoStore', function() {
     it("should NOT delete any other tasks when taskId doesn't found", function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
       todoList.deleteTask('task10');
@@ -323,9 +320,9 @@ describe.skip('ToDoStore', function() {
   describe('editTaskStatus', function() {
     it('should edit the status of the task with matching id', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.editTaskStatus('task1');
       assert.isFalse(todoList.list[0].tasks.list[0].done);
@@ -334,54 +331,54 @@ describe.skip('ToDoStore', function() {
 
   describe('deleteTodo', function() {
     it('should delete Todo with the given Id', function() {
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
-      todoList.addToDo(todo2);
-      todoList.deleteToDo('todo1');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todo2 = new Todo('Office', date, new TaskList(), 'todo19');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
+      todoList.addTodo(todo2);
+      todoList.deleteTodo('todo1');
       assert.deepStrictEqual(todoList.list, [todo2]);
     });
 
     it('should NOT delete Todo when the given Id not found', function() {
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
-      todoList.addToDo(todo2);
-      todoList.deleteToDo('todo18');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todo2 = new Todo('Office', date, new TaskList(), 'todo19');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
+      todoList.addTodo(todo2);
+      todoList.deleteTodo('todo18');
       assert.deepStrictEqual(todoList.list, [todo, todo2]);
     });
   });
 
   describe('findTodo', function() {
     it('should find todo with the give id', function() {
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
-      todoList.addToDo(todo2);
-      const foundedTodo = todoList.findToDo('todo19');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todo2 = new Todo('Office', date, new TaskList(), 'todo19');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
+      todoList.addTodo(todo2);
+      const foundedTodo = todoList.findTodo('todo19');
       assert.deepStrictEqual(foundedTodo, todo2);
     });
 
     it('should give undefined when todo with given todoId not found', function() {
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todo2 = new ToDo('Office', date, new TaskList(), 'todo19');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
-      todoList.addToDo(todo2);
-      const foundedTodo = todoList.findToDo('todo190');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todo2 = new Todo('Office', date, new TaskList(), 'todo19');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
+      todoList.addTodo(todo2);
+      const foundedTodo = todoList.findTodo('todo190');
       assert.isUndefined(foundedTodo);
     });
   });
 
   describe('editTodoTitle', function() {
     it('should edit the title with matching todoId', function() {
-      const todo = new ToDo('Home', date, new TaskList(), 'todo1');
-      const todoList = new ToDoStore();
-      todoList.addToDo(todo);
-      todoList.editToDoTitle('todo1', 'Office');
+      const todo = new Todo('Home', date, new TaskList(), 'todo1');
+      const todoList = new TodoStore();
+      todoList.addTodo(todo);
+      todoList.editTodoTitle('todo1', 'Office');
       assert.deepStrictEqual(todoList.list[0].title, 'Office');
     });
   });
@@ -392,7 +389,7 @@ describe.skip('ToDoStore', function() {
         {
           title: 'page_today',
           listId: 'list1',
-          startDate: date,
+          fromDate: date,
           tasks: [
             {
               caption: 'go to market',
@@ -404,12 +401,12 @@ describe.skip('ToDoStore', function() {
         }
       ];
       const jsonString = JSON.stringify(todoListRaw);
-      const todoList = ToDoStore.load(jsonString);
+      const todoList = TodoStore.load(jsonString);
       assert.deepStrictEqual(todoList, {
         list: [
           {
             listId: 'list1',
-            startDate: date,
+            fromDate: date,
             title: 'page_today',
             tasks: {
               list: [
@@ -429,8 +426,8 @@ describe.skip('ToDoStore', function() {
 
   describe('toJSON', function() {
     it('should give json string of its own data', function() {
-      const jsonString = `[{"title":"page_today","listId":"list1","startDate":"${date.toJSON()}","tasks":[{"caption":"go to office","id":"task1","time":"${date.toJSON()}","done":false},{"caption":"go to market","id":"task2","time":"${date.toJSON()}","done":false}]}]`;
-      const toDoStore = ToDoStore.load(jsonString);
+      const jsonString = `[{"title":"page_today","listId":"list1","fromDate":"${date.toJSON()}","tasks":[{"caption":"go to office","id":"task1","time":"${date.toJSON()}","done":false},{"caption":"go to market","id":"task2","time":"${date.toJSON()}","done":false}]}]`;
+      const toDoStore = TodoStore.load(jsonString);
       assert.strictEqual(toDoStore.toJSON(), jsonString);
     });
   });
@@ -438,14 +435,14 @@ describe.skip('ToDoStore', function() {
   describe('has', function() {
     it('should say true if the given id is present in todoList', function() {
       const jsonString =
-        '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
-      const toDoStore = ToDoStore.load(jsonString);
+        '[{"title":"page_today","listId":"list1","fromDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
+      const toDoStore = TodoStore.load(jsonString);
       assert.isTrue(toDoStore.has('list1'));
     });
     it('should say false if the given id is not present in todoList', function() {
       const jsonString =
-        '[{"title":"page_today","listId":"list1","startDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
-      const toDoStore = ToDoStore.load(jsonString);
+        '[{"title":"page_today","listId":"list1","fromDate":"2020-02-04T04:19:21.661Z","tasks":[{"caption":"go to office","id":"task1","time":"2020-02-04T04:19:30.857Z","done":false},{"caption":"go to market","id":"task2","time":"2020-02-04T04:19:30.857Z","done":false}]}]';
+      const toDoStore = TodoStore.load(jsonString);
       assert.isFalse(toDoStore.has('list2'));
     });
   });

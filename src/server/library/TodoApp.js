@@ -1,6 +1,7 @@
 const fs = require('fs');
-const { ToDo, TaskList, Task } = require('./todoList');
-const { Router } = require('./router');
+const Todo = require('./todo');
+const Task = require('./task');
+const Router = require('./router');
 const MIME_TYPES = require('./mimeTypes');
 
 class TodoApp {
@@ -12,13 +13,13 @@ class TodoApp {
     this.store.initialize();
     this.router.use(this.readBody);
     this.router.get('', this.serveStaticPage);
-    this.router.get('/getToDos', this.getToDos.bind(null, this.store));
-    this.router.post('/createToDo', this.createToDo.bind(null, this.store));
+    this.router.get('/getTodos', this.getTodos.bind(null, this.store));
+    this.router.post('/createTodo', this.createTodo.bind(null, this.store));
     this.router.post(
-      '/editToDoTitle',
-      this.editToDoTitle.bind(null, this.store)
+      '/editTodoTitle',
+      this.editTodoTitle.bind(null, this.store)
     );
-    this.router.post('/deleteToDo', this.deleteToDo.bind(null, this.store));
+    this.router.post('/deleteTodo', this.deleteTodo.bind(null, this.store));
     this.router.post('/createTask', this.createTask.bind(null, this.store));
     this.router.post(
       '/editTaskDescription',
@@ -70,37 +71,37 @@ class TodoApp {
     res.end('Not Found');
   }
 
-  getToDos(store, req, res, next) {
+  getTodos(store, req, res, next) {
     res.end(store.toJSON());
   }
 
-  createToDo(store, req, res, next) {
-    if (req.url !== '/createToDo') {
+  createTodo(store, req, res, next) {
+    if (req.url !== '/createTodo') {
       next();
       return;
     }
-    const { toDoName } = JSON.parse(req.body);
-    store.addToDo(new ToDo(toDoName, new Date(), []));
+    const { todoName } = JSON.parse(req.body);
+    store.addTodo(new Todo(todoName, new Date(), []));
     res.end(store.toJSON());
   }
 
-  editToDoTitle(store, req, res, next) {
-    if (req.url !== '/editToDoTitle') {
+  editTodoTitle(store, req, res, next) {
+    if (req.url !== '/editTodoTitle') {
       next();
       return;
     }
     const { title, todoId } = JSON.parse(req.body);
-    store.editToDoTitle(todoId, title);
+    store.editTodoTitle(todoId, title);
     res.end(store.toJSON());
   }
 
-  deleteToDo(store, req, res, next) {
-    if (req.url !== '/deleteToDo') {
+  deleteTodo(store, req, res, next) {
+    if (req.url !== '/deleteTodo') {
       next();
       return;
     }
     const { todoId } = JSON.parse(req.body);
-    store.deleteToDo(todoId);
+    store.deleteTodo(todoId);
     res.end(store.toJSON());
   }
 
@@ -120,8 +121,8 @@ class TodoApp {
       next();
       return;
     }
-    const { taskText, taskId } = JSON.parse(req.body);
-    store.editTaskCaption(taskId, taskText);
+    const { caption, taskId } = JSON.parse(req.body);
+    store.editTaskCaption(taskId, caption);
     res.end(store.toJSON());
   }
 
@@ -150,6 +151,4 @@ class TodoApp {
   }
 }
 
-module.exports = {
-  TodoApp
-};
+module.exports = TodoApp;

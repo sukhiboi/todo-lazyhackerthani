@@ -35,4 +35,4 @@ const matchRoute = function(route, req) {
   return true;
 };
 
-module.exports = { Router };
+module.exports = Router;
