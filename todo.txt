@@ -88,3 +88,8 @@
 ✔︎ Create TodoApp class which takes TodoStore instance. 
 ✔︎ It will have an initialize method to initilize ToDoStore.
 ✔︎ It has a serve method which take (req, res) and handle request, it will serve the response.
+
+✔︎ Delete TaskList, move the method logic to Todo class.
+- export classes ( in their own files)
+- make every method return. 
+- Change the tests

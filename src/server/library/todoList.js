@@ -19,24 +19,22 @@ class Task {
     this.done = !this.done;
   }
   toJSON() {
-    return JSON.stringify({
-      caption: this.caption,
-      id: this.id,
-      time: this.time,
-      done: this.done
-    });
+    return this;
   }
 }
 
-class TaskList {
-  constructor() {
-    this.list = [];
+class ToDo {
+  constructor(title, startDate, tasks, listId) {
+    this.title = title;
+    this.listId = listId || `list${getCount()}`;
+    this.startDate = startDate;
+    this.tasks = tasks;
   }
   addTask(task) {
-    this.list.push(task);
+    this.tasks.push(task);
   }
   findTask(taskId) {
-    return this.list.find(task => {
+    return this.tasks.find(task => {
       return task.id === taskId;
     });
   }
@@ -49,69 +47,15 @@ class TaskList {
     if (task) task.toggleStatus();
   }
   deleteTask(taskId) {
-    this.list.forEach((task, index) => {
-      if (task.id === taskId) this.list.splice(index, 1);
+    this.tasks.forEach((task, index) => {
+      if (task.id === taskId) this.tasks.splice(index, 1);
     });
-  }
-  static load(content) {
-    const tasks = content || [];
-    const taskList = new TaskList();
-    tasks.forEach(tsk => {
-      taskList.addTask(
-        new Task(tsk.caption, new Date(tsk.time), tsk.id, tsk.done)
-      );
-    });
-    return taskList;
-  }
-  toJSON() {
-    return JSON.stringify(this.list.map(tsk => JSON.parse(tsk.toJSON())));
-  }
-}
-
-class ToDo {
-  constructor(title, startDate, tasks, listId) {
-    this.title = title;
-    this.listId = listId || `list${getCount()}`;
-    this.startDate = startDate;
-    this.tasks = tasks || TaskList.load();
-  }
-  addTask(task) {
-    this.tasks.addTask(task);
-  }
-  findTask(taskId) {
-    return this.tasks.findTask(taskId);
-  }
-  editTaskCaption(taskId, caption) {
-    this.tasks.editTaskCaption(taskId, caption);
-  }
-  editTaskStatus(taskId) {
-    this.tasks.editTaskStatus(taskId);
-  }
-  deleteTask(taskId) {
-    this.tasks.deleteTask(taskId);
   }
   editTitle(title) {
     this.title = title;
   }
-  static load(content) {
-    const toDoDetails = content || {};
-    const taskList = TaskList.load(content.tasks);
-    const toDo = new ToDo(
-      toDoDetails.title,
-      new Date(toDoDetails.startDate),
-      taskList,
-      toDoDetails.listId
-    );
-    return toDo;
-  }
   toJSON() {
-    const todo = {
-      title: this.title,
-      listId: this.listId,
-      startDate: this.startDate,
-      tasks: JSON.parse(this.tasks.toJSON())
-    };
-    return JSON.stringify(todo);
+    return this;
   }
 }
 
@@ -123,12 +67,15 @@ class ToDoStore {
 
   initialize() {
     const content = fs.readFileSync(this.path, 'utf8');
-    const toDos = JSON.parse(content || '[]');
-    toDos.forEach(td => {
-      const toDo = ToDo.load(td);
-      this.addToDo(toDo);
+    const store = JSON.parse(content || '[]');
+    this.list = store.map(todo => {
+      const { title, startDate, tasks, listId } = todo;
+      const taskList = tasks.map(task => {
+        const { caption, time, id, done } = task;
+        return new Task(caption, time, id, done);
+      });
+      return new ToDo(title, startDate, taskList, listId);
     });
-    return this;
   }
 
   save() {
@@ -138,11 +85,6 @@ class ToDoStore {
   addToDo(toDo) {
     this.list.push(toDo);
     this.save();
-  }
-  has(todoId) {
-    return this.list.some(todo => {
-      return todo.listId === todoId;
-    });
   }
   addTask(todoId, task) {
     const toDo = this.list.find(td => {
@@ -186,12 +128,8 @@ class ToDoStore {
     this.save();
   }
   toJSON() {
-    const todoList = [];
-    this.list.forEach(todo => {
-      todoList.push(JSON.parse(todo.toJSON()));
-    });
-    return JSON.stringify(todoList);
+    return JSON.stringify(this.list);
   }
 }
 
-module.exports = { TaskList, Task, ToDo, ToDoStore };
+module.exports = { Task, ToDo, ToDoStore };

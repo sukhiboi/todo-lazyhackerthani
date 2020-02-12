@@ -80,8 +80,7 @@ class TodoApp {
       return;
     }
     const { toDoName } = JSON.parse(req.body);
-    const toDo = ToDo.load({ title: toDoName, startDate: new Date() });
-    store.addToDo(toDo);
+    store.addToDo(new ToDo(toDoName, new Date(), []));
     res.end(store.toJSON());
   }
 
