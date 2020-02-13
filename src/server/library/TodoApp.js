@@ -1,18 +1,13 @@
-const fs = require('fs');
 const Todo = require('./todo');
 const Task = require('./task');
-const Router = require('./router');
-const MIME_TYPES = require('./mimeTypes');
 
 class TodoApp {
-  constructor(todoStore) {
-    this.router = new Router();
+  constructor(router, todoStore) {
+    this.router = router;
     this.store = todoStore;
   }
   initialize() {
     this.store.initialize();
-    this.router.use(this.readBody);
-    this.router.get('', this.serveStaticPage);
     this.router.get('/getTodos', this.getTodos.bind(this));
     this.router.post('/createTodo', this.createTodo.bind(this));
     this.router.post('/editTodoTitle', this.editTodoTitle.bind(this));
@@ -21,45 +16,6 @@ class TodoApp {
     this.router.post('/editTaskCaption', this.editTaskCaption.bind(this));
     this.router.post('/editTaskStatus', this.editTaskStatus.bind(this));
     this.router.post('/deleteTask', this.deleteTask.bind(this));
-    this.router.get('', this.notFound);
-    this.router.post('', this.notFound);
-    this.router.use(this.methodNotAllowed);
-  }
-
-  readBody(req, res, next) {
-    let data = '';
-    req.on('data', chunk => (data += chunk));
-    req.on('end', () => {
-      req.body = data;
-      next();
-    });
-  }
-
-  serveStaticPage(req, res, next) {
-    const publicFolder = `${__dirname}/../../public`;
-    const path = req.url === '/' ? '/index.html' : req.url;
-    const absolutePath = publicFolder + path;
-    const stat = fs.existsSync(absolutePath) && fs.statSync(absolutePath);
-    if (!stat || !stat.isFile()) {
-      next();
-      return;
-    }
-    const content = fs.readFileSync(absolutePath);
-    const extension = path.split('.').pop();
-    res.setHeader('Content-Type', MIME_TYPES[extension]);
-    res.end(content);
-  }
-
-  methodNotAllowed(req, res) {
-    res.setHeader('Content-Type', MIME_TYPES.html);
-    res.writeHead(400);
-    res.end('Method Not Allowed');
-  }
-
-  notFound(req, res) {
-    res.setHeader('Content-Type', MIME_TYPES.html);
-    res.writeHead(404);
-    res.end('Not Found');
   }
 
   getTodos(req, res, next) {
