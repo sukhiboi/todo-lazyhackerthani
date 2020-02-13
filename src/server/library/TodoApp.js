@@ -13,23 +13,17 @@ class TodoApp {
     this.store.initialize();
     this.router.use(this.readBody);
     this.router.get('', this.serveStaticPage);
-    this.router.get('/getTodos', this.getTodos.bind(null, this.store));
-    this.router.post('/createTodo', this.createTodo.bind(null, this.store));
-    this.router.post(
-      '/editTodoTitle',
-      this.editTodoTitle.bind(null, this.store)
-    );
-    this.router.post('/deleteTodo', this.deleteTodo.bind(null, this.store));
-    this.router.post('/createTask', this.createTask.bind(null, this.store));
+    this.router.get('/getTodos', this.getTodos.bind(this));
+    this.router.post('/createTodo', this.createTodo.bind(this));
+    this.router.post('/editTodoTitle', this.editTodoTitle.bind(this));
+    this.router.post('/deleteTodo', this.deleteTodo.bind(this));
+    this.router.post('/createTask', this.createTask.bind(this));
     this.router.post(
       '/editTaskDescription',
-      this.editTaskDescription.bind(null, this.store)
+      this.editTaskDescription.bind(this)
     );
-    this.router.post(
-      '/editTaskStatus',
-      this.editTaskStatus.bind(null, this.store)
-    );
-    this.router.post('/deleteTask', this.deleteTask.bind(null, this.store));
+    this.router.post('/editTaskStatus', this.editTaskStatus.bind(this));
+    this.router.post('/deleteTask', this.deleteTask.bind(this));
     this.router.get('', this.notFound);
     this.router.post('', this.notFound);
     this.router.use(this.methodNotAllowed);
@@ -71,42 +65,42 @@ class TodoApp {
     res.end('Not Found');
   }
 
-  getTodos(store, req, res, next) {
-    res.end(store.toJSON());
+  getTodos(req, res, next) {
+    res.end(this.store.toJSON());
   }
 
-  createTodo(store, req, res, next) {
+  createTodo(req, res, next) {
     if (req.url !== '/createTodo') {
       next();
       return;
     }
     const { todoName } = JSON.parse(req.body);
     const id = `todo${new Date().getTime()}`;
-    store.addTodo(new Todo(todoName, new Date(), [], id));
-    res.end(store.toJSON());
+    this.store.addTodo(new Todo(todoName, new Date(), [], id));
+    res.end(this.store.toJSON());
   }
 
-  editTodoTitle(store, req, res, next) {
+  editTodoTitle(req, res, next) {
     if (req.url !== '/editTodoTitle') {
       next();
       return;
     }
     const { title, todoId } = JSON.parse(req.body);
-    store.editTodoTitle(todoId, title);
-    res.end(store.toJSON());
+    this.store.editTodoTitle(todoId, title);
+    res.end(this.store.toJSON());
   }
 
-  deleteTodo(store, req, res, next) {
+  deleteTodo(req, res, next) {
     if (req.url !== '/deleteTodo') {
       next();
       return;
     }
     const { todoId } = JSON.parse(req.body);
-    store.deleteTodo(todoId);
-    res.end(store.toJSON());
+    this.store.deleteTodo(todoId);
+    res.end(this.store.toJSON());
   }
 
-  createTask(store, req, res, next) {
+  createTask(req, res, next) {
     if (req.url !== '/createTask') {
       next();
       return;
@@ -114,38 +108,38 @@ class TodoApp {
     const { taskName, todoId } = JSON.parse(req.body);
     const id = `task${new Date().getTime()}`;
     const task = new Task(taskName, new Date(), id);
-    store.addTask(todoId, task);
-    res.end(store.toJSON());
+    this.store.addTask(todoId, task);
+    res.end(this.store.toJSON());
   }
 
-  editTaskDescription(store, req, res, next) {
+  editTaskDescription(req, res, next) {
     if (req.url !== '/editTaskDescription') {
       next();
       return;
     }
     const { caption, taskId } = JSON.parse(req.body);
-    store.editTaskCaption(taskId, caption);
-    res.end(store.toJSON());
+    this.store.editTaskCaption(taskId, caption);
+    res.end(this.store.toJSON());
   }
 
-  editTaskStatus(store, req, res, next) {
+  editTaskStatus(req, res, next) {
     if (req.url !== '/editTaskStatus') {
       next();
       return;
     }
     const { taskId } = JSON.parse(req.body);
-    store.editTaskStatus(taskId);
-    res.end(store.toJSON());
+    this.store.editTaskStatus(taskId);
+    res.end(this.store.toJSON());
   }
 
-  deleteTask(store, req, res, next) {
+  deleteTask(req, res, next) {
     if (req.url !== '/deleteTask') {
       next();
       return;
     }
     const { taskId } = JSON.parse(req.body);
-    store.deleteTask(taskId);
-    res.end(store.toJSON());
+    this.store.deleteTask(taskId);
+    res.end(this.store.toJSON());
   }
 
   serve(req, res) {
