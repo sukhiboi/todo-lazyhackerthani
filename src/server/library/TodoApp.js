@@ -18,10 +18,7 @@ class TodoApp {
     this.router.post('/editTodoTitle', this.editTodoTitle.bind(this));
     this.router.post('/deleteTodo', this.deleteTodo.bind(this));
     this.router.post('/createTask', this.createTask.bind(this));
-    this.router.post(
-      '/editTaskDescription',
-      this.editTaskDescription.bind(this)
-    );
+    this.router.post('/editTaskCaption', this.editTaskCaption.bind(this));
     this.router.post('/editTaskStatus', this.editTaskStatus.bind(this));
     this.router.post('/deleteTask', this.deleteTask.bind(this));
     this.router.get('', this.notFound);
@@ -112,8 +109,8 @@ class TodoApp {
     res.end(this.store.toJSON());
   }
 
-  editTaskDescription(req, res, next) {
-    if (req.url !== '/editTaskDescription') {
+  editTaskCaption(req, res, next) {
+    if (req.url !== '/editTaskCaption') {
       next();
       return;
     }

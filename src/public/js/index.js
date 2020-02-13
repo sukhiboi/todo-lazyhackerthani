@@ -40,7 +40,7 @@ const showEditTask = function(taskId) {
   const input = `<input type="text" id="editedDescriptionOf${taskId}" class="smallerTextBox" value="${description}"/>`;
   label.innerHTML = input;
   const editIconSpan = document.getElementById(`editIconFor${taskId}`);
-  const saveIcon = `<i id="saveIconFor${taskId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTaskDescription('editedDescriptionOf${taskId}','${taskId}')"></i>`;
+  const saveIcon = `<i id="saveIconFor${taskId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTaskCaption('editedDescriptionOf${taskId}','${taskId}')"></i>`;
   editIconSpan.innerHTML = saveIcon;
 };
 
@@ -54,12 +54,12 @@ const showEditTitle = function(todoId) {
   editIconSpan.innerHTML = saveIcon;
 };
 
-const editTaskDescription = function(textBoxId, taskId) {
+const editTaskCaption = function(textBoxId, taskId) {
   const caption = document.getElementById(textBoxId).value;
   if (caption) {
     sendXHR(
       JSON.stringify({ caption, taskId }),
-      'editTaskDescription',
+      'editTaskCaption',
       'POST',
       handleAllTodo
     );
