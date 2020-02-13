@@ -1,7 +1,7 @@
 class Task {
   constructor(caption, fromDate, id, done = false) {
     this.caption = caption;
-    this.id = id || `task${new Date().getTime()}`;
+    this.id = id;
     this.fromDate = fromDate;
     this.done = done;
   }

@@ -81,7 +81,8 @@ class TodoApp {
       return;
     }
     const { todoName } = JSON.parse(req.body);
-    store.addTodo(new Todo(todoName, new Date(), []));
+    const id = `todo${new Date().getTime()}`;
+    store.addTodo(new Todo(todoName, new Date(), [], id));
     res.end(store.toJSON());
   }
 
@@ -111,7 +112,8 @@ class TodoApp {
       return;
     }
     const { taskName, todoId } = JSON.parse(req.body);
-    const task = new Task(taskName, new Date());
+    const id = `task${new Date().getTime()}`;
+    const task = new Task(taskName, new Date(), id);
     store.addTask(todoId, task);
     res.end(store.toJSON());
   }

@@ -1,7 +1,7 @@
 class Todo {
   constructor(title, fromDate, tasks, id) {
     this.title = title;
-    this.id = id || `todo${new Date().getTime()}`;
+    this.id = id;
     this.fromDate = fromDate;
     this.tasks = tasks;
   }
