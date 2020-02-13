@@ -7,6 +7,7 @@ class Todo {
   }
   addTask(task) {
     this.tasks.push(task);
+    return this.tasks;
   }
   findTask(taskId) {
     return this.tasks.find(task => {
@@ -16,18 +17,22 @@ class Todo {
   editTaskCaption(taskId, caption) {
     const task = this.findTask(taskId);
     if (task) task.editCaption(caption);
+    return Boolean(task);
   }
   editTaskStatus(taskId) {
     const task = this.findTask(taskId);
     if (task) task.toggleStatus();
+    return Boolean(task);
   }
   deleteTask(taskId) {
     this.tasks.forEach((task, index) => {
       if (task.id === taskId) this.tasks.splice(index, 1);
     });
+    return this.tasks;
   }
   editTitle(title) {
     this.title = title;
+    return this.title;
   }
   toJSON() {
     return this;
