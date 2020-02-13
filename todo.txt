@@ -94,3 +94,13 @@
 ✔︎ Rename variables names 
 - make every method return. 
 - Change the tests
+
+--------
+
+- If file is not present create JSON file
+- Add JSON file in git ignore
+- Update npm start to crete directory.
+- FIXBUG: search in Todo tile, currently working after 3 characters
+- Rephrase test description (refer todoStore -> editTaskStatus description)
+- Change variable names
+- Refactor public/index.js

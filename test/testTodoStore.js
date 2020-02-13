@@ -28,7 +28,6 @@ describe('TodoStore', function() {
       assert.deepStrictEqual(todos, [todo]);
     });
   });
-
   describe('deleteTodo', function() {
     it('should delete Todo with the given Id', function() {
       const todo1 = new Todo('Home', date, [], 'todo1');
@@ -48,7 +47,6 @@ describe('TodoStore', function() {
       assert.deepStrictEqual(todos, [todo1, todo2]);
     });
   });
-
   describe('findTodo', function() {
     it('should find todo with the give id', function() {
       const todo1 = new Todo('Home', date, [], 'todo1');
@@ -68,7 +66,6 @@ describe('TodoStore', function() {
       assert.isUndefined(foundedTodo);
     });
   });
-
   describe('editTodoTitle', function() {
     it('should edit the title with matching todoId', function() {
       const todo = new Todo('Home', date, [], 'todo1');
@@ -83,7 +80,6 @@ describe('TodoStore', function() {
       assert.isFalse(result);
     });
   });
-
   describe('addTask', function() {
     it('should add a task', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
@@ -101,7 +97,6 @@ describe('TodoStore', function() {
       assert.isFalse(result);
     });
   });
-
   describe('findTask', function() {
     it('should find a task with a given id', function() {
       const task1 = new Task('buy shampoo', date, 'task1', true);
@@ -125,7 +120,6 @@ describe('TodoStore', function() {
       assert.isUndefined(foundedTask);
     });
   });
-
   describe('editTaskCaption', function() {
     it('should edit the caption of the task with matching taskId', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
@@ -145,7 +139,6 @@ describe('TodoStore', function() {
       assert.isFalse(result);
     });
   });
-
   describe('editTaskStatus', function() {
     it('should give true when the task is toggled', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
@@ -165,7 +158,6 @@ describe('TodoStore', function() {
       assert.isFalse(result);
     });
   });
-
   describe('toJSON', function() {
     it('should give json string of its own data', function() {
       const todo = new Todo('Home', date, [], 'todo1');
