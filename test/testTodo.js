@@ -9,54 +9,6 @@ beforeEach(function() {
   date = new Date();
 });
 
-describe('Task class', function() {
-  describe('toJSON', function() {
-    it('should generate JSON when task is inComplete', function() {
-      const task = new Task('buy milk', date, 'task1');
-      assert.deepStrictEqual(task.toJSON(), {
-        caption: 'buy milk',
-        id: 'task1',
-        time: date,
-        done: false
-      });
-    });
-  });
-  describe('toggleStatus', function() {
-    it('should change the status to done when it is inComplete', function() {
-      const task = new Task('buy milk', date, 'task1');
-      task.toggleStatus();
-      assert.deepStrictEqual(task, {
-        caption: 'buy milk',
-        time: date,
-        id: 'task1',
-        done: true
-      });
-    });
-    it('should change the status to undone when it is complete', function() {
-      const task = new Task('buy milk', date, 'task1', true);
-      task.toggleStatus();
-      assert.deepStrictEqual(task, {
-        caption: 'buy milk',
-        time: date,
-        id: 'task1',
-        done: false
-      });
-    });
-  });
-  describe('editCaption', function() {
-    it('should edit the caption of the Task', function() {
-      const task = new Task('buy milk', date, 'task1');
-      task.editCaption('buy shampoo');
-      assert.deepStrictEqual(task, {
-        caption: 'buy shampoo',
-        time: date,
-        id: 'task1',
-        done: false
-      });
-    });
-  });
-});
-
 describe.skip('Todo', function() {
   describe('addTask', function() {
     it('should add a task', function() {

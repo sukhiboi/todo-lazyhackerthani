@@ -1,5 +1,5 @@
 class Task {
-  constructor(caption, fromDate, id, done=false) {
+  constructor(caption, fromDate, id, done = false) {
     this.caption = caption;
     this.id = id || `task${new Date().getTime()}`;
     this.fromDate = fromDate;
@@ -7,9 +7,11 @@ class Task {
   }
   editCaption(caption) {
     this.caption = caption;
+    return this.caption;
   }
   toggleStatus() {
     this.done = !this.done;
+    return this.done;
   }
   toJSON() {
     return this;
