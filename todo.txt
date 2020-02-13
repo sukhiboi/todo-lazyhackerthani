@@ -90,7 +90,7 @@
 ✔︎ It has a serve method which take (req, res) and handle request, it will serve the response.
 
 ✔︎ Delete TaskList, move the method logic to Todo class.
-- export classes ( in their own files)
-- Rename variables names 
+✔︎ export classes ( in their own files)
+✔︎ Rename variables names 
 - make every method return. 
 - Change the tests
