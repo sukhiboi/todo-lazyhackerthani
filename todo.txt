@@ -104,3 +104,11 @@
 - Rephrase test description (refer todoStore -> editTaskStatus description)
 - Change variable names
 - Refactor public/index.js
+
+----------------
+✔︎ install express
+✔︎ add express instead of http server
+✔︎ removed store from class
+✔︎  moved initialization of handlers to server.js
+- use app.locals available in express instead of binding
+- make handlers indipendent of class

@@ -2,24 +2,12 @@ const Todo = require('./todo');
 const Task = require('./task');
 
 class TodoApp {
-  constructor(router, todoStore) {
+  constructor(router) {
     this.router = router;
-    this.store = todoStore;
-  }
-  initialize() {
-    this.store.initialize();
-    this.router.get('/getTodos', this.getTodos.bind(this));
-    this.router.post('/createTodo', this.createTodo.bind(this));
-    this.router.post('/editTodoTitle', this.editTodoTitle.bind(this));
-    this.router.post('/deleteTodo', this.deleteTodo.bind(this));
-    this.router.post('/createTask', this.createTask.bind(this));
-    this.router.post('/editTaskCaption', this.editTaskCaption.bind(this));
-    this.router.post('/editTaskStatus', this.editTaskStatus.bind(this));
-    this.router.post('/deleteTask', this.deleteTask.bind(this));
   }
 
   getTodos(req, res, next) {
-    res.end(this.store.toJSON());
+    res.end(this.toJSON());
   }
 
   createTodo(req, res, next) {
@@ -29,8 +17,8 @@ class TodoApp {
     }
     const { todoName } = req.body;
     const id = `todo${new Date().getTime()}`;
-    this.store.addTodo(new Todo(todoName, new Date(), [], id));
-    res.end(this.store.toJSON());
+    this.addTodo(new Todo(todoName, new Date(), [], id));
+    res.end(this.toJSON());
   }
 
   editTodoTitle(req, res, next) {
@@ -39,8 +27,8 @@ class TodoApp {
       return;
     }
     const { title, todoId } = req.body;
-    this.store.editTodoTitle(todoId, title);
-    res.end(this.store.toJSON());
+    this.editTodoTitle(todoId, title);
+    res.end(this.toJSON());
   }
 
   deleteTodo(req, res, next) {
@@ -49,8 +37,8 @@ class TodoApp {
       return;
     }
     const { todoId } = req.body;
-    this.store.deleteTodo(todoId);
-    res.end(this.store.toJSON());
+    this.deleteTodo(todoId);
+    res.end(this.toJSON());
   }
 
   createTask(req, res, next) {
@@ -61,8 +49,8 @@ class TodoApp {
     const { taskName, todoId } = req.body;
     const id = `task${new Date().getTime()}`;
     const task = new Task(taskName, new Date(), id);
-    this.store.addTask(todoId, task);
-    res.end(this.store.toJSON());
+    this.addTask(todoId, task);
+    res.end(this.toJSON());
   }
 
   editTaskCaption(req, res, next) {
@@ -71,8 +59,8 @@ class TodoApp {
       return;
     }
     const { caption, taskId } = req.body;
-    this.store.editTaskCaption(taskId, caption);
-    res.end(this.store.toJSON());
+    this.editTaskCaption(taskId, caption);
+    res.end(this.toJSON());
   }
 
   editTaskStatus(req, res, next) {
@@ -81,8 +69,8 @@ class TodoApp {
       return;
     }
     const { taskId } = req.body;
-    this.store.editTaskStatus(taskId);
-    res.end(this.store.toJSON());
+    this.editTaskStatus(taskId);
+    res.end(this.toJSON());
   }
 
   deleteTask(req, res, next) {
@@ -91,8 +79,8 @@ class TodoApp {
       return;
     }
     const { taskId } = req.body;
-    this.store.deleteTask(taskId);
-    res.end(this.store.toJSON());
+    this.deleteTask(taskId);
+    res.end(this.toJSON());
   }
 
   serve(req, res) {
