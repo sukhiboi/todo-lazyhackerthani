@@ -55,3 +55,12 @@ input[type='password']:focus {
 ::placeholder {
   color: rgba(207, 206, 206, 0.671);
 }
+#formMessage {
+  color: red;
+  width: 90%;
+  margin: 5%;
+  height: 45px;
+  text-align: center;
+  padding-top: 10px;
+  /* background-color: rgb(223, 195, 195); */
+}

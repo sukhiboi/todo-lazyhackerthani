@@ -119,7 +119,7 @@
 ✔︎ valid user redirect to home.html and invalid user will go to index.html
 ✔︎ client side validation just checks any data present in the text box
 * when login credentials doesn't match show message inside login box
-* It should show message when user tried to submit empty form.
+✔︎ It should show message when user tried to submit empty form.
 * set cookies when user login in the app.
 * home.html will be a template
 * only authorised users will get home.html otherwise redirect to login page(later:add        message to please login first)
