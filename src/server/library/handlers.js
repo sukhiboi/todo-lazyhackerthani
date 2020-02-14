@@ -86,6 +86,16 @@ const deleteTask = function(req, res, next) {
   res.end(req.app.locals.store.toJSON());
 };
 
+const STATIC_USER = { userName: 'ramu', password: 'kakka' };
+const loginHandler = function(req, res, next) {
+  const { userName, password } = req.body;
+  if (userName == STATIC_USER.userName && password === STATIC_USER.password) {
+    res.redirect('/home.html');
+    return;
+  }
+  res.redirect('/index.html');
+};
+
 module.exports = {
   getTodos,
   createTask,
@@ -94,5 +104,6 @@ module.exports = {
   deleteTodo,
   editTaskCaption,
   editTaskStatus,
-  editTodoTitle
+  editTodoTitle,
+  loginHandler
 };
