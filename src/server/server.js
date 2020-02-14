@@ -8,18 +8,18 @@ const app = express();
 app.use(express.static(`${__dirname}/../public`));
 app.use(express.json());
 
-const store = new TodoStore(TODO_STORE_PATH);
-store.initialize();
-const todoApp = new TodoApp(app);
+app.locals.store = new TodoStore(TODO_STORE_PATH);
+app.locals.store.initialize();
+const todoApp = new TodoApp();
 
-app.get('/getTodos', todoApp.getTodos.bind(store));
-app.post('/createTodo', todoApp.createTodo.bind(store));
-app.post('/editTodoTitle', todoApp.editTodoTitle.bind(store));
-app.post('/deleteTodo', todoApp.deleteTodo.bind(store));
-app.post('/createTask', todoApp.createTask.bind(store));
-app.post('/editTaskCaption', todoApp.editTaskCaption.bind(store));
-app.post('/editTaskStatus', todoApp.editTaskStatus.bind(store));
-app.post('/deleteTask', todoApp.deleteTask.bind(store));
+app.get('/getTodos', todoApp.getTodos);
+app.post('/createTodo', todoApp.createTodo);
+app.post('/editTodoTitle', todoApp.editTodoTitle);
+app.post('/deleteTodo', todoApp.deleteTodo);
+app.post('/createTask', todoApp.createTask);
+app.post('/editTaskCaption', todoApp.editTaskCaption);
+app.post('/editTaskStatus', todoApp.editTaskStatus);
+app.post('/deleteTask', todoApp.deleteTask);
 
 app.listen(PORT, () => {
   console.log(`listening on port ${PORT}`);
