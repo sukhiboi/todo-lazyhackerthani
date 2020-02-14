@@ -156,6 +156,7 @@ const createTaskTemplate = function(task) {
 const sendXHR = function(data, url, method, responseHandler) {
   const request = new XMLHttpRequest();
   request.open(method, url);
+  request.setRequestHeader('Content-Type', 'application/json');
   request.send(data);
   request.onload = responseHandler;
 };

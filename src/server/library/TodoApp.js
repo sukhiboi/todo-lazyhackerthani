@@ -27,7 +27,7 @@ class TodoApp {
       next();
       return;
     }
-    const { todoName } = JSON.parse(req.body);
+    const { todoName } = req.body;
     const id = `todo${new Date().getTime()}`;
     this.store.addTodo(new Todo(todoName, new Date(), [], id));
     res.end(this.store.toJSON());
@@ -38,7 +38,7 @@ class TodoApp {
       next();
       return;
     }
-    const { title, todoId } = JSON.parse(req.body);
+    const { title, todoId } = req.body;
     this.store.editTodoTitle(todoId, title);
     res.end(this.store.toJSON());
   }
@@ -48,7 +48,7 @@ class TodoApp {
       next();
       return;
     }
-    const { todoId } = JSON.parse(req.body);
+    const { todoId } = req.body;
     this.store.deleteTodo(todoId);
     res.end(this.store.toJSON());
   }
@@ -58,7 +58,7 @@ class TodoApp {
       next();
       return;
     }
-    const { taskName, todoId } = JSON.parse(req.body);
+    const { taskName, todoId } = req.body;
     const id = `task${new Date().getTime()}`;
     const task = new Task(taskName, new Date(), id);
     this.store.addTask(todoId, task);
@@ -70,7 +70,7 @@ class TodoApp {
       next();
       return;
     }
-    const { caption, taskId } = JSON.parse(req.body);
+    const { caption, taskId } = req.body;
     this.store.editTaskCaption(taskId, caption);
     res.end(this.store.toJSON());
   }
@@ -80,7 +80,7 @@ class TodoApp {
       next();
       return;
     }
-    const { taskId } = JSON.parse(req.body);
+    const { taskId } = req.body;
     this.store.editTaskStatus(taskId);
     res.end(this.store.toJSON());
   }
@@ -90,7 +90,7 @@ class TodoApp {
       next();
       return;
     }
-    const { taskId } = JSON.parse(req.body);
+    const { taskId } = req.body;
     this.store.deleteTask(taskId);
     res.end(this.store.toJSON());
   }
