@@ -111,4 +111,19 @@
 ✔︎ removed store from class
 ✔︎  moved initialization of handlers to server.js
 ✔︎ use app.locals available in express instead of binding
-- make handlers indipendent of class
+✔︎ make handlers indipendent of class
+--------------------------
+------Login------
+* hard coded single user credentials
+* dataStore will available for that single user.
+* home.html will be a template
+* only authorised users will get home.html otherwise redirect to login page(later:add        message to please login first)
+* authenticateUser will be a middleware which check for user before handling any request apart from static pages.
+----------------------------------
+----signUp------
+* design signUp page
+* user and users class
+* change data structure
+ - add outer array which has user object which has userName, password, id
+ - responsibility of keeping sessionId, validating user isLogged In or not and giving home page is given to userHandler
+* Improve UI
