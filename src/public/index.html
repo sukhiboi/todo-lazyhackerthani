@@ -9,26 +9,31 @@
   </head>
   <body>
     <div class="popUpDiv" id="loginDiv">
-      <form action="/login" method="POST" onsubmit="return loginValidator()">
-        <div>
-          <div id="formMessage"></div>
-          <input
-            type="text"
-            name="userName"
-            id="userName"
-            placeholder="userName"
-          /><br />
-          <input
-            type="password"
-            name="password"
-            id="password"
-            placeholder="password"
-          />
-        </div>
-        <div>
-          <input class="" type="submit" value="login" />
-        </div>
-      </form>
+      <!-- <form action="/login" method="POST" onsubmit="return loginValidator()"> -->
+      <div>
+        <div id="formMessage"></div>
+        <input
+          type="text"
+          name="userName"
+          id="userName"
+          placeholder="userName"
+        /><br />
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="password"
+        />
+      </div>
+      <div>
+        <input
+          class=""
+          type="submit"
+          value="login"
+          onclick="loginValidator()"
+        />
+      </div>
+      <!-- </form> -->
     </div>
   </body>
   <script src="./js/login.js"></script>

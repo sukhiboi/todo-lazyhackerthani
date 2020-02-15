@@ -99,8 +99,12 @@ const deleteTodo = function(todoId) {
 const loadTodos = () => sendXHR({}, 'getTodos', 'GET', handleAllTodo);
 
 const handleAllTodo = function() {
-  const todoList = JSON.parse(this.responseText);
-  const html = todoList
+  const res = JSON.parse(this.response);
+  if (res.errMsg) {
+    document.body.innerHTML = res.errMsg;
+    return;
+  }
+  const html = res
     .map(todo => {
       return createStickyTemplate(todo);
     })
