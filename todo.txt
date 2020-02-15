@@ -118,12 +118,17 @@
 ✔︎ dataStore will available for that single user.
 ✔︎ valid user redirect to home.html and invalid user will go to index.html
 ✔︎ client side validation just checks any data present in the text box
-* when login credentials doesn't match show message inside login box
+✔︎ when login credentials doesn't match show message inside login box
 ✔︎ It should show message when user tried to submit empty form.
-* set cookies when user login in the app.
-* home.html will be a template
-* only authorised users will get home.html otherwise redirect to login page(later:add        message to please login first)
-* authenticateUser will be a middleware which check for user before handling any request apart from static pages.
+✔︎ set cookies when user login in the app.
+✗ home.html will be a template
+✔︎ only authorised users will get home.html otherwise redirect to login page(later:add message to please login first)
+✔︎ authenticateUser will be a middleware which check for user before handling any request apart from static pages.
+
+----
+* user class userName, password and id are properties, matchPassword, matchUserName matchUserInfo(username, password)
+* userList class has array of user, hasUser, (later: addUser,removeUser)
+
 ----------------------------------
 ----signUp------
 * design signUp page

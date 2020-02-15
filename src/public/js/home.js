@@ -101,7 +101,7 @@ const loadTodos = () => sendXHR({}, 'getTodos', 'GET', handleAllTodo);
 const handleAllTodo = function() {
   const res = JSON.parse(this.response);
   if (res.errMsg) {
-    document.body.innerHTML = res.errMsg;
+    document.location = '/';
     return;
   }
   const html = res
