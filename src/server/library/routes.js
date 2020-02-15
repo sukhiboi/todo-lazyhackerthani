@@ -1,9 +1,16 @@
+const fs = require('fs');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
-const TODO_STORE_PATH = require(`${__dirname}/../../../config.js`);
+const {
+  DATA_STORE_PATH,
+  USERS_PATH
+} = require(`${__dirname}/../../../config.js`);
 const TodoStore = require('./todoStore');
 const handlers = require('./handlers');
+const UserCollection = require('./userCollection');
+
+const allUserCollection = fs.readFileSync(USERS_PATH, 'utf8');
 
 const app = express();
 app.use(express.static(`${__dirname}/../../public`));
@@ -12,7 +19,9 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-app.locals.store = new TodoStore(TODO_STORE_PATH);
+app.locals.allUsers = UserCollection.load(allUserCollection);
+
+app.locals.store = new TodoStore(DATA_STORE_PATH);
 app.locals.store.initialize();
 
 app.post('/login', handlers.loginHandler);

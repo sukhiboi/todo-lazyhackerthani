@@ -86,22 +86,24 @@ const deleteTask = function(req, res, next) {
   res.end(req.app.locals.store.toJSON());
 };
 
-const STATIC_USER = { userName: 'ramu', password: 'kakka', sessionId: '' };
 const loginHandler = function(req, res, next) {
   const { userName, password } = req.body;
-  if (userName == STATIC_USER.userName && password === STATIC_USER.password) {
+  const allUsers = req.app.locals.allUsers;
+  const user = allUsers.findUser(userName);
+  if (user && user.verifyPassword(password)) {
     res.cookie('username', userName);
-    STATIC_USER.sessionId = new Date().getTime();
-    res.cookie('sessionId', STATIC_USER.sessionId);
-    res.json({ validUser: true, user: STATIC_USER, errMsg: '' });
+    res.cookie('sessionId', user.sessionId);
+    res.json({ validUser: true, user, errMsg: '' });
     return;
   }
   res.json({ validUser: false, errMsg: 'User name or Password incorrect' });
 };
 
 const validateSession = function(req, res, next) {
-  const sessionId = req.cookies.sessionId;
-  if (sessionId && sessionId == STATIC_USER.sessionId) {
+  const allUsers = req.app.locals.allUsers;
+  const { sessionId, username } = req.cookies;
+  const user = allUsers.findUser(username);
+  if (user && user.verifySessionId(sessionId)) {
     return next();
   }
   res.status(203).end(JSON.stringify({ errMsg: 'Session Expired' }));
