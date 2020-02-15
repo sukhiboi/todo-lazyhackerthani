@@ -1,7 +1,7 @@
 const app = require('./../src/server/library/routes');
 const request = require('supertest');
 
-describe('/getTodos', () => {
+describe.skip('/getTodos', () => {
   it('should response back with todos', done => {
     request(app)
       .get('/getTodos')
@@ -12,7 +12,7 @@ describe('/getTodos', () => {
   });
 });
 
-describe('/bad', () => {
+describe.skip('/bad', () => {
   it('should response back with 404 not found', done => {
     request(app)
       .get('/bad')
