@@ -60,4 +60,13 @@ describe('userCollection', () => {
       assert.isTrue(userCollection.users.ramu instanceof User);
     });
   });
+
+  describe('toJSON', () => {
+    it('should give the JSON representation', () => {
+      const collection = '{"ram":{"name":"ram","password":123}}';
+      const userCollection = UserCollection.load(collection);
+      assert.isTrue(userCollection instanceof UserCollection);
+      assert.isTrue(userCollection.users.ram instanceof User);
+    });
+  });
 });

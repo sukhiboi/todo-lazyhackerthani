@@ -18,6 +18,9 @@ class UserCollection {
     delete this.users[username];
     return this.users;
   }
+  toJSON() {
+    return { ...this.users };
+  }
   static load(rawUserContent) {
     const usersDetail = JSON.parse(rawUserContent);
     const userCollection = new UserCollection();
