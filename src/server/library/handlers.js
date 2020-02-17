@@ -88,6 +88,7 @@ const logoutHandler = function(req, res, next) {
   const allUsers = req.app.locals.allUsers;
   const { username } = req.cookies;
   const user = allUsers.findUser(username);
+  if (!user) return res.json({ errMsg: 'User not found' });
   user.removeSession();
   res.clearCookie('username');
   res.clearCookie('sessionId');

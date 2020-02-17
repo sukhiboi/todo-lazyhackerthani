@@ -10,8 +10,13 @@ const TodosStore = require('./todosStore');
 const handlers = require('./handlers');
 const UserCollection = require('./userCollection');
 
-const rawUsersCollection = fs.readFileSync(USERS_PATH, 'utf8');
-const rawDataStore = fs.readFileSync(DATA_STORE_PATH, 'utf8');
+const loadContent = function(filename) {
+  fs.existsSync(filename) || fs.writeFileSync(filename, '', 'utf8');
+  return fs.readFileSync(filename, 'utf8');
+};
+
+const rawUsersCollection = loadContent(USERS_PATH);
+const rawDataStore = loadContent(DATA_STORE_PATH);
 
 const app = express();
 app.use(express.static(`${__dirname}/../../public`));
