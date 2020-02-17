@@ -19,10 +19,6 @@ const getTodos = function(req, res, next) {
 };
 
 const createTodo = function(req, res, next) {
-  if (req.url !== '/createTodo') {
-    next();
-    return;
-  }
   const { todoName } = req.body;
   const { userTodos, store } = req.app.locals;
   const id = `todo${new Date().getTime()}`;
@@ -34,10 +30,6 @@ const createTodo = function(req, res, next) {
 
 const editTodoTitle = function(req, res, next) {
   const { userTodos, store } = req.app.locals;
-  if (req.url !== '/editTodoTitle') {
-    next();
-    return;
-  }
   const { title, todoId } = req.body;
   req.app.locals.userTodos.editTodoTitle(todoId, title);
   res.set('Content-Type', 'application/json');
@@ -47,10 +39,6 @@ const editTodoTitle = function(req, res, next) {
 
 const deleteTodo = function(req, res, next) {
   const { userTodos, store } = req.app.locals;
-  if (req.url !== '/deleteTodo') {
-    next();
-    return;
-  }
   const { todoId } = req.body;
   req.app.locals.userTodos.deleteTodo(todoId);
   res.set('Content-Type', 'application/json');
@@ -60,10 +48,6 @@ const deleteTodo = function(req, res, next) {
 
 const createTask = function(req, res, next) {
   const { userTodos, store } = req.app.locals;
-  if (req.url !== '/createTask') {
-    next();
-    return;
-  }
   const { taskName, todoId } = req.body;
   const id = `task${new Date().getTime()}`;
   const task = new Task(taskName, new Date(), id);
@@ -75,10 +59,6 @@ const createTask = function(req, res, next) {
 
 const editTaskCaption = function(req, res, next) {
   const { userTodos, store } = req.app.locals;
-  if (req.url !== '/editTaskCaption') {
-    next();
-    return;
-  }
   const { caption, taskId } = req.body;
   req.app.locals.userTodos.editTaskCaption(taskId, caption);
   res.set('Content-Type', 'application/json');
@@ -88,10 +68,6 @@ const editTaskCaption = function(req, res, next) {
 
 const editTaskStatus = function(req, res, next) {
   const { userTodos, store } = req.app.locals;
-  if (req.url !== '/editTaskStatus') {
-    next();
-    return;
-  }
   const { taskId } = req.body;
   req.app.locals.userTodos.editTaskStatus(taskId);
   res.set('Content-Type', 'application/json');
@@ -101,10 +77,6 @@ const editTaskStatus = function(req, res, next) {
 
 const deleteTask = function(req, res, next) {
   const { userTodos, store } = req.app.locals;
-  if (req.url !== '/deleteTask') {
-    next();
-    return;
-  }
   const { taskId } = req.body;
   req.app.locals.userTodos.deleteTask(taskId);
   res.set('Content-Type', 'application/json');
