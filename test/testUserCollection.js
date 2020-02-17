@@ -64,9 +64,6 @@ describe('userCollection', () => {
 
   describe('toJSON', () => {
     it('should give the JSON representation', () => {
-      const now = new Date();
-      const clock = sinon.useFakeTimers(now);
-      const id = clock.now;
       const user = new User('ram', '234');
       const userCollection = new UserCollection();
       userCollection.addUser(user);
@@ -74,7 +71,7 @@ describe('userCollection', () => {
         ram: {
           name: 'ram',
           password: '234',
-          sessionId: id
+          sessionId: ''
         }
       });
     });

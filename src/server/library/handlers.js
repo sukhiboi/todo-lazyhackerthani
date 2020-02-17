@@ -85,8 +85,12 @@ const deleteTask = function(req, res, next) {
 };
 
 const logoutHandler = function(req, res, next) {
-  res.cookie('username', '');
-  res.cookie('sessionId', '');
+  const allUsers = req.app.locals.allUsers;
+  const { username } = req.cookies;
+  const user = allUsers.findUser(username);
+  user.removeSession();
+  res.clearCookie('username');
+  res.clearCookie('sessionId');
   res.json({ msg: 'Logged out' });
 };
 
@@ -109,7 +113,7 @@ const loginHandler = function(req, res, next) {
   const user = allUsers.findUser(userName);
   if (user && user.verifyPassword(password)) {
     res.cookie('username', userName);
-    res.cookie('sessionId', user.sessionId);
+    res.cookie('sessionId', user.createSession());
     const todos = store.findTodos(userName);
     req.app.locals.userTodos = todos;
     res.json({
