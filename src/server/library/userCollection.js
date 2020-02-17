@@ -22,7 +22,7 @@ class UserCollection {
     return { ...this.users };
   }
   static load(rawUserContent) {
-    const usersDetail = JSON.parse(rawUserContent);
+    const usersDetail = JSON.parse(rawUserContent || '{}');
     const userCollection = new UserCollection();
     for (const username in usersDetail) {
       const { name, password } = usersDetail[username];

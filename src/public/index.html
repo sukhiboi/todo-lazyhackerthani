@@ -9,7 +9,6 @@
   </head>
   <body>
     <div class="popUpDiv" id="loginDiv">
-      <!-- <form action="/login" method="POST" onsubmit="return loginValidator()"> -->
       <div>
         <div id="formMessage"></div>
         <input
@@ -32,8 +31,21 @@
           value="login"
           onclick="loginValidator()"
         />
+        <div
+          style="    position: relative;
+    top: 10.7rem;
+    left: 10%;
+    width: 77%;
+    text-align: center;
+    padding: 10px;
+    background-color: #9ab6eb;
+  box-shadow: 0 8px 6px -6px black;
+  color:white"
+          onclick="signup()"
+        >
+          Signup
+        </div>
       </div>
-      <!-- </form> -->
     </div>
   </body>
   <script src="./js/login.js"></script>

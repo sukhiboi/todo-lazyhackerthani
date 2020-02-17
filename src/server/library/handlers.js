@@ -1,5 +1,11 @@
+const fs = require('fs');
 const Todo = require('./todo');
 const Task = require('./task');
+const User = require('./user');
+const {
+  DATA_STORE_PATH,
+  USERS_PATH
+} = require(`${__dirname}/../../../config.js`);
 
 const getTodos = function(req, res, next) {
   res.set('Content-Type', 'application/json');
@@ -86,6 +92,16 @@ const deleteTask = function(req, res, next) {
   res.end(req.app.locals.store.toJSON());
 };
 
+const signupHandler = function(req, res, next) {
+  const { userName, password } = req.body;
+  const allUsers = req.app.locals.allUsers;
+  const user = new User(userName, password);
+  allUsers.addUser(user);
+  const userCollectionJSON = JSON.stringify(allUsers.toJSON());
+  fs.writeFile(USERS_PATH, userCollectionJSON, () => {});
+  res.json({ signedUp: true });
+};
+
 const loginHandler = function(req, res, next) {
   const { userName, password } = req.body;
   const allUsers = req.app.locals.allUsers;
@@ -119,5 +135,6 @@ module.exports = {
   editTaskStatus,
   editTodoTitle,
   loginHandler,
-  validateSession
+  validateSession,
+  signupHandler
 };

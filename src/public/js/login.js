@@ -22,3 +22,18 @@ const loginValidator = function() {
     messageBox.innerHTML = res.errMsg;
   });
 };
+
+const signup = function() {
+  const userName = document.querySelector('#loginDiv #userName').value;
+  const password = document.querySelector('#loginDiv #password').value;
+  const validationResult = Boolean(userName && password);
+  if (!validationResult) {
+    messageBox.innerHTML = 'Please enter you information';
+    return;
+  }
+  const data = { userName, password };
+  sendXHR(JSON.stringify(data), '/signup', 'POST', function() {
+    const res = JSON.parse(this.response);
+    if (res.signedUp) document.location = '/';
+  });
+};

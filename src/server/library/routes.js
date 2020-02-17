@@ -10,7 +10,7 @@ const TodoStore = require('./todoStore');
 const handlers = require('./handlers');
 const UserCollection = require('./userCollection');
 
-const allUserCollection = fs.readFileSync(USERS_PATH, 'utf8');
+const rawUsersCollection = fs.readFileSync(USERS_PATH, 'utf8');
 
 const app = express();
 app.use(express.static(`${__dirname}/../../public`));
@@ -19,11 +19,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
 
-app.locals.allUsers = UserCollection.load(allUserCollection);
+app.locals.allUsers = UserCollection.load(rawUsersCollection);
 
 app.locals.store = new TodoStore(DATA_STORE_PATH);
 app.locals.store.initialize();
 
+app.post('/signup', handlers.signupHandler);
 app.post('/login', handlers.loginHandler);
 app.use(handlers.validateSession);
 app.get('/getTodos', handlers.getTodos);
