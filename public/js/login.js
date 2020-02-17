@@ -7,9 +7,9 @@ const sendXHR = function(data, url, method, responseHandler) {
 };
 
 const loginValidator = function() {
-  const userName = document.querySelector('#loginDiv #userName').value;
-  const password = document.querySelector('#loginDiv #password').value;
-  const messageBox = document.getElementById('formMessage');
+  const messageBox = document.getElementById('loginErrMsg');
+  const userName = document.querySelector('#loginuserName').value;
+  const password = document.querySelector('#loginpassword').value;
   const validationResult = Boolean(userName && password);
   if (!validationResult) {
     messageBox.innerHTML = 'Please enter you information';
@@ -24,9 +24,11 @@ const loginValidator = function() {
 };
 
 const signup = function() {
-  const userName = document.querySelector('#loginDiv #userName').value;
-  const password = document.querySelector('#loginDiv #password').value;
+  const messageBox = document.getElementById('signupErrMsg');
+  const userName = document.querySelector('#signupuserName').value;
+  const password = document.querySelector('#signuppassword').value;
   const validationResult = Boolean(userName && password);
+  console.log(validationResult);
   if (!validationResult) {
     messageBox.innerHTML = 'Please enter you information';
     return;
@@ -36,4 +38,14 @@ const signup = function() {
     const res = JSON.parse(this.response);
     if (res.signedUp) document.location = '/';
   });
+};
+
+const show = function(elementId) {
+  const element = document.getElementById(elementId);
+  element.classList.remove('hide');
+};
+
+const hide = function(elementId) {
+  const element = document.getElementById(elementId);
+  element.classList.add('hide');
 };

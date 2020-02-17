@@ -162,6 +162,7 @@ body {
   background-color: #ed553b;
   padding: 10px 20px;
   width: fit-content;
+  boder: none;
   box-shadow: rgba(0, 0, 0, 0.2);
   border-radius: 5px;
   font-weight: 900;

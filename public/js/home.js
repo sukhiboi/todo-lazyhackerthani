@@ -132,5 +132,3 @@ const sendXHR = function(data, url, method, responseHandler) {
   request.send(data);
   request.onload = responseHandler;
 };
-
-window.onload = loadTodos();
