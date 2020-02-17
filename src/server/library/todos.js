@@ -2,7 +2,7 @@ const fs = require('fs');
 const Todo = require('./todo');
 const Task = require('./task');
 
-class TodoStore {
+class Todos {
   constructor(filePath) {
     this.path = filePath;
     this.todos = [];
@@ -79,4 +79,4 @@ class TodoStore {
   }
 }
 
-module.exports = TodoStore;
+module.exports = Todos;

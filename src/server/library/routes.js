@@ -6,7 +6,7 @@ const {
   DATA_STORE_PATH,
   USERS_PATH
 } = require(`${__dirname}/../../../config.js`);
-const TodoStore = require('./todoStore');
+const Todos = require('./todos');
 const handlers = require('./handlers');
 const UserCollection = require('./userCollection');
 
@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 
 app.locals.allUsers = UserCollection.load(rawUsersCollection);
 
-app.locals.store = new TodoStore(DATA_STORE_PATH);
+app.locals.store = new Todos(DATA_STORE_PATH);
 app.locals.store.initialize(rawDataStore);
 
 app.post('/signup', handlers.signupHandler);

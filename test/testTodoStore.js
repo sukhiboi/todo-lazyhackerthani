@@ -3,7 +3,7 @@ const assert = require('chai').assert;
 const sinon = require('sinon');
 const Task = require('./../src/server/library/task');
 const Todo = require('./../src/server/library/todo');
-const TodoStore = require('./../src/server/library/todoStore');
+const Todos = require('./../src/server/library/todos');
 
 let date;
 let store;
@@ -11,7 +11,7 @@ let fakeWriter;
 
 beforeEach(function() {
   date = new Date();
-  store = new TodoStore('fakeFile');
+  store = new Todos('fakeFile');
   fakeWriter = sinon.fake();
   sinon.replace(fs, 'writeFile', fakeWriter);
 });
@@ -20,7 +20,7 @@ afterEach(function() {
   sinon.restore();
 });
 
-describe('TodoStore', function() {
+describe('Todos', function() {
   describe('addTodo', function() {
     it('should add a todo to the list', function() {
       const todo = new Todo('new Todo', date, [], 'todo1');
@@ -183,7 +183,7 @@ describe('TodoStore', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
       const todo = new Todo('Home', date, [], 'todo1');
-      const todoList = new TodoStore();
+      const todoList = new Todos();
       todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
@@ -195,7 +195,7 @@ describe('TodoStore', function() {
       const task = new Task('buy shampoo', date, 'task1', true);
       const task2 = new Task('buy dove shampoo', date, 'task7', false);
       const todo = new Todo('Home', date, [], 'todo1');
-      const todoList = new TodoStore();
+      const todoList = new Todos();
       todoList.addTodo(todo);
       todoList.addTask('todo1', task);
       todoList.addTask('todo1', task2);
