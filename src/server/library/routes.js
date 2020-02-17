@@ -11,6 +11,7 @@ const handlers = require('./handlers');
 const UserCollection = require('./userCollection');
 
 const rawUsersCollection = fs.readFileSync(USERS_PATH, 'utf8');
+const rawDataStore = fs.readFileSync(DATA_STORE_PATH, 'utf8');
 
 const app = express();
 app.use(express.static(`${__dirname}/../../public`));
@@ -22,7 +23,7 @@ app.use(morgan('dev'));
 app.locals.allUsers = UserCollection.load(rawUsersCollection);
 
 app.locals.store = new TodoStore(DATA_STORE_PATH);
-app.locals.store.initialize();
+app.locals.store.initialize(rawDataStore);
 
 app.post('/signup', handlers.signupHandler);
 app.post('/login', handlers.loginHandler);

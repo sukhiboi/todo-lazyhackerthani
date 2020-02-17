@@ -63,9 +63,8 @@ class TodoStore {
   toJSON() {
     return JSON.stringify(this.todos);
   }
-  initialize() {
-    const content = fs.readFileSync(this.path, 'utf8');
-    const store = JSON.parse(content || '[]');
+  initialize(rawContent) {
+    const store = JSON.parse(rawContent || '[]');
     this.todos = store.map(todo => {
       const { title, fromDate, tasks, id } = todo;
       const taskList = tasks.map(task => {
