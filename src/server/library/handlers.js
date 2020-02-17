@@ -1,4 +1,5 @@
 const fs = require('fs');
+const Todos = require('./todos');
 const Todo = require('./todo');
 const Task = require('./task');
 const User = require('./user');
@@ -12,9 +13,9 @@ const saveDataStore = function(store) {
 };
 
 const getTodos = function(req, res, next) {
-  const storeAsJSON = req.app.locals.store.toJSON();
+  const { userTodos } = req.app.locals;
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  res.end(JSON.stringify(userTodos));
 };
 
 const createTodo = function(req, res, next) {
@@ -23,41 +24,42 @@ const createTodo = function(req, res, next) {
     return;
   }
   const { todoName } = req.body;
+  const { userTodos, store } = req.app.locals;
   const id = `todo${new Date().getTime()}`;
-  req.app.locals.store.addTodo(new Todo(todoName, new Date(), [], id));
+  userTodos.addTodo(new Todo(todoName, new Date(), [], id));
   res.set('Content-Type', 'application/json');
-  const storeAsJSON = req.app.locals.store.toJSON();
-  res.end(storeAsJSON);
-  saveDataStore(storeAsJSON);
+  res.end(JSON.stringify(userTodos));
+  saveDataStore(JSON.stringify(store));
 };
 
 const editTodoTitle = function(req, res, next) {
+  const { userTodos, store } = req.app.locals;
   if (req.url !== '/editTodoTitle') {
     next();
     return;
   }
   const { title, todoId } = req.body;
-  req.app.locals.store.editTodoTitle(todoId, title);
-  const storeAsJSON = req.app.locals.store.toJSON();
+  req.app.locals.userTodos.editTodoTitle(todoId, title);
   res.set('Content-Type', 'application/json');
-  res.end(storeAsJSON);
-  saveDataStore(storeAsJSON);
+  res.end(JSON.stringify(userTodos));
+  saveDataStore(JSON.stringify(store));
 };
 
 const deleteTodo = function(req, res, next) {
+  const { userTodos, store } = req.app.locals;
   if (req.url !== '/deleteTodo') {
     next();
     return;
   }
   const { todoId } = req.body;
-  req.app.locals.store.deleteTodo(todoId);
-  const storeAsJSON = req.app.locals.store.toJSON();
+  req.app.locals.userTodos.deleteTodo(todoId);
   res.set('Content-Type', 'application/json');
-  res.end(storeAsJSON);
-  saveDataStore(storeAsJSON);
+  res.end(JSON.stringify(userTodos));
+  saveDataStore(JSON.stringify(store));
 };
 
 const createTask = function(req, res, next) {
+  const { userTodos, store } = req.app.locals;
   if (req.url !== '/createTask') {
     next();
     return;
@@ -65,73 +67,84 @@ const createTask = function(req, res, next) {
   const { taskName, todoId } = req.body;
   const id = `task${new Date().getTime()}`;
   const task = new Task(taskName, new Date(), id);
-  req.app.locals.store.addTask(todoId, task);
-  const storeAsJSON = req.app.locals.store.toJSON();
+  req.app.locals.userTodos.addTask(todoId, task);
   res.set('Content-Type', 'application/json');
-  res.end(storeAsJSON);
-  saveDataStore(storeAsJSON);
+  res.end(JSON.stringify(userTodos));
+  saveDataStore(JSON.stringify(store));
 };
 
 const editTaskCaption = function(req, res, next) {
+  const { userTodos, store } = req.app.locals;
   if (req.url !== '/editTaskCaption') {
     next();
     return;
   }
   const { caption, taskId } = req.body;
-  req.app.locals.store.editTaskCaption(taskId, caption);
-  const storeAsJSON = req.app.locals.store.toJSON();
+  req.app.locals.userTodos.editTaskCaption(taskId, caption);
   res.set('Content-Type', 'application/json');
-  res.end(storeAsJSON);
-  saveDataStore(storeAsJSON);
+  res.end(JSON.stringify(userTodos));
+  saveDataStore(JSON.stringify(store));
 };
 
 const editTaskStatus = function(req, res, next) {
+  const { userTodos, store } = req.app.locals;
   if (req.url !== '/editTaskStatus') {
     next();
     return;
   }
   const { taskId } = req.body;
-  req.app.locals.store.editTaskStatus(taskId);
-  const storeAsJSON = req.app.locals.store.toJSON();
+  req.app.locals.userTodos.editTaskStatus(taskId);
   res.set('Content-Type', 'application/json');
-  res.end(storeAsJSON);
-  saveDataStore(storeAsJSON);
+  res.end(JSON.stringify(userTodos));
+  saveDataStore(JSON.stringify(store));
 };
 
 const deleteTask = function(req, res, next) {
+  const { userTodos, store } = req.app.locals;
   if (req.url !== '/deleteTask') {
     next();
     return;
   }
   const { taskId } = req.body;
-  req.app.locals.store.deleteTask(taskId);
-  const storeAsJSON = req.app.locals.store.toJSON();
+  req.app.locals.userTodos.deleteTask(taskId);
   res.set('Content-Type', 'application/json');
-  res.end(storeAsJSON);
-  saveDataStore(storeAsJSON);
+  res.end(JSON.stringify(userTodos));
+  saveDataStore(JSON.stringify(store));
 };
 
 const signupHandler = function(req, res, next) {
   const { userName, password } = req.body;
   const allUsers = req.app.locals.allUsers;
+  const store = req.app.locals.store;
   const user = new User(userName, password);
   allUsers.addUser(user);
-  const userCollectionJSON = JSON.stringify(allUsers.toJSON());
-  fs.writeFile(USERS_PATH, userCollectionJSON, () => {});
+  store.addTodos(userName, new Todos());
+  fs.writeFile(USERS_PATH, JSON.stringify(allUsers), () => {});
+  fs.writeFile(DATA_STORE_PATH, JSON.stringify(store), () => {});
   res.json({ signedUp: true });
 };
 
 const loginHandler = function(req, res, next) {
   const { userName, password } = req.body;
   const allUsers = req.app.locals.allUsers;
+  const store = req.app.locals.store;
   const user = allUsers.findUser(userName);
   if (user && user.verifyPassword(password)) {
     res.cookie('username', userName);
     res.cookie('sessionId', user.sessionId);
-    res.json({ validUser: true, user, errMsg: '' });
+    const todos = store.findTodos(userName);
+    req.app.locals.userTodos = todos;
+    res.json({
+      validUser: true,
+      user,
+      errMsg: ''
+    });
     return;
   }
-  res.json({ validUser: false, errMsg: 'User name or Password incorrect' });
+  res.json({
+    validUser: false,
+    errMsg: 'User name or Password incorrect'
+  });
 };
 
 const validateSession = function(req, res, next) {

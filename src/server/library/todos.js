@@ -52,10 +52,9 @@ class Todos {
     this.list.forEach(todo => todo.deleteTask(taskId));
   }
   toJSON() {
-    return JSON.stringify(this.list);
+    return [...this.list];
   }
-  static initialize(rawContent) {
-    const store = JSON.parse(rawContent || '[]');
+  static initialize(store) {
     const TODOS = new Todos();
     TODOS.list = store.map(todo => {
       const { title, fromDate, tasks, id } = todo;

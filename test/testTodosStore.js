@@ -54,7 +54,7 @@ describe('todosStore', () => {
   });
   describe('load', () => {
     it('should load raw users and give TodosStore', () => {
-      const rawTodosStore = '{"ram":"[]"}';
+      const rawTodosStore = '{"ram":[]}';
       const todosStore = TodosStore.load(rawTodosStore);
       assert.isTrue(todosStore instanceof TodosStore);
       assert.isTrue(todosStore.store.ram instanceof Todos);

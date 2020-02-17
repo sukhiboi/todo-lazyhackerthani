@@ -19,7 +19,6 @@ class TodosStore {
     return this.store;
   }
   toJSON() {
-    console.log(this.store);
     return { ...this.store };
   }
   static load(rawTodosContent) {

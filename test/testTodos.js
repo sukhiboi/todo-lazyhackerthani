@@ -157,11 +157,23 @@ describe('Todos', function() {
   describe('toJSON', function() {
     it('should give json string of its own data', function() {
       const todo = new Todo('Home', date, [], 'todo1');
-      const task = new Task('But milk', date, 'task1');
+      const task = new Task('Buy milk', date, 'task1');
       store.addTodo(todo);
+      const testTodo = {
+        fromDate: date,
+        id: 'todo1',
+        title: 'Home',
+        tasks: [
+          {
+            caption: 'Buy milk',
+            done: false,
+            fromDate: date,
+            id: 'task1'
+          }
+        ]
+      };
       store.addTask('todo1', task);
-      const JSONstring = JSON.stringify(store.list);
-      assert.strictEqual(store.toJSON(), JSONstring);
+      assert.deepStrictEqual(store.toJSON(), [testTodo]);
     });
   });
   describe.skip('deleteTask', function() {
