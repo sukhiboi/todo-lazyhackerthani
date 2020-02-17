@@ -110,11 +110,12 @@ const loginHandler = function(req, res, next) {
   const { store, sessions, allUsers } = req.app.locals;
   const user = allUsers.findUser(userName);
   if (user && user.verifyPassword(password)) {
-    const sessionId = sessions.createSession(new Date().getTime(), userName);
+    const sessionId = new Date().getTime();
+    sessions.createSession(sessionId, userName);
     res.cookie('sessionId', sessionId);
     const todos = store.findTodos(userName);
     req.app.locals.userTodos = todos;
-    res.json({ validUser: true, users });
+    res.json({ validUser: true, user });
     return;
   }
   res.json({ validUser: false, errMsg: 'User name or Password incorrect' });
