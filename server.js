@@ -1,4 +1,4 @@
-const app = require('./library/routes');
+const app = require('./lib/routes');
 
 const PORT = 7000;
 

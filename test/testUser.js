@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
-const User = require('./../src/server/library/user');
+const User = require('./../lib/user');
 
 describe('User', () => {
   describe('verify password', () => {

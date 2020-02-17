@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
-const Todo = require('./../src/server/library/todo');
-const Todos = require('./../src/server/library/todos');
-const TodosStore = require('./../src/server/library/todosStore');
+const Todo = require('./../lib/todo');
+const Todos = require('./../lib/todos');
+const TodosStore = require('./../lib/todosStore');
 
 describe('todosStore', () => {
   let todos;

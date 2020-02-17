@@ -1,8 +1,8 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
-const Task = require('../src/server/library/task');
-const Todo = require('../src/server/library/todo');
-const Todos = require('../src/server/library/todos');
+const Task = require('./../lib/task');
+const Todo = require('./../lib/todo');
+const Todos = require('./../lib/todos');
 
 let date;
 let store;

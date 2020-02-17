@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
-const Task = require('./../src/server/library/task');
-const Todo = require('./../src/server/library/todo');
+const Task = require('./../lib/task');
+const Todo = require('./../lib/todo');
 
 let date;
 

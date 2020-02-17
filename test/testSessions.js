@@ -1,6 +1,6 @@
 const assert = require('chai').assert;
 const sinon = require('sinon');
-const Sessions = require('./../src/server/library/sessions');
+const Sessions = require('./../lib//sessions');
 
 describe('Sessions', () => {
   let sessions;

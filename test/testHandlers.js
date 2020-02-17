@@ -1,4 +1,4 @@
-const app = require('./../src/server/library/routes');
+const app = require('./../lib/routes');
 const request = require('supertest');
 
 describe.skip('/getTodos', () => {

@@ -1,7 +1,7 @@
 const assert = require('chai').assert;
-const User = require('./../src/server/library/user');
+const User = require('./../lib/user');
 const sinon = require('sinon');
-const UserCollection = require('./../src/server/library/userCollection');
+const UserCollection = require('./../lib/userCollection');
 
 describe('userCollection', () => {
   describe('addUser', () => {
