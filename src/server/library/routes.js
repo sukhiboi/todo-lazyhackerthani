@@ -2,6 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const morgan = require('morgan');
+const Sessions = require('./sessions');
 const {
   DATA_STORE_PATH,
   USERS_PATH
@@ -27,6 +28,7 @@ app.use(morgan('dev'));
 
 app.locals.allUsers = UserCollection.load(rawUsersCollection);
 app.locals.store = TodosStore.load(rawDataStore);
+app.locals.sessions = new Sessions();
 
 app.post('/logout', handlers.logoutHandler);
 app.post('/signup', handlers.signupHandler);

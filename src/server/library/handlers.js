@@ -85,12 +85,10 @@ const deleteTask = function(req, res, next) {
 };
 
 const logoutHandler = function(req, res, next) {
-  const allUsers = req.app.locals.allUsers;
-  const { username } = req.cookies;
-  const user = allUsers.findUser(username);
-  if (!user) return res.json({ errMsg: 'User not found' });
-  user.removeSession();
-  res.clearCookie('username');
+  const { sessions } = req.app.locals;
+  const { sessionId } = req.cookies;
+  const removed = sessions.removeSession(sessionId);
+  if (!removed) return res.json({ errMsg: 'User not found' });
   res.clearCookie('sessionId');
   res.json({ msg: 'Logged out' });
 };
@@ -109,34 +107,24 @@ const signupHandler = function(req, res, next) {
 
 const loginHandler = function(req, res, next) {
   const { userName, password } = req.body;
-  const allUsers = req.app.locals.allUsers;
-  const store = req.app.locals.store;
+  const { store, sessions, allUsers } = req.app.locals;
   const user = allUsers.findUser(userName);
   if (user && user.verifyPassword(password)) {
-    res.cookie('username', userName);
-    res.cookie('sessionId', user.createSession());
+    const sessionId = sessions.createSession(new Date().getTime(), userName);
+    res.cookie('sessionId', sessionId);
     const todos = store.findTodos(userName);
     req.app.locals.userTodos = todos;
-    res.json({
-      validUser: true,
-      user,
-      errMsg: ''
-    });
+    res.json({ validUser: true, users });
     return;
   }
-  res.json({
-    validUser: false,
-    errMsg: 'User name or Password incorrect'
-  });
+  res.json({ validUser: false, errMsg: 'User name or Password incorrect' });
 };
 
 const validateSession = function(req, res, next) {
-  const allUsers = req.app.locals.allUsers;
-  const { sessionId, username } = req.cookies;
-  const user = allUsers.findUser(username);
-  if (user && user.verifySessionId(sessionId)) {
-    return next();
-  }
+  const { sessions } = req.app.locals;
+  const { sessionId } = req.cookies;
+  const username = sessions.findUser(sessionId);
+  if (username) return next();
   res.status(203).end(JSON.stringify({ errMsg: 'Session Expired' }));
 };
 

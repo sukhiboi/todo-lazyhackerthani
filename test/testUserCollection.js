@@ -70,8 +70,7 @@ describe('userCollection', () => {
       assert.deepStrictEqual(userCollection.toJSON(), {
         ram: {
           name: 'ram',
-          password: '234',
-          sessionId: ''
+          password: '234'
         }
       });
     });
