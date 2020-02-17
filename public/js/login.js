@@ -36,7 +36,8 @@ const signup = function() {
   const data = { userName, password };
   sendXHR(JSON.stringify(data), '/signup', 'POST', function() {
     const res = JSON.parse(this.response);
-    if (res.signedUp) document.location = '/';
+    if (res.errMsg) messageBox.innerHTML = res.errMsg;
+    else document.location = '/';
   });
 };
 
