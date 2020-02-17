@@ -1,5 +1,6 @@
 const assert = require('chai').assert;
 const User = require('./../src/server/library/user');
+const sinon = require('sinon');
 const UserCollection = require('./../src/server/library/userCollection');
 
 describe('userCollection', () => {
@@ -63,10 +64,19 @@ describe('userCollection', () => {
 
   describe('toJSON', () => {
     it('should give the JSON representation', () => {
-      const collection = '{"ram":{"name":"ram","password":123}}';
-      const userCollection = UserCollection.load(collection);
-      assert.isTrue(userCollection instanceof UserCollection);
-      assert.isTrue(userCollection.users.ram instanceof User);
+      const now = new Date();
+      const clock = sinon.useFakeTimers(now);
+      const id = clock.now;
+      const user = new User('ram', '234');
+      const userCollection = new UserCollection();
+      userCollection.addUser(user);
+      assert.deepStrictEqual(userCollection.toJSON(), {
+        ram: {
+          name: 'ram',
+          password: '234',
+          sessionId: id
+        }
+      });
     });
   });
 });

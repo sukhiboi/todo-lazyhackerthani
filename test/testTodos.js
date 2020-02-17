@@ -1,19 +1,15 @@
-const fs = require('fs');
 const assert = require('chai').assert;
 const sinon = require('sinon');
-const Task = require('./../src/server/library/task');
-const Todo = require('./../src/server/library/todo');
-const Todos = require('./../src/server/library/todos');
+const Task = require('../src/server/library/task');
+const Todo = require('../src/server/library/todo');
+const Todos = require('../src/server/library/todos');
 
 let date;
 let store;
-let fakeWriter;
 
 beforeEach(function() {
   date = new Date();
-  store = new Todos('fakeFile');
-  fakeWriter = sinon.fake();
-  sinon.replace(fs, 'writeFile', fakeWriter);
+  store = new Todos();
 });
 
 afterEach(function() {
@@ -164,18 +160,8 @@ describe('Todos', function() {
       const task = new Task('But milk', date, 'task1');
       store.addTodo(todo);
       store.addTask('todo1', task);
-      const JSONstring = JSON.stringify(store.todos);
+      const JSONstring = JSON.stringify(store.list);
       assert.strictEqual(store.toJSON(), JSONstring);
-    });
-  });
-  describe('save', () => {
-    it('should save the data to the given file', () => {
-      const todo = new Todo('Home', date, [], 'todo1');
-      store.addTodo(todo);
-      assert.isTrue(fakeWriter.calledOnce);
-      const [filename, JSONstring] = fakeWriter.firstCall.args;
-      assert.strictEqual(filename, 'fakeFile');
-      assert.strictEqual(JSONstring, store.toJSON());
     });
   });
   describe.skip('deleteTask', function() {
