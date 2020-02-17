@@ -14,7 +14,7 @@ const createStickyTemplate = function(todo) {
         __TASKS__
         </div>
         <div class="add-new-todo-box flex">
-            <input placeholder="Add new Task..." id="addNewTodo__TODOID__"/>
+            <input placeholder="Add Task..." id="addNewTodo__TODOID__"/>
             <div><img class="center hoverable" src="https://img.icons8.com/material-outlined/24/000000/add.png" onclick="createTask('addNewTodo__TODOID__','__TODOID__')"></div>
         </div>
       </div>`;
