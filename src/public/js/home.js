@@ -157,6 +157,12 @@ const createTaskTemplate = function(task) {
   }')"></i></span></div><br />`;
 };
 
+const logout = function() {
+  sendXHR('', '/logout', 'POST', function() {
+    document.location = '/';
+  });
+};
+
 const sendXHR = function(data, url, method, responseHandler) {
   const request = new XMLHttpRequest();
   request.open(method, url);

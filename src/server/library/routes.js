@@ -23,6 +23,7 @@ app.use(morgan('dev'));
 app.locals.allUsers = UserCollection.load(rawUsersCollection);
 app.locals.store = TodosStore.load(rawDataStore);
 
+app.post('/logout', handlers.logoutHandler);
 app.post('/signup', handlers.signupHandler);
 app.post('/login', handlers.loginHandler);
 app.use(handlers.validateSession);

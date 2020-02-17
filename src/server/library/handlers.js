@@ -84,6 +84,12 @@ const deleteTask = function(req, res, next) {
   saveDataStore(JSON.stringify(store));
 };
 
+const logoutHandler = function(req, res, next) {
+  res.cookie('username', '');
+  res.cookie('sessionId', '');
+  res.json({ msg: 'Logged out' });
+};
+
 const signupHandler = function(req, res, next) {
   const { userName, password } = req.body;
   const allUsers = req.app.locals.allUsers;
@@ -140,5 +146,6 @@ module.exports = {
   editTodoTitle,
   loginHandler,
   validateSession,
-  signupHandler
+  signupHandler,
+  logoutHandler
 };
