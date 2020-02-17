@@ -3,20 +3,20 @@ const Task = require('./task');
 
 class Todos {
   constructor() {
-    this.todos = [];
+    this.list = [];
   }
   addTodo(todo) {
-    this.todos.push(todo);
-    return this.todos;
+    this.list.push(todo);
+    return this.list;
   }
   deleteTodo(todoId) {
-    this.todos.forEach((todo, index) => {
-      if (todo.id === todoId) this.todos.splice(index, 1);
+    this.list.forEach((todo, index) => {
+      if (todo.id === todoId) this.list.splice(index, 1);
     });
-    return this.todos;
+    return this.list;
   }
   findTodo(todoId) {
-    return this.todos.find(todo => {
+    return this.list.find(todo => {
       return todo.id === todoId;
     });
   }
@@ -33,7 +33,7 @@ class Todos {
     return Boolean(TODO);
   }
   findTask(taskId) {
-    const task = this.todos.reduce((context, todo) => {
+    const task = this.list.reduce((context, todo) => {
       return todo.findTask(taskId);
     }, null);
     return task;
@@ -49,14 +49,15 @@ class Todos {
     return Boolean(task);
   }
   deleteTask(taskId) {
-    this.todos.forEach(todo => todo.deleteTask(taskId));
+    this.list.forEach(todo => todo.deleteTask(taskId));
   }
   toJSON() {
-    return JSON.stringify(this.todos);
+    return JSON.stringify(this.list);
   }
-  initialize(rawContent) {
+  static initialize(rawContent) {
     const store = JSON.parse(rawContent || '[]');
-    this.todos = store.map(todo => {
+    const TODOS = new Todos();
+    TODOS.list = store.map(todo => {
       const { title, fromDate, tasks, id } = todo;
       const taskList = tasks.map(task => {
         const { caption, time, id, done } = task;
@@ -64,6 +65,7 @@ class Todos {
       });
       return new Todo(title, fromDate, taskList, id);
     });
+    return TODOS;
   }
 }
 

@@ -21,9 +21,7 @@ app.use(cookieParser());
 app.use(morgan('dev'));
 
 app.locals.allUsers = UserCollection.load(rawUsersCollection);
-
-app.locals.store = new Todos();
-app.locals.store.initialize(rawDataStore);
+app.locals.store = Todos.initialize(rawDataStore)
 
 app.post('/signup', handlers.signupHandler);
 app.post('/login', handlers.loginHandler);
