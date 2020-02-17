@@ -22,7 +22,7 @@ app.use(morgan('dev'));
 
 app.locals.allUsers = UserCollection.load(rawUsersCollection);
 
-app.locals.store = new Todos(DATA_STORE_PATH);
+app.locals.store = new Todos();
 app.locals.store.initialize(rawDataStore);
 
 app.post('/signup', handlers.signupHandler);

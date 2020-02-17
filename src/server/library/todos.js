@@ -1,22 +1,18 @@
-const fs = require('fs');
 const Todo = require('./todo');
 const Task = require('./task');
 
 class Todos {
-  constructor(filePath) {
-    this.path = filePath;
+  constructor() {
     this.todos = [];
   }
   addTodo(todo) {
     this.todos.push(todo);
-    this.save();
     return this.todos;
   }
   deleteTodo(todoId) {
     this.todos.forEach((todo, index) => {
       if (todo.id === todoId) this.todos.splice(index, 1);
     });
-    this.save();
     return this.todos;
   }
   findTodo(todoId) {
@@ -27,14 +23,12 @@ class Todos {
   editTodoTitle(todoId, title) {
     const todo = this.findTodo(todoId);
     if (todo) todo.editTitle(title);
-    this.save();
     return Boolean(todo);
   }
   addTask(todoId, task) {
     const TODO = this.findTodo(todoId);
     if (TODO) {
       TODO.addTask(task);
-      this.save();
     }
     return Boolean(TODO);
   }
@@ -47,18 +41,15 @@ class Todos {
   editTaskCaption(taskId, caption) {
     const task = this.findTask(taskId);
     if (task) task.editCaption(caption);
-    this.save();
     return Boolean(task);
   }
   editTaskStatus(taskId) {
     const task = this.findTask(taskId);
     if (task) task.toggleStatus();
-    this.save();
     return Boolean(task);
   }
   deleteTask(taskId) {
     this.todos.forEach(todo => todo.deleteTask(taskId));
-    this.save();
   }
   toJSON() {
     return JSON.stringify(this.todos);
@@ -73,9 +64,6 @@ class Todos {
       });
       return new Todo(title, fromDate, taskList, id);
     });
-  }
-  save() {
-    fs.writeFile(this.path, this.toJSON(), () => {});
   }
 }
 

@@ -7,7 +7,12 @@ const {
   USERS_PATH
 } = require(`${__dirname}/../../../config.js`);
 
+const saveDataStore = function(store) {
+  fs.writeFile(DATA_STORE_PATH, store, () => {});
+};
+
 const getTodos = function(req, res, next) {
+  const storeAsJSON = req.app.locals.store.toJSON();
   res.set('Content-Type', 'application/json');
   res.end(req.app.locals.store.toJSON());
 };
@@ -21,7 +26,9 @@ const createTodo = function(req, res, next) {
   const id = `todo${new Date().getTime()}`;
   req.app.locals.store.addTodo(new Todo(todoName, new Date(), [], id));
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  const storeAsJSON = req.app.locals.store.toJSON();
+  res.end(storeAsJSON);
+  saveDataStore(storeAsJSON);
 };
 
 const editTodoTitle = function(req, res, next) {
@@ -31,8 +38,10 @@ const editTodoTitle = function(req, res, next) {
   }
   const { title, todoId } = req.body;
   req.app.locals.store.editTodoTitle(todoId, title);
+  const storeAsJSON = req.app.locals.store.toJSON();
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  res.end(storeAsJSON);
+  saveDataStore(storeAsJSON);
 };
 
 const deleteTodo = function(req, res, next) {
@@ -42,8 +51,10 @@ const deleteTodo = function(req, res, next) {
   }
   const { todoId } = req.body;
   req.app.locals.store.deleteTodo(todoId);
+  const storeAsJSON = req.app.locals.store.toJSON();
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  res.end(storeAsJSON);
+  saveDataStore(storeAsJSON);
 };
 
 const createTask = function(req, res, next) {
@@ -55,8 +66,10 @@ const createTask = function(req, res, next) {
   const id = `task${new Date().getTime()}`;
   const task = new Task(taskName, new Date(), id);
   req.app.locals.store.addTask(todoId, task);
+  const storeAsJSON = req.app.locals.store.toJSON();
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  res.end(storeAsJSON);
+  saveDataStore(storeAsJSON);
 };
 
 const editTaskCaption = function(req, res, next) {
@@ -66,8 +79,10 @@ const editTaskCaption = function(req, res, next) {
   }
   const { caption, taskId } = req.body;
   req.app.locals.store.editTaskCaption(taskId, caption);
+  const storeAsJSON = req.app.locals.store.toJSON();
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  res.end(storeAsJSON);
+  saveDataStore(storeAsJSON);
 };
 
 const editTaskStatus = function(req, res, next) {
@@ -77,8 +92,10 @@ const editTaskStatus = function(req, res, next) {
   }
   const { taskId } = req.body;
   req.app.locals.store.editTaskStatus(taskId);
+  const storeAsJSON = req.app.locals.store.toJSON();
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  res.end(storeAsJSON);
+  saveDataStore(storeAsJSON);
 };
 
 const deleteTask = function(req, res, next) {
@@ -88,8 +105,10 @@ const deleteTask = function(req, res, next) {
   }
   const { taskId } = req.body;
   req.app.locals.store.deleteTask(taskId);
+  const storeAsJSON = req.app.locals.store.toJSON();
   res.set('Content-Type', 'application/json');
-  res.end(req.app.locals.store.toJSON());
+  res.end(storeAsJSON);
+  saveDataStore(storeAsJSON);
 };
 
 const signupHandler = function(req, res, next) {
