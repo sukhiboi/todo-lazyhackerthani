@@ -2,137 +2,63 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="./images/checkListIcon.png" />
-    <link rel="stylesheet" href="css/formStyle.css" />
-    <link rel="stylesheet" href="css/homeStyle.css" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-    <script src="./js/home.js"></script>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="./css/main.css" type="text/css" />
     <title>Todo</title>
   </head>
-  <body onload="loadTodos()">
-    <datalist id="">
-      <option>In TASK</option>
-      <option>In TODO</option>
-    </datalist>
+  <body>
+    <div class="header flex">
+      <div class="app-name"><span>Todo</span></div>
+      <div class="options flex">
+        <div class="logout hoverable" onclick="logout()">Logout</div>
+        <div class="search-bar flex">
+          <input
+            placeholder="Search Todos..."
+            oninput="filter(this.value, 'todo-heading')"
+          />
+          <img class="hoverable" src="./images/search.svg" />
+        </div>
+        <div class="search-bar flex">
+          <input
+            placeholder="Search Tasks..."
+            oninput="filter(this.value, 'task-tile')"
+          />
+          <img class="hoverable" src="./images/search.svg" />
+        </div>
+        <div class="new-list hoverable" onclick="toggleNewListBox()">
+          New list
+        </div>
+      </div>
+    </div>
+    <div class="window flex" id="window"></div>
 
-    <div id="searchDiv">
-      <i
-        class="fa fa-search searchIcon"
-        id="plainSearchIcon"
-        aria-hidden="true"
-        onclick="hide('plainSearchIcon'),show('taskSearchDiv')"
-      ></i>
-      <div id="taskSearchDiv">
-        <input
-          id="taskSearchTextBox"
-          type="search"
-          autocomplete="on"
-          onkeyup="filter('taskSearchTextBox','label')"
-          placeholder="search in Tasks"
-        />
-        <img
-          id="taskSearchIcon"
-          title="search in tasks"
-          src="./images/taskSearchIcon.png"
-          class="searchIcon specificSearchIcon"
-          alt="taskSearch"
-          onclick="hide('taskSearchDiv'),show('titleSearchDiv'),clearValue('taskSearchTextBox')"
-        />
-      </div>
-      <div id="titleSearchDiv">
-        <input
-          id="titleSearchTextBox"
-          type="search"
-          autocomplete="on"
-          onkeyup="filter('titleSearchTextBox','h2')"
-          placeholder="search in title"
-        /><img
-          id="titleSearchIcon"
-          title="search in toDos"
-          src="./images/titleSearchIcon.png"
-          class="searchIcon specificSearchIcon"
-          alt="titleSearch"
-          onclick="hide('titleSearchDiv'),show('taskSearchDiv'),clearValue('titleSearchTextBox')"
-        />
+    <div class="popup hide" id="newListPopup">
+      <div class="msgBox center">
+        <span>Create New List</span><br />
+        <input placeholder="You new list name..." id="newTodoTitle" /><br />
+        <button class="logout hoverable" onclick="createTodo()">
+          Create
+        </button>
+        <button class="logout cancel hoverable" onclick="toggleNewListBox()">
+          Cancel
+        </button>
       </div>
     </div>
-    <div class="addTodoDiv">
-      <img
-        id="todoAddIcon"
-        src="./images/addTodoIcon.png"
-        alt="Add"
-        title="add new todo"
-        onclick="show('myForm'),hideByOpacity('mainBox')"
-      />
-    </div>
-    <div
-      style="    text-align: right;
-    padding: 20px 30px 0 0;
-    font-weight: 900;
-    font-family: Helvetica;
-    text-transform: capitalize;
-    font-size: 20px;"
-    onclick="logout()"
-    >
-      logout
-    </div>
-    <div id="mainBox"></div>
-    <div class="form-popup" id="myForm">
-      <input
-        type="text"
-        name="todoName"
-        id="todoName"
-        placeholder="type task list name and enter"
-      />
-      <input
-        class="popUpButton"
-        type="submit"
-        value="create"
-        onclick="hide('myForm'),createTodo('todoName','todoBox'),clearValue('todoName'),showByOpacity('mainBox')"
-      />
-      <input
-        class="popUpButton"
-        type="button"
-        value="cancel"
-        onclick="clearValue('todoName'),hide('myForm'),showByOpacity('mainBox')"
-      />
-    </div>
-    <div class="todoPageDiv hideIt" id="todoBox">
-      <div class="todoBoxDiv">
-        <div class="textBoxDiv">
-          <input
-            type="text"
-            name="taskBox"
-            id="taskBox"
-            placeholder="type your task and enter"
-          />
-          <img
-            id="taskAddIcon"
-            src="./images/addTaskIcon.png"
-            alt="Submit"
-            onclick="createTask('taskBox'),clearValue('taskBox')"
-          />
-        </div>
-        <div class="listIdDiv" id="#">
-          <h1 class="headingTag"></h1>
-        </div>
-        <div>
-          <input
-            type="button"
-            value="save"
-            onclick="hide('todoBox'),clearValue('taskBox')"
-          />&emsp;
-          <input
-            type="button"
-            value="close"
-            onclick="hide('todoBox'),clearValue('taskBox')"
-          />
-        </div>
+
+    <div class="popup hide" id="deleteTodoPopup">
+      <div class="msgBox center">
+        <span>Are you sure to delete this Todo</span><br />
+        <button class="logout cancel hoverable" id="deleteBtn">
+          DELETE
+        </button>
+        <button class="logout hoverable" onclick="toggleTodoDeleteBox()">
+          Cancel
+        </button>
       </div>
     </div>
   </body>
+  <script src="./js/home.js"></script>
+  <script src="./js/todoGenerator.js"></script>
+  <script src="./js/taskGenerator.js"></script>
 </html>

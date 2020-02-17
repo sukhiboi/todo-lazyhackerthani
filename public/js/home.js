@@ -6,16 +6,15 @@ const showByOpacity = id => (document.getElementById(id).style.opacity = 1);
 
 const clearValue = id => (document.getElementById(id).value = '');
 
-const filter = function(textBoxId, tagName) {
-  const searchText = document.getElementById(textBoxId).value;
-  const stickies = Array.from(document.getElementsByClassName('stickNote'));
+const filter = function(searchText, classname) {
+  const stickies = Array.from(document.getElementsByClassName('todo'));
   stickies.forEach(sticky => {
-    const labels = Array.from(sticky.getElementsByTagName(tagName)).concat([
+    const labels = Array.from(sticky.getElementsByClassName(classname)).concat([
       ''
     ]);
     const isMatch = labels.some(label => {
-      const regEx = new RegExp(`${searchText}`, 'g');
-      return regEx.test(label.innerHTML);
+      const regEx = new RegExp(`^${searchText}`, 'g');
+      return regEx.test(label.value);
     });
     if (isMatch) show(sticky.id);
     else hide(sticky.id);
@@ -34,28 +33,7 @@ const createTask = function(textBoxId, todoId) {
   }
 };
 
-const showEditTask = function(taskId) {
-  const label = document.getElementById(`descriptionOf${taskId}`);
-  const description = label.innerHTML;
-  const input = `<input type="text" id="editedDescriptionOf${taskId}" class="smallerTextBox" value="${description}"/>`;
-  label.innerHTML = input;
-  const editIconSpan = document.getElementById(`editIconFor${taskId}`);
-  const saveIcon = `<i id="saveIconFor${taskId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTaskCaption('editedDescriptionOf${taskId}','${taskId}')"></i>`;
-  editIconSpan.innerHTML = saveIcon;
-};
-
-const showEditTitle = function(todoId) {
-  const headingSpan = document.getElementById(`titleFor${todoId}`);
-  const title = headingSpan.innerHTML;
-  const input = `<input type="text" id="editedTitleOf${todoId}" class="smallerTextBox" value="${title}"/>`;
-  headingSpan.innerHTML = input;
-  const editIconSpan = document.getElementById(`editIconFor${todoId}`);
-  const saveIcon = `<i id="saveIconFor${todoId}" class="fa fa-floppy-o" aria-hidden="true" onclick="editTodoTitle('editedTitleOf${todoId}','${todoId}')"></i>`;
-  editIconSpan.innerHTML = saveIcon;
-};
-
-const editTaskCaption = function(textBoxId, taskId) {
-  const caption = document.getElementById(textBoxId).value;
+const editTaskCaption = function(caption, taskId) {
   if (caption) {
     sendXHR(
       JSON.stringify({ caption, taskId }),
@@ -66,8 +44,7 @@ const editTaskCaption = function(textBoxId, taskId) {
   } else alert('type something in text box and save');
 };
 
-const editTodoTitle = function(textBoxId, todoId) {
-  const title = document.getElementById(textBoxId).value;
+const editTodoTitle = function(title, todoId) {
   if (title) {
     sendXHR(
       JSON.stringify({ title, todoId }),
@@ -79,24 +56,26 @@ const editTodoTitle = function(textBoxId, todoId) {
 };
 
 const editTaskStatus = function(taskId) {
-  sendXHR(JSON.stringify({ taskId }), 'editTaskStatus', 'POST', () => {});
+  sendXHR(JSON.stringify({ taskId }), 'editTaskStatus', 'POST', handleAllTodo);
 };
 
-const deleteTask = taskId =>
+const deleteTask = function(taskId) {
   sendXHR(JSON.stringify({ taskId }), 'deleteTask', 'POST', handleAllTodo);
+};
 
-const createTodo = function(textBoxId) {
-  const todoName = document.getElementById(textBoxId).value;
-  if (todoName) {
-    sendXHR(JSON.stringify({ todoName }), 'createTodo', 'POST', handleAllTodo);
-  }
+const createTodo = function() {
+  const todoName = document.getElementById('newTodoTitle').value;
+  toggleNewListBox();
+  sendXHR(JSON.stringify({ todoName }), 'createTodo', 'POST', handleAllTodo);
 };
 
 const deleteTodo = function(todoId) {
   sendXHR(JSON.stringify({ todoId }), 'deleteTodo', 'POST', handleAllTodo);
 };
 
-const loadTodos = () => sendXHR({}, 'getTodos', 'GET', handleAllTodo);
+const loadTodos = function() {
+  sendXHR({}, 'getTodos', 'GET', handleAllTodo);
+};
 
 const handleAllTodo = function() {
   const res = JSON.parse(this.response);
@@ -109,58 +88,41 @@ const handleAllTodo = function() {
       return createStickyTemplate(todo);
     })
     .join('');
-  document.getElementById('mainBox').innerHTML = html;
-};
-
-const createStickyTemplate = function(todo) {
-  const tasksInHtml = todo.tasks
-    .map(task => {
-      return createTaskTemplate(task);
-    })
-    .join('');
-  const html = `<div class="stickNote" id="div${todo.id}">
-            <img id="edit${todo.id}" class="editTodoIcon" src="./images/editTodoIcon.png" alt="edit" />
-            <img id="delete${todo.id}"  class="deleteTodoIcon" src="./images/deleteTodoIcon.png" alt="delete" onclick="deleteTodo('${todo.id}')"/>
-             <div class="stickyTitle">
-               <h2><span id="titleFor${todo.id}">${todo.title}</span>&nbsp<span id="editIconFor${todo.id}"><i  class="fa fa-pencil" aria-hidden="true" onclick="showEditTitle('${todo.id}')"></i>&nbsp
-               <i class="fa fa-chevron-down" aria-hidden="true" onclick="show('input${todo.id}')"></i></span></h2>
-             </div>
-             <div class="smallTextBoxDiv hideIt" id="input${todo.id}">
-               <input type="text"  class="smallTextBox" name="stickyInputBox" id="taskTo${todo.id}" placeholder="type task and enter"/>
-               <i  id="addIconFor${todo.id}" class="fa fa-plus-circle" aria-hidden="true" onclick="createTask('taskTo${todo.id}','${todo.id}')"></i>&nbsp
-               <i id="cancelIconFor${todo.id}" class="fa fa-times-circle" aria-hidden="true" onclick="hide('input${todo.id}'),clearValue('taskTo${todo.id}')"></i>
-             </div><br>
-            <div id="tasksOf${todo.id}">
-              ${tasksInHtml}
-            </div>
-          </div>`;
-  return html;
-};
-
-const createTaskTemplate = function(task) {
-  return `<div class="taskDiv" id="${
-    task.id
-  }"><input type="checkbox" name="checkBox" onclick="editTaskStatus('${
-    task.id
-  }')" id="checkbox${task.id}" ${
-    task.done ? 'checked' : ''
-  } /><label class="taskLabel" id="descriptionOf${task.id}" for="checkbox${
-    task.id
-  }">${task.caption}</label>&emsp;<span id="editIconFor${
-    task.id
-  }"><i  class="fa fa-pencil-square-o" aria-hidden="true" onclick="showEditTask('${
-    task.id
-  }')"></i>&nbsp<i id="deleteIconFor${
-    task.id
-  }" class="fa fa-minus-square-o" aria-hidden="true" onclick="deleteTask('${
-    task.id
-  }')"></i></span></div><br />`;
+  document.getElementById('window').innerHTML = html;
 };
 
 const logout = function() {
+  console.log('something');
   sendXHR('', '/logout', 'POST', function() {
     document.location = '/';
   });
+};
+
+const toggleNewListBox = function() {
+  const box = document.getElementById('newListPopup');
+  const inputBox = document.querySelector('#newTodoTitle');
+  if (box.className.includes('hide')) {
+    box.classList.remove('hide');
+    inputBox.focus();
+  } else {
+    box.classList.add('hide');
+    inputBox.value = '';
+  }
+};
+
+const toggleTodoDeleteBox = function(todoId) {
+  const box = document.getElementById('deleteTodoPopup');
+  if (box.className.includes('hide')) {
+    box.classList.remove('hide');
+    const deleteBtn = box.querySelector('#deleteBtn');
+    console.log(todoId);
+    deleteBtn.addEventListener('click', () => {
+      deleteTodo(todoId);
+      toggleTodoDeleteBox();
+    });
+  } else {
+    box.classList.add('hide');
+  }
 };
 
 const sendXHR = function(data, url, method, responseHandler) {
@@ -170,3 +132,5 @@ const sendXHR = function(data, url, method, responseHandler) {
   request.send(data);
   request.onload = responseHandler;
 };
+
+window.onload = loadTodos();
