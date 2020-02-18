@@ -44,7 +44,7 @@ const editTaskCaption = function(caption, taskId) {
       'POST',
       handleAllTodo
     );
-  } else alert('type something in text box and save');
+  }
 };
 
 const editTodoTitle = function(title, todoId) {
@@ -55,7 +55,7 @@ const editTodoTitle = function(title, todoId) {
       'POST',
       handleAllTodo
     );
-  } else alert('type something in text box and save');
+  }
 };
 
 const editTaskStatus = function(taskId) {
@@ -66,11 +66,12 @@ const deleteTask = function(taskId) {
   sendXHR(JSON.stringify({ taskId }), 'deleteTask', 'POST', handleAllTodo);
 };
 
-const createTodo = function (isOnKeyPress = false) {
-    if (isOnKeyPress && event.key !== 'Enter') {
-      return;
-    }
+const createTodo = function(isOnKeyPress = false) {
+  if (isOnKeyPress && event.key !== 'Enter') {
+    return;
+  }
   const todoName = document.getElementById('newTodoTitle').value;
+  if (!todoName) return;
   toggleNewListBox();
   sendXHR(JSON.stringify({ todoName }), 'createTodo', 'POST', handleAllTodo);
 };
