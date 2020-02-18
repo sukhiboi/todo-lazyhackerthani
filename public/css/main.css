@@ -129,6 +129,10 @@ body {
   margin: 0;
 }
 
+.animationOnTaskCaption  {
+  background-color: rgba(74, 174, 163, 0.3);
+}
+
 .add-new-todo-box {
   background-color: #e4e4e4;
   border-radius: 5px;

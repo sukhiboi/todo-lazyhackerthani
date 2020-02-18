@@ -49,23 +49,33 @@ const createTask = function(textBoxId, todoId, isOnKeyPress = false) {
 
 const editTaskCaption = function(caption, taskId) {
   if (caption) {
-    sendXHR(
-      JSON.stringify({ caption, taskId }),
-      'editTaskCaption',
-      'POST',
-      handleAllTodo
-    );
+    const task = document.getElementById(taskId);
+    task.classList.add('animationOnTaskCaption');
+    setTimeout(() => {
+      task.classList.remove('animationOnTaskCaption');
+      sendXHR(
+        JSON.stringify({ caption, taskId }),
+        'editTaskCaption',
+        'POST',
+        handleAllTodo
+      );
+    }, 100);
   }
 };
 
 const editTodoTitle = function(title, todoId) {
   if (title) {
-    sendXHR(
-      JSON.stringify({ title, todoId }),
-      'editTodoTitle',
-      'POST',
-      handleAllTodo
-    );
+    const todo = document.getElementById(todoId);
+    todo.classList.add('animationOnTaskCaption');
+    setTimeout(() => {
+      todo.classList.remove('animationOnTaskCaption');
+      sendXHR(
+        JSON.stringify({ title, todoId }),
+        'editTodoTitle',
+        'POST',
+        handleAllTodo
+      );
+    }, 100);
   }
 };
 
