@@ -1,5 +1,5 @@
 const createTaskTemplate = function(task) {
-  let html = `<div class='task flex'>
+  let html = `<div class='task flex' id="__TASKID__">
     <div class='checkbox hoverable' onclick="editTaskStatus('__TASKID__')">
       <div class='center'>
         <div class='check center __COMPLETEORNOT__'></div>

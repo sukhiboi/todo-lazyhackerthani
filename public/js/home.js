@@ -1,6 +1,7 @@
 const hide = id => (document.getElementById(id).style.display = 'none');
 
 const show = id => (document.getElementById(id).style.display = 'block');
+const taskShow = id => (document.getElementById(id).style.display = 'flex');
 const hideByOpacity = id => (document.getElementById(id).style.opacity = -1);
 const showByOpacity = id => (document.getElementById(id).style.opacity = 1);
 
@@ -18,6 +19,16 @@ const filter = function(searchText, classname) {
     });
     if (isMatch) show(sticky.id);
     else hide(sticky.id);
+    if (classname == 'task-tile') {
+      const tasks = Array.from(sticky.getElementsByClassName('task'));
+      const isMatch = tasks.filter(task => {
+        const regEx = new RegExp(`^${searchText}`, 'g');
+        const inputBox = task.querySelector('input');
+        return regEx.test(inputBox.value);
+      });
+      tasks.forEach(task => hide(task.id));
+      isMatch.forEach(task => taskShow(task.id));
+    }
   });
 };
 
