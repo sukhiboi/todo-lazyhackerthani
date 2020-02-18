@@ -6,7 +6,10 @@ const sendXHR = function(data, url, method, responseHandler) {
   request.onload = responseHandler;
 };
 
-const loginValidator = function() {
+const loginValidator = function (isOnKeyPress = false) {
+    if (isOnKeyPress && event.key !== 'Enter') {
+      return;
+    }
   const messageBox = document.getElementById('loginErrMsg');
   const userName = document.querySelector('#loginuserName').value;
   const password = document.querySelector('#loginpassword').value;
@@ -23,7 +26,10 @@ const loginValidator = function() {
   });
 };
 
-const signup = function() {
+const signup = function(isOnKeyPress = false) {
+  if (isOnKeyPress && event.key !== 'Enter') {
+    return;
+  }
   const messageBox = document.getElementById('signupErrMsg');
   const userName = document.querySelector('#signupuserName').value;
   const password = document.querySelector('#signuppassword').value;

@@ -21,7 +21,10 @@ const filter = function(searchText, classname) {
   });
 };
 
-const createTask = function(textBoxId, todoId) {
+const createTask = function(textBoxId, todoId, isOnKeyPress = false) {
+  if (isOnKeyPress && event.key !== 'Enter') {
+    return;
+  }
   const taskName = document.getElementById(textBoxId).value;
   if (taskName) {
     sendXHR(
@@ -63,7 +66,10 @@ const deleteTask = function(taskId) {
   sendXHR(JSON.stringify({ taskId }), 'deleteTask', 'POST', handleAllTodo);
 };
 
-const createTodo = function() {
+const createTodo = function (isOnKeyPress = false) {
+    if (isOnKeyPress && event.key !== 'Enter') {
+      return;
+    }
   const todoName = document.getElementById('newTodoTitle').value;
   toggleNewListBox();
   sendXHR(JSON.stringify({ todoName }), 'createTodo', 'POST', handleAllTodo);

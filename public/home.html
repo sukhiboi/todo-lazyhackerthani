@@ -36,7 +36,11 @@
     <div class="popup hide" id="newListPopup">
       <div class="msgBox center">
         <span>Create New Todo</span><br />
-        <input placeholder="You new list name..." id="newTodoTitle" /><br />
+        <input
+          placeholder="You new list name..."
+          id="newTodoTitle"
+          onkeydown="createTodo(true)"
+        /><br />
         <button class="logout hoverable" onclick="createTodo()">
           Create
         </button>

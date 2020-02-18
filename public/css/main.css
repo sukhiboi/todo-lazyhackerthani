@@ -240,6 +240,7 @@ body {
 }
 
 .msgBox > button {
+  margin-top: 10px;
   color: #fff;
   font-size: 1rem;
   letter-spacing: 1px;

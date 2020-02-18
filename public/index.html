@@ -14,10 +14,10 @@
       </div>
       <span id="loginErrMsg">&nbsp;</span>
       <div class="loginInputs">
-        <input placeholder="Username" id="loginuserName" /><br />
-        <input type="password" placeholder="Password" id="loginpassword" />
+        <input placeholder="Username" id="loginuserName" autofocus /><br />
+        <input type="password" placeholder="Password" id="loginpassword" onkeydown="loginValidator(true)"/>
       </div>
-      <div class="buttons">
+      <div class="buttons" >
         <button class="button hoverable" onclick="loginValidator()">Login</button class="button">
             <span class="signup"><br>Not a registered user? <span class="hoverable label" id="singupLink" onclick="hide('loginBox'), show('signupBox')">Singup</span></span>
       </div>
@@ -29,8 +29,8 @@
       </div>
       <span id="signupErrMsg">&nbsp;</span>
       <div class="loginInputs">
-        <input placeholder="Username" id="signupuserName" /><br />
-        <input type="password" placeholder="Password" id="signuppassword" />
+        <input placeholder="Username" id="signupuserName" autofocus /><br />
+        <input type="password" placeholder="Password" id="signuppassword" onkeydown="signup(true)"/>
       </div>
       <div class="buttons">
         <button class="button hoverable" onclick="signup()">Signup</button class="button">
