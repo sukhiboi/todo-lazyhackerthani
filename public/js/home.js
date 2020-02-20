@@ -98,6 +98,7 @@ const createTodo = function(isOnKeyPress = false) {
 };
 
 const deleteTodo = function(todoId) {
+  toggleTodoDeleteBox();
   sendXHR(JSON.stringify({ todoId }), 'deleteTodo', 'POST', handleAllTodo);
 };
 
@@ -146,7 +147,6 @@ const toggleTodoDeleteBox = function(todoId) {
     console.log(todoId);
     deleteBtn.addEventListener('click', () => {
       deleteTodo(todoId);
-      toggleTodoDeleteBox();
     });
   } else {
     box.classList.add('hide');
