@@ -54,8 +54,7 @@
   * login class which create and handle user
 
   * design login page which will be the index page
-  * check wether you have cookies if its present then validate then only go to to do page of perticular person
-
+  * check wether you have cookies if its present then validate then only go to to do page of perticular perso
 
 ---------------
 
