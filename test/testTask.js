@@ -12,6 +12,7 @@ describe('Task class', function () {
     it('should edit the caption of the Task', function() {
       const task = new Task('buy milk', date, 'task1');
       const newCaption = task.editCaption('buy shampoo');
+      console.log('hi sukhiboi')
       assert.strictEqual(newCaption, 'buy shampoo');
     });
   });
